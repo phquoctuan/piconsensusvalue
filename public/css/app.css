@@ -1,5 +1,145 @@
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+html {
+  margin: 0 !important;
+  -webkit-text-size-adjust: none;
+}
+
+/* HTML5 display-role reset for older browsers */
+
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section,
+main {
+  display: block;
+}
+
 .title {
   font-size: large;
   font-style: revert;
+}
+
+input.parsley-success,
+select.parsley-success,
+textarea.parsley-success {
+  color: #468847;
+  background-color: #DFF0D8;
+  border: 1px solid #D6E9C6;
+}
+
+input.parsley-error,
+select.parsley-error,
+textarea.parsley-error {
+  color: #B94A48;
+  background-color: #F2DEDE;
+  border: 1px solid #EED3D7;
+}
+
+.parsley-errors-list {
+  margin: 2px 0 3px;
+  padding: 0;
+  list-style-type: none;
+  font-size: 0.9em;
+  line-height: 0.9em;
+  opacity: 0;
+  transition: all 0.3s ease-in;
+  -o-transition: all 0.3s ease-in;
+  -moz-transition: all 0.3s ease-in;
+  -webkit-transition: all 0.3s ease-in;
+}
+
+.parsley-errors-list.filled {
+  opacity: 1;
+}
+
+.panel-default > .panel-heading {
+  background-image: none !important;
+  font-size: 25px;
+}
+
+.pi-sign {
+  font-family: sans-serif;
+  font-size: 150%;
+  color: gold;
+}
+
+.inline {
+  display: inline-block;
+}
+
+#pi-value {
+  font-size: 40;
+  background-color: #403838;
+  color: white;
+}
+
+.current-pivalue {
+  display: inline-block;
+  font-size: 200%;
+  color: gold;
+}
+
+#pi-proposal {
+  font-size: 40;
+}
+
+#proposal-value {
+  font-size: 40px;
+  text-align: center;
+  font-size: inherit;
+}
+
+#onepi {
+  font-size: 40px;
+}
+
+#dollar-sign {
+  font-size: 40px;
+  display: inline-block;
+}
+
+#donate_label {
+  clear: both;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  font-size: 18px;
+  color: darkorange;
+  font-weight: 500;
+}
+
+#donate_value {
+  color: red;
+  font-size: 150%;
+}
+
+#donate_sign {
+  color: red;
+  font-size: 150%;
+}
+
+#donate_hint {
+  display: inline-block;
+  color: darkblue;
+  width: 14px;
+  height: 14px;
+  line-height: 14px;
+  vertical-align: super;
+  font-size: 105%;
+}
+
+#donate_hint:hover {
+  color: blue;
 }
 

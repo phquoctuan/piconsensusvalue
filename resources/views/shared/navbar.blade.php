@@ -15,14 +15,35 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="/about">About</a></li>
-                <li class="dropdown">
+                {{-- <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Account <span class="caret"></span></a>
                     <ul class="dropdown-menu" role="menu">
-                        <li class='disabled'><a href="/users/register" class="disabled-link">Register</a></li>
-                        <li><a href="/users/login">Login</a></li>
+                        <li class=''><a href="/users/register" class="disabled-link">Register</a></li>
+                        <li><a href="/users/login" >Login</a></li>
                     </ul>
-                </li>
+                </li> --}}
             </ul>
         </div>
     </div>
 </nav>
+
+{{-- bootstrap 4 --}}
+{{-- <nav class="navbar navbar-expand-md bg-dark navbar-dark">
+    <!-- Brand -->
+    <a class="navbar-brand" href="#">Navbar</a>
+
+    <!-- Toggler/collapsibe Button -->
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Navbar links -->
+    <div class="collapse navbar-collapse" id="collapsibleNavbar">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="#">About</a>
+        </li>
+
+      </ul>
+    </div>
+  </nav> --}}

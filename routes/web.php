@@ -20,3 +20,11 @@ Route::resource('posts', 'PostsController');
 Route::group(['prefix' => 'api/v1', 'middleware' => ['api', 'cors']], function(){
     Route::resource('posts', 'PostsController');
 });
+
+Route::get('proposal/current', 'ProposalController@currentValue');
+Route::post('proposal/propose', 'ProposalController@create');
+
+Route::get('users/login', 'Auth\AuthController@getLogin');
+Route::post('users/login', 'Auth\AuthController@postLogin');
+Route::get('users/register', 'Auth\AuthController@getRegister');
+Route::post('users/register', 'Auth\AuthController@postRegister');

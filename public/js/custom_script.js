@@ -100,7 +100,7 @@ $(document).ready(function() {
             .done(function(response) { //success
                 if (response.success) {
                     swal({
-                        title: "Your proposion was accepted !",
+                        title: "Accepted !",
                         text: response.message,
                         timer: 10000,
                         showConfirmButton: true,
@@ -111,8 +111,16 @@ $(document).ready(function() {
                 }
             })
             .fail(function(response) { //error
-                swal("Fail!", response.responseJSON.message, 'error');
-
+                if (response.message) {
+                    swal("Fail!", response.message, 'error');
+                } else
+                if (response.responseJSON) {
+                    swal("Fail!", response.responseJSON.message, 'error');
+                } else {
+                    swal("Fail!", "unknow error, please try again.", 'error');
+                }
+                ld.stop();
+                ld.remove();
             })
             .complete(function(response) {
                 ld.stop();

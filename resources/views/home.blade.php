@@ -25,7 +25,7 @@
                     <div class="panel-body">
                         <div class="text-center" id="pi-value">
                             1π =
-                            <div class="current-pivalue" id="current-pivalue">10</div>
+                            <div class="current-pivalue" id="current-pivalue">{{$current_value}}</div>
                             <div id="dollar-sign">$
                             </div>
                         </div>
@@ -50,7 +50,7 @@
                         </div>
                         <div class= "donate">
                             <label id="donate_label" class="">To propse you will have to donate:</label>
-                            <label id="donate_value" class="">0</label>
+                            <label id="donate_value" class="">{{number_format(0,7)}}</label>
                             <label id="donate_sign" class="">π</label>
                             <span id= "donate_hint" class="fa fa-question-circle" data-toggle="tooltip" data-original-title="Donate value = abs(propose - current) x 10% in dollar, and will be convert to Pi in current value." ></span>
                         </div>
@@ -110,14 +110,19 @@
                     type:'GET',
                     dataType:'json',
                     success:function(response){
-                        if(response.current_value){
-                            $('#current-pivalue').html(response.current_value);
+                        if(response.current_value || response.current_value == 0){
+                            $('#current-pivalue').html(response.current_value.toFixed(7));
                             var donatePi = 0;
                             // var propose = $('#proposal-value');
                             if($('#proposal-value').val()){
                                 var diff = Math.abs($('#proposal-value').val() - response.current_value);
                                 if(diff != 0) {
-                                    var donatePi = diff/(10 * response.current_value)
+                                    if (response.current_value == 0){
+                                        var donatePi = diff/(10 * $('#proposal-value').val())
+                                    }
+                                    else{
+                                        var donatePi = diff/(10 * response.current_value)
+                                    }
                                 }
                             }
                             $('#donate_value').html(donatePi.toFixed(7));
@@ -126,7 +131,7 @@
 
                     }
                 })
-            }, 1000);
+            }, 3000);
 
             $('#proposal-value').change(function (e) {
                 var donatePi = 0;

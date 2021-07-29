@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Proposal extends Model
 {
+    //Proposal data of all poonineer
+
     /**
      * The attributes that are mass assignable.
      *

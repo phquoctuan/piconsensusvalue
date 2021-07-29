@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use SweetAlert;
+use Illuminate\Support\Facades\Cache;
 
 
 class HomeController extends Controller
@@ -24,7 +25,18 @@ class HomeController extends Controller
         //alert()->error('Error Message', 'Optional Title')->persistent('Close');
         //Alert::info('Welcome to our website', 'Hi! This is a Sweet Alert message!');
         //SweetAlert::message('Robots are working!');
-        return view('home');
-        //return Redirect::();
+        $pival = 0;
+        if (Cache::has('CurrentPiValue')){
+            $cacheValue = Cache::get('CurrentPiValue');
+            $pival = $cacheValue["current_value"];
+        }
+        else{
+            $responsedata = app('App\Http\Controllers\ProposalController')->currentValue();
+            $content = $responsedata->getContent();
+            $array = json_decode($content, true);
+            //dd(($responsedata));
+            $pival = $array['current_value'];
+        }
+        return view('home')->with('current_value', number_format($pival,7));
     }
 }

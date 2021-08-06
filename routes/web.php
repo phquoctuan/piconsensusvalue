@@ -22,7 +22,13 @@ Route::group(['prefix' => 'api/v1', 'middleware' => ['api', 'cors']], function()
 });
 
 Route::get('proposal/current', 'ProposalController@currentValue');
-Route::post('proposal/propose', 'ProposalController@create');
+// Route::post('proposal/propose', 'ProposalController@create');
+Route::post('/proposal/serverapproval', 'ProposalController@ApprovalPayment');
+Route::post('/proposal/servercompletion', 'ProposalController@CompletionPayment');
+Route::post('/proposal/cancel', 'ProposalController@CancelPayment');
+Route::post('/proposal/error', 'ProposalController@ErrorPayment');
+Route::post('/proposal/incomplete', 'ProposalController@InCompletionPayment');
+Route::post('/proposal/checkproposal', 'ProposalController@CheckProposal');
 
 Route::get('users/login', 'Auth\AuthController@getLogin');
 Route::post('users/login', 'Auth\AuthController@postLogin');

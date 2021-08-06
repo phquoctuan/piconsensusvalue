@@ -15,11 +15,20 @@ class CreateProposalTalbe extends Migration
     {
         Schema::create('proposals', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('uid');
+            $table->string('username', 256);
+            $table->string('paymentid');
             $table->double('propose');
             $table->double('current');
             $table->double('donate')->default(0);
-            $table->string('public_key', 256);
             $table->string('note')->nullable();
+            $table->ipAddress('ipaddress', 40)->nullable();
+            $table->string('txid')->nullable();
+            $table->string('txlink')->nullable();
+            $table->string('fromwallet')->nullable();
+            $table->string('towallet')->nullable();
+            $table->smallInteger('status')->default(0);//1: complete, 2: Cancel, 3: error
+            $table->boolean('completed')->default(0);
             $table->timestamps();
         });
     }

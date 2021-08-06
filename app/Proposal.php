@@ -14,6 +14,18 @@ class Proposal extends Model
      * @var array
      */
     protected $fillable = [
-        'propose', 'current', 'donate', 'public_key', 'note',
+        'uid',
+        'username',
+        'paymentid' ,
+        'propose',
+        'current',
+        'donate',
+        'note',
+        'ipaddress',
+        'txid',
+        'fromwallet',
+        'towallet',
+        'txlink',
+        'completed'
     ];
 }

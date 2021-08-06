@@ -11,12 +11,16 @@
     <link rel="stylesheet" href="/css/ladda.min.css">
     <link href="{{asset('css/app.css') }}" rel="stylesheet" />
 
-    <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+    {{-- <script src="//code.jquery.com/jquery-1.11.3.min.js"></script> --}}
+    <script src="{{asset('js/jquery-1.11.3.min.js') }}"></script>
 
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     {{-- <script src="https://cdn.usebootstrap.com/bootstrap/4.6.0/js/bootstrap.min.js"></script>
     <script src="https://cdn.usebootstrap.com/bootstrap/4.6.0/js/bootstrap.bundle.min.js"></script> --}}
     <script src="{{asset('js/app.js') }}"></script>
+
+    <script src="https://sdk.minepi.com/pi-sdk.js"></script>
+
 </head>
 <body>
     {{-- @include('sweet::alert') --}}
@@ -27,5 +31,10 @@
 <script src="/js/spin.min.js"></script>
 <script src="/js/ladda.min.js"></script>
 <script src="/js/custom_script.js"></script>
+
+<script>
+
+
+</script>
 </body>
 </html>

@@ -25,10 +25,10 @@ return [
 
     'allowed_headers' => ['*'],
 
-    'exposed_headers' => false,
+    'exposed_headers' => false,//false: server can only use standard response headers
 
     'max_age' => false,
 
-    'supports_credentials' => false,
+    'supports_credentials' => true,//whether you can use cookies or other credentials with your requests
 
 ];

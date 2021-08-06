@@ -37,6 +37,7 @@ class HomeController extends Controller
             //dd(($responsedata));
             $pival = $array['current_value'];
         }
+        header("Set-Cookie: cross-site-cookie=whatever; SameSite=None; Secure");
         return view('home')->with('current_value', number_format($pival,7));
     }
 }

@@ -1,6 +1,5 @@
 @extends('master')
 @section('title', 'Home')
-
 @section('content')
 
     <div class="container">
@@ -41,6 +40,9 @@
                         <div class="text-center">Your Proposal</div>
                     </div>
                     <div class="panel-body">
+                        <div class="text-center" id="pi-proposal">
+                            <label id="ready_state">Open this page in Pi Browser to enable proposal</label>
+                        </div>
                         <div class="text-center" id="pi-proposal">
                             <div class="form-group">
                                 <label id="onepi" class="control-label col-xs-4 col-md-3 col-md-offset-1" >1π =</label>
@@ -131,7 +133,7 @@
 
                     }
                 })
-            }, 3000);
+            }, 5000);
 
             $('#proposal-value').change(function (e) {
                 var donatePi = 0;

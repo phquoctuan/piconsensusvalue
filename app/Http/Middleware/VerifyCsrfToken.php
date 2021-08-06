@@ -14,5 +14,12 @@ class VerifyCsrfToken extends Middleware
     protected $except = [
         //
         'proposal/propose',
+        '/proposal/serverapproval',
+        '/proposal/servercompletion',
+        '/proposal/cancel',
+        '/proposal/error',
+        '/proposal/incomplete',
+        '/proposal/checkproposal',
+
     ];
 }

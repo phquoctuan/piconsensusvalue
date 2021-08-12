@@ -15,18 +15,23 @@ class CreateDonateLogsTable extends Migration
     {
         Schema::create('donate_logs', function (Blueprint $table) {
             $table->increments('id');
-            $table->timestamp('from_date');
-            $table->timestamp('to_date');
+            $table->dateTime('from_date');
+            $table->dateTime('to_date');
             $table->integer('id_from')->nullable();
             $table->integer('id_to')->nullable();
-            $table->double('all_donate')->default(0);//from initial
+            $table->integer('count_donate')->default(0);
+            $table->double('total_propose')->default(0);//this period
             $table->double('total_donate')->default(0);//this period
-            $table->timestamp('draw_date')->nullable();//first day of next month
+            $table->double('reward')->nullable();//reward this period
+            $table->double('remain_donate')->nullable();//reward this period
+            $table->dateTime('draw_date')->nullable();//first day of next month
             $table->integer('drawed_id')->nullable();//proposal id
             $table->string('drawed_username', 256)->nullable();//winner
             $table->boolean('paid')->nullable();//mark transferred for winner this month
             $table->string('txid')->nullable();
-            $table->timestamp('created_at')->useCurrent = true;
+            $table->string('fromwallet')->nullable();
+            $table->string('towallet')->nullable();
+            $table->dateTime('created_at')->useCurrent = true;
         });
     }
 

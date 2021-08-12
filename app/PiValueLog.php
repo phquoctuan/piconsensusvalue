@@ -11,6 +11,6 @@ class PiValueLog extends Model
     //this value is reference to calculate current value if we lose cahce.
 
     protected $fillable = [
-        'current_value', 'total_propose', 'propose_time', 'propose_id',
+        'current_value', 'total_propose', 'sum_donate', 'propose_time', 'propose_id',
     ];
 }

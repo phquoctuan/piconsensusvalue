@@ -15,11 +15,25 @@ use Debugger;
 use App\Classes\Contracts\CurrentValueInterface;
 use Illuminate\Support\Facades\Cache;
 use App\PiValueLog;
+use App\DonateLog;
 use Illuminate\Support\Facades\DB;
 use GuzzleHttp;
+use \Datetime;
+
+
 
 class ProposalController extends Controller
 {
+
+    public function index(Request $request)
+    {
+        $items = Proposal::where('completed','1')->latest('created_at')->paginate(20);
+        if ($request->ajax()) {
+            return view('proposal.proposal_item', ['items' => $items])->render();
+        }
+        return view('proposal.index', compact('items'));
+    }
+
     public function currentValue()
     {
         if (!Cache::has('CurrentPiValue')) {
@@ -28,18 +42,20 @@ class ProposalController extends Controller
             $lastlog = PiValueLog::orderBy('propose_time', 'desc')->first();//PiValueLog::latest();
             if ($lastlog){
                 $new_last_log = false;
-                $new_proposals = Proposal::select(DB::raw("COUNT(*) AS total_propose, SUM(propose) AS sum_propose , MAX(created_at) AS propose_time"))
+                $new_proposals = Proposal::select(DB::raw("COUNT(*) AS total_propose, SUM(propose) AS sum_propose, SUM(donate) AS sum_donate, MAX(created_at) AS propose_time"))
                 ->where('completed','1')
                 ->where('created_at', '>',  $lastlog->propose_time)
                 ->first();
                 if($new_proposals->total_propose > 0){
                     $new_last_log = true;
                     $new_total_propose = $lastlog->total_propose + $new_proposals->total_propose;
+                    $new_sum_donate = $lastlog->sum_donate + $new_proposals->sum_donate;
                     $new_pivalue = (($lastlog->current_value * $lastlog->total_propose) + $new_proposals->sum_propose)/$new_total_propose;
                     $new_propose_time = $new_proposals->propose_time;
                 }
                 else{ //no new proposal data
                     $new_total_propose = $lastlog->total_propose;
+                    $new_sum_donate = $lastlog->sum_donate;
                     $new_pivalue = $lastlog->current_value;
                     $new_propose_time = $lastlog-> propose_time;
                 }
@@ -47,6 +63,7 @@ class ProposalController extends Controller
                 $newdata = array(
                     'current_value' => $new_pivalue,
                     'total_propose' => $new_total_propose,
+                    'sum_donate' => $new_sum_donate,
                     'propose_time' => $new_propose_time
                 );
 
@@ -61,18 +78,20 @@ class ProposalController extends Controller
             }
             else{//no last log in database
                 //calculate everage value base all proposal
-                $new_proposals = Proposal::select(DB::raw("COUNT(*) AS total_propose, SUM(propose) AS sum_propose , MAX(created_at) AS propose_time"))
+                $new_proposals = Proposal::select(DB::raw("COUNT(*) AS total_propose, SUM(propose) AS sum_propose, SUM(donate) AS sum_donate , MAX(created_at) AS propose_time"))
                 ->where('completed','1')
                 ->first();
 
                 if($new_proposals->total_propose > 0){
                     //dd($new_proposals->total_propose);
                     $new_total_propose = $new_proposals->total_propose;
+                    $new_sum_donate = $new_proposals->sum_donate;
                     $new_pivalue = $new_proposals->sum_propose/$new_proposals->total_propose;
                     $new_propose_time = $new_proposals->propose_time;
                 }
                 else{// no data at all
                     $new_total_propose = 0;
+                    $new_sum_donate = 0;
                     $new_pivalue = 0;
                     $new_propose_time = null;
                 }
@@ -80,6 +99,7 @@ class ProposalController extends Controller
                 $newdata = array(
                     'current_value' => $new_pivalue,
                     'total_propose' => $new_total_propose,
+                    'sum_donate' => $new_sum_donate,
                     'propose_time' => $new_propose_time
                 );
                 $CurrentPiValue = new PiValueLog($newdata);
@@ -93,8 +113,184 @@ class ProposalController extends Controller
         }
 
         $cacheValue = Cache::get('CurrentPiValue');
-        lad($cacheValue);
-        $response = response()->json(['current_value' => $cacheValue["current_value"] ], 200);
+        // lad($cacheValue);
+        $response = response()->json(['current_value' => $cacheValue["current_value"], 'sum_donate' => $cacheValue["sum_donate"] ], 200);
+        return $response;
+    }
+
+    /*
+    //
+    */
+    public function LastMonthDonate()
+    {
+        $refeshcache = false;
+        $firstdaystr = date("Y-m-01");//first day of month
+        $firstday = new DateTime($firstdaystr);
+        // return response()->json($firstday, 200);
+        $firstdaylastmonth = $firstday;
+        $firstdaylastmonth->modify('-1 months');
+        $lastdaylastmonth = new DateTime($firstdaylastmonth->format('Y-m-t'));
+
+        if(!Cache::has('LastMonthDonateLog')){
+            $refeshcache = true;
+        }
+        else{
+            $cacheValue = Cache::get('LastMonthDonateLog');
+            $d1 = new DateTime($cacheValue['from_date']);
+            if($d1 != $firstdaylastmonth)
+            {
+                $refeshcache = true;
+            }
+        }
+
+        if ($refeshcache) {
+            //1: get LastDonateLog
+            // $timezone = date_default_timezone_get();
+            $LastMonthDonateLog = DonateLog::where('from_date', $firstdaylastmonth)->first();
+            if($LastMonthDonateLog == null){
+                lad("no log");
+                $newdata = array(
+                    'from_date' => $firstdaylastmonth,//->format("Y-m-d")
+                    'to_date' => $lastdaylastmonth,
+                    'id_from' => 0,
+                    'id_to' => 0,
+                    'total_propose' => 0,
+                    'count_donate' => 0,
+                    'total_donate' => 0,
+                    'reward' => null,
+                    'remain_donate' => null,
+                    'draw_date' => $firstday,
+                    'drawed_id' => null,
+                    'drawed_username' => null,
+                    'paid' => 0,
+                    'txid' => null
+                );
+                $LastMonthDonateLog = new DonateLog($newdata);
+            }
+            //sum donation for last month
+            if($LastMonthDonateLog->drawed_id == null){ //not drawed yet
+
+                $lastmonth_proposals = Proposal::select(DB::raw("COUNT(*) AS count_propose, SUM(propose) AS sum_propose , SUM(donate) AS sum_donate, MIN(id) AS min_id ,MAX(id) AS max_id"))
+                ->where('created_at', '>=', $firstdaylastmonth)
+                ->where('created_at', '<=',  $lastdaylastmonth)
+                ->where('completed','1')
+                ->first();
+
+                if($lastmonth_proposals != null && $lastmonth_proposals->count_propose > 0){
+                    $LastMonthDonateLog->count_donate = $lastmonth_proposals->count_propose;
+                    $LastMonthDonateLog->id_from = $lastmonth_proposals->min_id;
+                    $LastMonthDonateLog->id_to = $lastmonth_proposals->max_id;
+                    $LastMonthDonateLog->total_propose = $lastmonth_proposals->sum_propose;
+                    $LastMonthDonateLog->total_donate = $lastmonth_proposals->sum_donate;
+                    $LastMonthDonateLog->save();
+                }
+            }
+            // echo(gettype($LastDonateLog->from_date));
+            // echo ($LastDonateLog->from_date);
+            //Cache data
+            $cachedata = array(
+                'from_date' => $LastMonthDonateLog->from_date,//->format('d/m/Y')
+                'to_date' => $LastMonthDonateLog->to_date,
+                'id_from' => $LastMonthDonateLog->id_from,
+                'id_to' => $LastMonthDonateLog->id_to,
+                'total_propose' => $LastMonthDonateLog->total_propose,
+                'count_donate' => $LastMonthDonateLog->count_donate,
+                'total_donate' => $LastMonthDonateLog->total_donate,
+                'reward' => number_format(($LastMonthDonateLog->total_donate)/10, 7),
+                'remain_donate' => $LastMonthDonateLog->remain_donate,
+                'draw_date' => $LastMonthDonateLog->draw_date,
+                'drawed_id' => $LastMonthDonateLog->drawed_id,
+                'drawed_username' => $LastMonthDonateLog->drawed_username,
+                'paid' => $LastMonthDonateLog->paid,
+                'txid' => $LastMonthDonateLog->txid,
+            );
+            Cache::forget('LastMonthDonateLog');
+            Cache::put('LastMonthDonateLog', $cachedata);
+        }
+
+        $cacheValue = Cache::get('LastMonthDonateLog');
+        // lad($cacheValue);
+        $response = response()->json($cacheValue, 200);
+        return $response;
+    }
+    /*
+    //
+    */
+    public function ThisMonthDonate()
+    {
+        if (!Cache::has('LastDonateLog')) {
+            //1: get LastDonateLog
+            // $timezone = date_default_timezone_get();
+            $firstdaystr = date("Y-m-01");//first day of month
+            $firstday = new DateTime($firstdaystr);
+            // return response()->json($firstday, 200);
+            $lastdaystr = date("Y-m-t");//last day of month
+            $lastday = new DateTime($lastdaystr);
+            $draw_date = clone $lastday;
+            $draw_date->modify('+1 day');
+
+            $LastDonateLog = DonateLog::where('from_date', $firstday)->first();
+            if($LastDonateLog == null){
+                lad("no log");
+                $newdata = array(
+                    'from_date' => $firstday,//->format("Y-m-d")
+                    'to_date' => $lastday,
+                    'id_from' => 0,
+                    'id_to' => 0,
+                    'total_propose' => 0,
+                    'count_donate' => 0,
+                    'total_donate' => 0,
+                    'reward' => null,
+                    'remain_donate' => null,
+                    'draw_date' => $draw_date,
+                    'drawed_id' => null,
+                    'drawed_username' => null,
+                    'paid' => 0,
+                    'txid' => null
+                );
+                $LastDonateLog = new DonateLog($newdata);
+                $LastDonateLog->save();
+            }
+            //sum donation for this month
+            $thismonth_proposals = Proposal::select(DB::raw("COUNT(*) AS count_propose, SUM(propose) AS sum_propose , SUM(donate) AS sum_donate, MIN(id) AS min_id ,MAX(id) AS max_id"))
+            ->where('created_at', '>=', $firstday)
+            ->where('created_at', '<=',  $lastday)
+            ->where('completed','1')
+            ->first();
+
+            $LastDonateLog->count_donate = $thismonth_proposals->count_propose;
+            $LastDonateLog->id_from = $thismonth_proposals->min_id;
+            $LastDonateLog->id_to = $thismonth_proposals->max_id;
+            $LastDonateLog->total_propose = $thismonth_proposals->sum_propose;
+            $LastDonateLog->total_donate = $thismonth_proposals->sum_donate;
+            // $LastDonateLog->save();
+
+            // echo(gettype($LastDonateLog->from_date));
+            // echo ($LastDonateLog->from_date);
+            //Cache data
+            $cachedata = array(
+                'from_date' => $LastDonateLog->from_date,//->format('d/m/Y')
+                'to_date' => $LastDonateLog->to_date,
+                'id_from' => $LastDonateLog->id_from,
+                'id_to' => $LastDonateLog->id_to,
+                'total_propose' => $LastDonateLog->total_propose,
+                'count_donate' => $LastDonateLog->count_donate,
+                'total_donate' => $LastDonateLog->total_donate,
+                'reward' => number_format(($LastDonateLog->total_donate)/10, 7),
+                'remain_donate' => $LastDonateLog->remain_donate,
+                'draw_date' => $LastDonateLog->draw_date,
+                'drawed_id' => $LastDonateLog->drawed_id,
+                'drawed_username' => $LastDonateLog->drawed_username,
+                'paid' => $LastDonateLog->paid,
+                'txid' => $LastDonateLog->txid,
+            );
+            Cache::forget('LastDonateLog');
+            Cache::put('LastDonateLog', $cachedata);
+        }
+
+        $cacheValue = Cache::get('LastDonateLog');
+        // lad($cacheValue);
+        $response = response()->json($cacheValue, 200);
         return $response;
     }
 
@@ -252,12 +448,13 @@ class ProposalController extends Controller
         // $client->post('http://www.example.com/user/create', array('form_params' => array('email' => 'test@gmail.com',)));
 
         if($res->getStatusCode() == 200){
-        //update cache
+            //update cache CurrentPiValue
             if ($proposal && Cache::has('CurrentPiValue')) {
                 $cacheValue = Cache::get('CurrentPiValue');
                 //calculate new pi value
                 $total_propose = $cacheValue["total_propose"];
                 $new_total_propose = $total_propose + 1;
+                $new_sum_donate = $cacheValue["sum_donate"] + $proposal->donate;
                 $new_pivalue = (($cacheValue["current_value"] * $total_propose) + $proposal->propose)/$new_total_propose;
                 $new_propose_time = $proposal->created_at;
                 $lastlog_time = $cacheValue["lastlog_time"];
@@ -270,6 +467,7 @@ class ProposalController extends Controller
                         $newdata = array(
                             'current_value' => $new_pivalue,
                             'total_propose' => $new_total_propose,
+                            'sum_donate' => $new_sum_donate,
                             'propose_time' => $new_propose_time,
                             "lastlog_time" => $lastlog_time
                         );
@@ -288,31 +486,7 @@ class ProposalController extends Controller
             }
             //LastDonateLog
             if ($proposal && Cache::has('LastDonateLog')) {
-                $LastDonateLog = Cache::get('LastDonateLog');
-                $from_date = $LastDonateLog["from_date"];
-                if(($proposal->created_at)->format('Y-m') === $from_date->format('Y-m')) {//check if same month-year
-                    $interval = $proposal->created_at->diff($lastlog_time);
-                    //update cache
-                    $newdata = array(
-                        'from_date' => $LastDonateLog["from_date"],
-                        'to_date' => $LastDonateLog["to_date"],
-                        'id_from' => $LastDonateLog["id_from"],
-                        'id_to' => ($proposal->id > $LastDonateLog["id_to"]) ? $proposal->id : $LastDonateLog["id_to"],
-                        'all_donate' => $LastDonateLog["all_donate"] + $proposal->donate,
-                        'total_donate' => $LastDonateLog["total_donate"] + $proposal->donate,
-                        'draw_date' => $LastDonateLog["draw_date"],
-                        'drawed_id' => $LastDonateLog["drawed_id"],
-                        'drawed_username' => $LastDonateLog["drawed_username"],
-                        'paid' => $LastDonateLog["paid"],
-                        'txid' => $LastDonateLog["txid"]
-                    );
-                    Cache::forget('LastDonateLog');
-                    Cache::put('LastDonateLog', $newdata);
-                }
-                else{
-                    //clear -> Create LastDonateLog when load homepage
-                    Cache::forget('LastDonateLog');
-                }
+                CacheLastDonateLogSameMonth($proposal);
             }
             //return
 
@@ -406,7 +580,7 @@ class ProposalController extends Controller
         //LOAD proposal base on paymentid and save data
         $proposal = Proposal::where('paymentid', $request->paymentid)->first();
         if($proposal != null){
-            if(($request->transaction_verified) && !($request->cancelled)){
+            if(($request->transaction_verified == "true") && ($request->cancelled == "false")){
                 $proposal->txid = $request->txid;
                 $proposal->status = 1;//1: complete
                 $proposal->completed = true;
@@ -468,6 +642,10 @@ class ProposalController extends Controller
                 }
             }
 
+            //LastDonateLog
+            if ($proposal && $proposal->completed && Cache::has('LastDonateLog')) {
+                CacheLastDonateLogSameMonth($proposal);
+            }
             //return
 
             $response = response()->json([
@@ -486,6 +664,8 @@ class ProposalController extends Controller
             return $response;
         }
     }
+
+
 
     public function CheckProposal(Request $request)
     {
@@ -700,4 +880,34 @@ class ProposalController extends Controller
 
     }
 
+}
+
+function CacheLastDonateLogSameMonth(Proposal  $proposal) {
+    $LastDonateLog = Cache::get('LastDonateLog');
+    $from_date = $LastDonateLog["from_date"];
+    if(($proposal->created_at)->format('Y-m') === $from_date->format('Y-m')) {//check if same month-year
+        //update cache
+        $newdata = array(
+            'from_date' => $LastDonateLog["from_date"],
+            'to_date' => $LastDonateLog["to_date"],
+            'id_from' => $LastDonateLog["id_from"],
+            'id_to' => ($proposal->id > $LastDonateLog["id_to"]) ? $proposal->id : $LastDonateLog["id_to"],
+            'total_propose' => $LastDonateLog["total_propose"] + $proposal->propose,
+            'count_donate' => $LastDonateLog["count_donate"] + 1,
+            'total_donate' => $LastDonateLog["total_donate"] + $proposal->donate,
+            'reward' => $LastDonateLog["reward"],
+            'remain_donate' => $LastDonateLog["remain_donate"] + $proposal->donate,
+            'draw_date' => $LastDonateLog["draw_date"],
+            'drawed_id' => $LastDonateLog["drawed_id"],
+            'drawed_username' => $LastDonateLog["drawed_username"],
+            'paid' => $LastDonateLog["paid"],
+            'txid' => $LastDonateLog["txid"]
+        );
+        Cache::forget('LastDonateLog');
+        Cache::put('LastDonateLog', $newdata);
+    }
+    else{
+        //clear -> Create LastDonateLog when load homepage
+        Cache::forget('LastDonateLog');
+    }
 }

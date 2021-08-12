@@ -27,17 +27,46 @@ class HomeController extends Controller
         //SweetAlert::message('Robots are working!');
         $pival = 0;
         if (Cache::has('CurrentPiValue')){
-            $cacheValue = Cache::get('CurrentPiValue');
-            $pival = $cacheValue["current_value"];
+            $CurrentPiValue = Cache::get('CurrentPiValue');
+            $pival = $CurrentPiValue["current_value"];
         }
         else{
             $responsedata = app('App\Http\Controllers\ProposalController')->currentValue();
             $content = $responsedata->getContent();
-            $array = json_decode($content, true);
-            //dd(($responsedata));
-            $pival = $array['current_value'];
+            $CurrentPiValue = json_decode($content, true);
+            $pival = $CurrentPiValue['current_value'];
         }
-        header("Set-Cookie: cross-site-cookie=whatever; SameSite=None; Secure");
-        return view('home')->with('current_value', number_format($pival,7));
+
+        $ThisMonthDonate = null;
+        if (Cache::has('LastDonateLog')){
+            lad("has this month");
+            $ThisMonthDonate = Cache::get('LastDonateLog');
+        }
+        else{
+            lad("no this month");
+            $responsedata = app('App\Http\Controllers\ProposalController')->ThisMonthDonate();
+            $content = $responsedata->getContent();
+            $ThisMonthDonate = json_decode($content, true);
+        }
+
+        $LastMonthDonate = null;
+        if(Cache::has('LastMonthDonateLog')){
+            lad("has last month");
+            $LastMonthDonate = Cache::get('LastMonthDonateLog');
+        }
+        else{
+            lad("no last month");
+            $resdata = app('App\Http\Controllers\ProposalController')->LastMonthDonate();
+            $cont = $resdata->getContent();
+            $LastMonthDonate = json_decode($cont, true);
+        }
+        // header("Set-Cookie: cross-site-cookie=whatever; SameSite=None; Secure");
+        return view('home')->with('current_value', number_format($pival,7))
+                            ->with('current_pi_value', $CurrentPiValue)
+                            ->with('this_month_donate', $ThisMonthDonate)
+                            ->with('last_month_donate', $LastMonthDonate);
+        // return view('home')->with('name', 'Victoria')->with('occupation', 'Astronaut');
+        // return view('home', compact('var1','var2','var3'));
+        // return $view->with('data', ['ms' => $ms, 'persons' => $persons])); -> {{ $data['ms'] }}
     }
 }

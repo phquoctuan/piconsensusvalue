@@ -240,12 +240,14 @@ $(document).ready(function() {
         // const authResult = await window.Pi.authenticate(scopes, onIncompletePaymentFound);
 
     window.Pi.authenticate(scopes, onIncompletePaymentFound).then(function(auth) {
+        $('#ready_state').removeClass('login_error');
         $('#ready_state').html("You're ready to make proposal: " + auth.user.username);
         accessToken = auth.accessToken;
         uId = auth.user.uid;
         userName = auth.user.username;
         console.log("Hi there! You're ready to make payments: " + auth.user.username);
     }).catch(function(error) {
+        $('#ready_state').addClass('login_error')
         $('#ready_state').html("Authentication error !");
         console.error(error);
     });

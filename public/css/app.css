@@ -9,6 +9,64 @@ html {
   -webkit-text-size-adjust: none;
 }
 
+.row {
+  margin-right: -25px !important;
+  margin-left: -25px !important;
+}
+
+.align-right {
+  text-align: right;
+}
+
+.datetime-width {
+  min-width: 140px;
+}
+
+#load {
+  overflow-x: auto;
+}
+
+table,
+th,
+td {
+  border-spacing: 1px;
+  border-collapse: collapse;
+}
+
+[id*=-table] {
+  font-size: 14px !important;
+}
+
+[id*=-table] thead {
+  color: #8a6d3b;
+}
+
+.table > thead > tr {
+  border-bottom: 1px solid #555;
+}
+
+.table > thead > tr > th {
+  vertical-align: bottom;
+}
+
+[id*=-table] tbody {
+  color: #555;
+}
+
+[id*=-table] > tbody > tr {
+  padding-top: 2px;
+  padding-bottom: 2px;
+  border-bottom: 1px solid #ddd;
+}
+
+.table > tbody > tr > td {
+  padding: 3px;
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) {
+  background-color: ghostwhite;
+}
+
 /* HTML5 display-role reset for older browsers */
 
 article,
@@ -24,6 +82,28 @@ nav,
 section,
 main {
   display: block;
+}
+
+.float-left {
+  float: left;
+}
+
+.float-right {
+  float: right;
+}
+
+.row-item {
+  overflow: hidden;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.row-item .key {
+  font-size: large;
+}
+
+.row-item .value {
+  font-size: large;
+  font-style: revert;
 }
 
 .title {
@@ -81,11 +161,21 @@ textarea.parsley-error {
 
 #pi-value {
   font-size: 40;
-  background-color: #403838;
   color: white;
 }
 
-.current-pivalue {
+#currentvalue_panel {
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+  background-color: #403838;
+}
+
+#pi-value_label {
+  color: white;
+  font-size: 18px;
+}
+
+#current-pivalue {
   display: inline-block;
   font-size: 200%;
   color: gold;
@@ -120,12 +210,12 @@ textarea.parsley-error {
 }
 
 #donate_value {
-  color: red;
+  color: blue;
   font-size: 150%;
 }
 
 #donate_sign {
-  color: red;
+  color: blue;
   font-size: 150%;
 }
 
@@ -143,9 +233,128 @@ textarea.parsley-error {
   color: blue;
 }
 
+#btn-propose {
+  min-width: 200px;
+}
+
 #ready_state {
   font-size: 16;
   color: brown;
   font-style: italic;
+}
+
+#ready_state.login_error {
+  color: red;
+}
+
+.this-month-em {
+  padding-top: 15px;
+  display: inline-block;
+}
+
+#last-month-reward {
+  clear: both;
+  padding-top: 15px;
+  padding-left: 15px;
+  padding-right: 15px;
+  margin-right: -15px;
+  margin-left: -15px;
+  border-top: 1px solid #ddd;
+  font-family: sans-serif;
+  font-size: 105%;
+  color: #337ab7;
+}
+
+.total-proposal-info {
+  padding-top: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+  font-size: 16px;
+  display: inline-block;
+}
+
+.total-proposal-info .info-item-wrap {
+  background-color: #555;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.total-proposal-info .info-item {
+  display: inline-block;
+  padding: 0 15px;
+  background-color: #555;
+  color: white;
+  border-radius: 5px;
+}
+
+.align-cemter {
+  text-align: center;
+}
+
+.footer {
+  margin-top: 50px;
+  padding: 20px;
+  color: #f5f5f5;
+  background-color: #555;
+}
+
+@media (max-width: 768px) {
+  #btn-propose {
+    width: 100%;
+  }
+
+  #current-pivalue {
+    font-size: 110%;
+  }
+
+  #donate_label {
+    font-size: 14px;
+  }
+
+  #onepi {
+    padding-top: 5px;
+    font-size: 20px;
+    padding-right: 0px !important;
+    padding-left: 0px !important;
+  }
+
+  #dollar-sign {
+    padding-top: 5px;
+    font-size: 20px;
+  }
+
+  #proposal-value {
+    font-size: 22px;
+  }
+
+  #donate_value {
+    font-size: 110%;
+  }
+
+  .datetime-width {
+    min-width: 80px;
+  }
+
+  .small-hide {
+    display: none;
+  }
+
+  .total-proposal-info {
+    padding-top: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .ssmall-hide {
+    display: none;
+  }
+
+  .total-proposal-info {
+    padding-top: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+  }
 }
 

@@ -18,9 +18,10 @@ class CreatePiValueLogsTable extends Migration
             $table->increments('id');
             $table->double('current_value');
             $table->integer('total_propose');
-            $table->timestamp('propose_time');
+            $table->double('sum_donate');
+            $table->dateTime('propose_time');
             $table->integer('propose_id')->default(0);
-            $table->timestamp('created_at')->useCurrent = true;
+            $table->dateTime('created_at')->useCurrent = true;
         });
     }
 

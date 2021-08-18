@@ -39,7 +39,7 @@
                             </div>
                         </div>
                         <div class= "donate">
-                            <label id="donate_label" class="">To propse you will have to donate:</label>
+                            <label id="donate_label" class="">To propose you will have to donate:</label>
                             <label id="donate_value" class="">{{number_format(0,7)}}</label>
                             <label id="donate_sign" class="">π</label>
                             <span id= "donate_hint" class="fa fa-question-circle" data-toggle="tooltip" data-original-title="Donate amount = abs(propose - current) x 10% in dollar, and will be convert to Pi in current value." ></span>
@@ -81,7 +81,7 @@
                             </div>
                             <div class="row-item">
                                 <div class="col-md-6 float-left">
-                                    <div class="key">Total proposals:</div>
+                                    <div class="key">Proposals:</div>
                                 </div>
                                 <div class="col-md-6 float-right">
                                     <div class="value">{{$this_month_donate["count_donate"]}}</div>
@@ -99,7 +99,7 @@
                         <div class="col-md-6">
                             <div class="row-item">
                                 <div class="col-md-6 float-left">
-                                    <div class="key">Donation ID from:</div>
+                                    <div class="key">Proposal Id from:</div>
                                 </div>
                                 <div class="col-md-6 float-right">
                                     <div class="value">{{$this_month_donate["id_from"]}}</div>
@@ -107,7 +107,7 @@
                             </div>
                             <div class="row-item">
                                 <div class="col-md-6 float-left">
-                                    <div class="key">Donation ID to:</div>
+                                    <div class="key">Proposal Id to:</div>
                                 </div>
                                 <div class="col-md-6 float-right">
                                     <div class="value">{{$this_month_donate["id_to"]}}</div>
@@ -143,7 +143,7 @@
                                 @else
                                     <li>Last month reward: <strong>{{$last_month_donate["reward"]}} π</strong></li>
                                     @if ($last_month_donate["drawed_username"] != null )
-                                        <li>Lucky person is: <strong>{{$last_month_donate["drawed_username"]}}</strong> with donation id : <strong>{{$last_month_donate["drawed_id"]}}</strong></li>
+                                        <li>Lucky person is: <strong>{{$last_month_donate["drawed_username"]}}</strong> with proposal id : <strong>{{$last_month_donate["drawed_id"]}}</strong></li>
                                     @else
                                         <li>Lucky person is: no draw yet.</li>
                                     @endif
@@ -183,18 +183,11 @@
                 </div>
             </div>
         </div>
-        <div class="align-right">
-            <a class="btn btn-info" href="{{url('/drawhistory')}}">Lucky Draw history</a>
+        <div class="">
+            <a class="pi-button" href="{{url('/drawhistory')}}">Lucky Draw history</a>
         </div>
     </div>
-    <div class="footer align-cemter">
-        <div>
-            Thank you for using this application.
-        </div>
-        <div>
-            For more information, please contact @phquoctuan on Telegram.
-        </div>
-    </div>
+
     <script>
         // $(function() {
         //     $.ajaxSetup({

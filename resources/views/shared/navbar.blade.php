@@ -8,7 +8,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#"><span style="font-family: serif; font-size: 35;">π</span> value</a>
+            <a class="navbar-brand" href="/"><span style="font-family: serif; font-size: 35;">π</span> value</a>
         </div>
 
         <!-- Navbar Right -->

@@ -35,6 +35,12 @@ Route::get('/proposal/thismonthdonate', 'ProposalController@ThisMonthDonate');
 Route::get('/proposal/lastmonthdonate', 'ProposalController@LastMonthDonate');
 
 Route::get('drawhistory', 'DonateLogController@index');
+Route::get('luckydrawresult', 'DonateLogController@LuckyDrawSelect');
+Route::post('luckydrawresult', 'DonateLogController@LuckyDrawResult');
+Route::post('/donatelog/getuserbyproposalid', 'DonateLogController@GetUserByProposalId');
+Route::post('/donatelog/saveluckydraw', 'DonateLogController@SaveLuckyDraw');
+
+Route::get('about', 'CommonControler@about');
 
 Route::get('users/login', 'Auth\AuthController@getLogin');
 Route::post('users/login', 'Auth\AuthController@postLogin');

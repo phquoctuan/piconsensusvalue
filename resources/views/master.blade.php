@@ -1,6 +1,7 @@
 <html>
 <head>
     <title> @yield('title') </title>
+    <link rel="shortcut icon" href="{{ asset('images/favicon.png') }}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -36,5 +37,13 @@
 
 
 </script>
+    <div class="footer align-center">
+            <div>
+                Thank you for using this application.
+            </div>
+            <div>
+                For more information, please contact @phquoctuan on Telegram.
+            </div>
+    </div>
 </body>
 </html>

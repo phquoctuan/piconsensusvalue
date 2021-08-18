@@ -192,9 +192,6 @@ textarea.parsley-error {
     color: gold;
 }
 
-#dollar-sign {
-    // display: inline-block;
-}
 
 #pi-proposal {
     font-size: 40;
@@ -304,7 +301,7 @@ textarea.parsley-error {
     border-radius: 5px;
 }
 
-.align-cemter {
+.align-center {
     text-align: center;
 }
 
@@ -313,6 +310,149 @@ textarea.parsley-error {
     padding: 20px;
     color: #f5f5f5;
     background-color: #555;
+}
+
+#about-logo {
+    width: 100px;
+    height: auto;
+  }
+#about-title {
+    font-size: 80px;
+    color: gold;
+    display: inline-block;
+    line-height: 100px;
+    vertical-align: middle;
+    padding: 20px;
+}
+#about-header{
+    text-align: center;
+}
+#about-slogan{
+    text-align: center;
+    color: #e40aab;
+    font-size: 20px;
+    padding: 20px;
+}
+
+
+  .readmore {
+    position: relative;
+    max-height: 180px;
+    overflow: hidden;
+    border: solid 1px #8a6d3b;
+    padding: 10px;
+    margin-bottom: 20px;
+    transition:max-height 0.15s ease-out;
+    box-shadow: 0px 3px 5px #cebc9f;
+  }
+
+  .readmore.expand{
+    max-height: 5000px !important;
+    transition:max-height 0.35s ease-in-out;
+  }
+
+  .readmore-link{
+    position: absolute;
+    bottom: 0px;
+    right: 0;
+    padding-right: 5px;
+    display: block;
+    width: 100%;
+    height: 65px;
+    text-align: right;
+    color: #808084;
+    font-weight: bold;
+    font-size: 15px;
+    padding-top: 40px;
+    background-image: linear-gradient(to bottom, transparent, white);
+    cursor: pointer;
+  }
+
+  .readmore-link.expand {
+    position: relative;
+    background-image: none;
+    padding-top:5px;
+    height:20px;
+  }
+
+  .readmore-link:after {
+    content:"Read more...";
+    background-color: white;
+    box-shadow: -15px -2px 20px 10px #fff;
+  }
+  .readmore-link.expand:after{
+    content:"Read less";
+  }
+  .readmore-title{
+    color: mediumseagreen;
+    font-size: 18px;
+  }
+  .page-title{
+    color: mediumseagreen;
+    text-align: center;
+    font-size: 25px;
+    font-weight: 500;
+    padding-top: 20px;
+    padding-bottom: 30px;
+  }
+
+  .sm-separate{
+    margin-top: 20px;
+  }
+  .md-separate{
+    margin-top: 30px;
+  }
+  .input-control{
+    height: 36px;
+    padding: 5px;
+    font-size: 16px;
+  }
+  #selected-time{
+    font-size: 20px;
+    color: brown;
+  }
+  #form_donatelog{
+      font-size: 16px;
+      padding-top: 20px;
+      padding-bottom: 20px;
+      border: solid 2px #eee;
+  }
+  .row-block{
+      overflow: hidden;
+  }
+
+/* CSS */
+.pi-button {
+  background-color: #fff;
+  border: 1px solid #d5d9d9;
+  border-radius: 8px;
+  box-shadow: rgba(213, 217, 217, .5) 0 2px 5px 0;
+  box-sizing: border-box;
+  color: #0f1111;
+  cursor: pointer;
+  display: inline-block;
+  font-family: "Amazon Ember",sans-serif;
+  font-size: 13px;
+  line-height: 29px;
+  padding: 0 10px 0 11px;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: middle;
+}
+
+.pi-button:hover {
+  background-color: #f7fafa;
+  text-decoration: none;
+}
+
+.pi-button:focus {
+  border-color: #008296;
+  box-shadow: rgba(213, 217, 217, .5) 0 2px 5px 0;
+  outline: 0;
 }
 
 @media (max-width: 768px) {
@@ -352,6 +492,23 @@ textarea.parsley-error {
         padding-left: 10px;
         padding-right: 10px;
     }
+
+    #about-logo {
+        width: 50px;
+        height: 50px;
+    }
+
+    #about-title {
+        font-size: 35px;
+        display: inline-block;
+        line-height: 50px;
+        vertical-align: middle;
+        padding: 10px;
+    }
+    #about-slogan{
+        font-size: 15px;
+        padding: 15px;
+    }
 }
 
 @media (max-width: 480px) {
@@ -363,4 +520,21 @@ textarea.parsley-error {
         padding-left: 5px;
         padding-right: 5px;
     }
+
+    #about-logo {
+        width: 40px;
+        height: 40px;
+      }
+    #about-title {
+        font-size: 30px;
+        display: inline-block;
+        line-height: 40px;
+        vertical-align: middle;
+        padding: 8px;
+    }
+    #about-slogan{
+        font-size: 14px;
+        padding: 15px;
+    }
 }
+

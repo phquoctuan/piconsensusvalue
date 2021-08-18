@@ -21,6 +21,6 @@ class VerifyCsrfToken extends Middleware
         '/proposal/error',
         '/proposal/incomplete',
         '/proposal/checkproposal',
-
+        '/donatelog/getuserbyproposalid',
     ];
 }

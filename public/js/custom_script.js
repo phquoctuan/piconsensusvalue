@@ -123,7 +123,7 @@ function ReadyForServerCompletion(paymentId, txid) {
                 swal({
                     // html: true,
                     title: "Accepted !",
-                    text: response.message,
+                    text: response.message + '\n Your proposal Id is: ' + response.data.id,
                     showConfirmButton: true,
                     type: "success"
                 });

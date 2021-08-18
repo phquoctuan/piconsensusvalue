@@ -492,7 +492,7 @@ class ProposalController extends Controller
 
             $response = response()->json([
                 'success' => 'OK',
-                'message' => 'The proposal has accepted, thank you for donation',
+                'message' => 'The proposal has accepted, thank you for donation.',
                 'data' => $proposal,
             ], 200);
             return $response;

@@ -31,6 +31,18 @@ class CreateDonateLogsTable extends Migration
             $table->string('txid')->nullable();
             $table->string('fromwallet')->nullable();
             $table->string('towallet')->nullable();
+            $table->integer('drawed_id2')->nullable();//proposal id 2
+            $table->string('drawed_username2', 256)->nullable();//winner
+            $table->boolean('paid2')->nullable();//mark transferred for winner this month
+            $table->string('txid2')->nullable();
+            $table->string('fromwallet2')->nullable();
+            $table->string('towallet2')->nullable();
+            $table->integer('drawed_id3')->nullable();//proposal id 2
+            $table->string('drawed_username3', 256)->nullable();//winner
+            $table->boolean('paid3')->nullable();//mark transferred for winner this month
+            $table->string('txid3')->nullable();
+            $table->string('fromwallet3')->nullable();
+            $table->string('towallet3')->nullable();
             $table->dateTime('created_at')->useCurrent = true;
         });
     }

@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use App\DonateLog;
 use App\Proposal;
 use \Datetime;
+use Illuminate\Support\Facades\Cache;
 
 class DonateLogController extends Controller
 {
@@ -62,6 +63,8 @@ class DonateLogController extends Controller
             $donatelog['drawed_username'] = $ThisDonateLog->drawed_username;
             $donatelog['paid'] = $ThisDonateLog->paid;
             $donatelog['txid'] = $ThisDonateLog->txid;
+            $donatelog['fixed_drawdate'] = $ThisDonateLog->fixed_drawdate;
+            $donatelog['live_drawlink'] = $ThisDonateLog->live_drawlink;
         }
 
         return view('donatelog.luckydraw_result', compact('donatelog'));
@@ -144,8 +147,18 @@ class DonateLogController extends Controller
             //draw_date
             $temdate = DateTime::createFromFormat('Y-m-d H:i', $request->draw_date);
             $founditem->draw_date = $temdate;
-
+            if($request->fixed_drawdate =="true"){
+                $founditem->fixed_drawdate = 1;
+            }
+            else{
+                $founditem->fixed_drawdate = 0;
+            }
+            $founditem->live_drawlink = $request->live_drawlink;
             $founditem->save();
+
+            Cache::forget('LastDonateLog');
+            Cache::forget('LastMonthDonateLog');
+
             $message = [
                 "success" => 'OK',
                 "message" => 'Data has been saved successfully.',

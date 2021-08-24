@@ -1,23 +1,32 @@
 @extends('master')
-@section('title', 'Blog')
+@section('title', 'Post')
 @section('content')
 
-    <div class="container col-md-8 col-md-offset-2">
-
-        @if (session('status'))
-            <div class="alert alert-success">
-                {{ session('status') }}
-            </div>
-        @endif
-
+    <div class="container">
+        <a class="pi-button" href="{{url('/posts/create')}}">New post</a>
         @if ($posts->isEmpty())
             <p> There is no post.</p>
         @else
             @foreach ($posts as $post)
-                <div class="panel panel-default">
-                    <div class="panel-heading">{!! $post->title !!}</div>
-                    <div class="panel-body">
+                <div class="post-item">
+                    <div class="post-title"><strong>{!! $post->id !!}</strong>. {!! $post->title !!}</div>
+                    <div class="post-body">
                         {!! mb_substr($post->content, 0, 500) !!}
+                    </div>
+
+                    <div class="post-detail">
+                        <div class="post-fromdate">
+                            <em>From date: </em> {!! $post->fromdate !!}
+                        </div>
+                        <div class="post-todate">
+                            <em>To date:   </em> {!! $post->todate !!}
+                        </div>
+                        <div class="post-status">
+                            <em>Status : </em>{!! $post->status !!}
+                        </div>
+                    </div>
+                    <div class = "post-action">
+                        <a href="{{Url('/posts/edit/' . $post->id)}}" class="btn btn-primary" data-size="xs">Edit</a>
                     </div>
                 </div>
             @endforeach

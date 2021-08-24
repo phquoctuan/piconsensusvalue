@@ -278,6 +278,10 @@ textarea.parsley-error {
     // background-color: ghostwhite;
 }
 
+#last-month-reward .draw-info {
+    color: #131414;
+}
+
 .total-proposal-info {
     padding-top: 20px;
     padding-left: 20px;
@@ -364,7 +368,7 @@ textarea.parsley-error {
     font-weight: bold;
     font-size: 15px;
     padding-top: 40px;
-    background-image: linear-gradient(to bottom, transparent, white);
+    background-image: linear-gradient(to bottom, transparent 20%, white 60% 100%);
     cursor: pointer;
   }
 
@@ -378,7 +382,7 @@ textarea.parsley-error {
   .readmore-link:after {
     content:"Read more...";
     background-color: white;
-    box-shadow: -15px -2px 20px 10px #fff;
+    // box-shadow: -15px -2px 20px 10px #fff;
   }
   .readmore-link.expand:after{
     content:"Read less";
@@ -453,6 +457,53 @@ textarea.parsley-error {
   border-color: #008296;
   box-shadow: rgba(213, 217, 217, .5) 0 2px 5px 0;
   outline: 0;
+}
+.countdown-item{
+    overflow: hidden;
+    padding: 15px;
+}
+.post-item{
+    margin-top: 10px;
+    border: solid 1px #dff0d8;
+    // padding: 5px;
+}
+.post-item .post-title {
+    font-size: larger;
+    border-bottom: solid 1px #eee;
+    padding: 5px;
+}
+.post-item .post-body {
+    padding: 5px;
+}
+.post-item .post-action {
+    padding: 5px;
+    text-align: right;
+}
+.post-item .post-detail {
+    padding: 10px;
+    text-align: right;
+}
+
+#form_post .post-field{
+    padding: 10px;
+}
+#form_post .post-field input,textarea{
+    width: 100%;
+}
+
+.setting-item {
+    padding: 10px;
+    border: solid 1px lightgray;
+}
+.setting-item .setting-attr{
+    padding: 10px;
+    color: blue;
+}
+.setting-item .setting-value{
+    color: coral;
+    margin-left: 20px;
+    border: solid 1px beige;
+    margin-bottom: 10px;
 }
 
 @media (max-width: 768px) {

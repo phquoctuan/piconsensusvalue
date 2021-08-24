@@ -18,8 +18,10 @@ class CreatePostsTable extends Migration
             $table->string('title', 255);
             $table->text('content');
             $table->string('slug')->nullable();
+            $table->dateTime('fromdate')->nullable();
+            $table->dateTime('todate')->nullable();
             $table->tinyInteger('status')->default(1);
-            $table->integer('user_id');
+            $table->integer('user_id')->nullable();
             $table->timestamps();
         });
     }

@@ -44,6 +44,8 @@ class CreateDonateLogsTable extends Migration
             $table->string('fromwallet3')->nullable();
             $table->string('towallet3')->nullable();
             $table->dateTime('created_at')->useCurrent = true;
+            $table->boolean('fixed_drawdate')->nullable();//mark to fix draw datetime
+            $table->string('live_drawlink', 256)->nullable();
         });
     }
 

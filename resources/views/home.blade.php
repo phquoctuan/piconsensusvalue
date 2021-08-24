@@ -1,12 +1,10 @@
+@inject('PostAlert', 'App\Http\Controllers\PostsController')
 @extends('master')
 @section('title', 'Home')
 @section('content')
 
     <div class="container">
-        {{-- <div class="text-center">
-        <img src="{{ asset('images/under_construction.jpg') }}" style="width: 150;">
-        </div> --}}
-
+        {{$PostAlert::AlertLastActivePost()}}
         <div class="row">
             <div class="col-md-10 col-md-offset-1">
             <div id="currentvalue_panel" class="">
@@ -133,8 +131,23 @@
                             </div>
 
                         </div>
+                        @if($this_month_donate["fixed_drawdate"] == 1 && $this_month_donate["drawed_id"] == NULL)
+                            <div class="this-month-em">
+                                (*)
+                                The draw will take place at <span>{{date('Y-M-d H:i', strtotime($this_month_donate["draw_date"]))}}</span> - GMT
+                                <br>
+                                Link to join: <a href="{{$this_month_donate["live_drawlink"]}}" target="_blank">{{$this_month_donate["live_drawlink"]}}</a>
 
-                        <em class="this-month-em">(*): Draw date is intended date. We will announce the specific date and time along with zoom link for everyone involved. </em>
+                            </div>
+                        @else
+                            <em class="this-month-em">(*): Draw date is intended date. We will announce the specific date and time along with zoom link for everyone involved. </em>
+                        @endif
+
+                        @if($this_month_donate["fixed_drawdate"] == 1 && $this_month_donate["drawed_id"] == NULL)
+                            <div class="countdown-item">
+                                @include('shared.thismonthcountdown')
+                            </div>
+                        @endif
                         <br>
                         <div id="last-month-reward">
                             <ul>
@@ -144,19 +157,30 @@
                                     <li>Last month reward: <strong>{{$last_month_donate["reward"]}} π</strong></li>
                                     @if ($last_month_donate["drawed_username"] != null )
                                         <li>Lucky person is: <strong>{{$last_month_donate["drawed_username"]}}</strong> with proposal id : <strong>{{$last_month_donate["drawed_id"]}}</strong></li>
+                                        <li>Please DM on telegram to @phquoctuan to claim your reward.</li>
                                     @else
                                         <li>Lucky person is: no draw yet.</li>
+                                        @if($last_month_donate["fixed_drawdate"] == 1 && $last_month_donate["drawed_id"] == NULL)
+                                            <div class="draw-info">
+                                                The draw will take place at <span>{{date('Y-M-d H:i', strtotime($last_month_donate["draw_date"]))}}</span> - GMT
+                                                <br>
+                                                Link to join: <a href="{{$last_month_donate["live_drawlink"]}}" target="_blank">{{$last_month_donate["live_drawlink"]}}</a>
+                                            </div>
+                                        @endif
                                     @endif
                                     @if ($last_month_donate["paid"] == 1 )
                                         <li>The reward has been transferred.</li>
                                         <li>Txid: {{$last_month_donate["txid"]}}.</li>
-                                    @else
-                                        <li>Please DM on telegram to @phquoctuan to claim your reward.</li>
                                     @endif
+
                                 @endif
                             </ul>
+                            @if($last_month_donate["fixed_drawdate"] == 1 && $last_month_donate["drawed_id"] == NULL)
+                                <div class="countdown-item">
+                                    @include('shared.lastmonthcountdown')
+                                </div>
+                            @endif
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -173,7 +197,7 @@
                                 Total proposal: <strong>{{$current_pi_value['total_propose']}}</strong>
                             </div>
                             <div class="info-item">
-                                Total donation: <strong>{{$current_pi_value['sum_donate']}}π</strong>
+                                Total donation: <strong>{{$current_pi_value['sum_donate']}} π</strong>
                             </div>
                         </div>
                     </div>
@@ -205,7 +229,7 @@
             });
             setInterval(function(){
                 $.ajax({
-                    url:'{{ url("proposal/current") }}',
+                    url:'{{url("api/proposal/current") }}',
                     type:'GET',
                     dataType:'json',
                     success:function(response){
@@ -230,7 +254,7 @@
 
                     }
                 })
-            }, 5000);
+            }, 1000);
 
             $('#proposal-value').change(function (e) {
                 var donatePi = 0;
@@ -243,6 +267,88 @@
                 $('#donate_value').html(donatePi.toFixed(7));
             })
 
+
+
+
         })
     </script>
+
+    {{-- ///////this month countdown////// --}}
+    @if($this_month_donate["fixed_drawdate"] == 1 && $this_month_donate["drawed_id"] == NULL)
+        <script>
+            $(document).ready(function() {
+                // var target_date = new Date().getTime() + (1000*3600*48); // set the countdown date
+                var this_left = {!! $this_month_diff !!};//(target_date - current_date) / 1000;
+                var days, hours, minutes, seconds; // variables for time units
+
+                var countdown = document.getElementById("thismonth-tiles"); // get tag element
+
+                getCountdown();
+
+                setInterval(function () { getCountdown(); }, 1000);
+
+                function getCountdown(){
+
+                    // find the amount of "seconds" between now and target
+                    // var current_date = new Date().getTime();
+                    this_left = this_left - 1;
+                    seconds_left = this_left;
+                    days = pad( parseInt(seconds_left / 86400) );
+                    seconds_left = seconds_left % 86400;
+
+                    hours = pad( parseInt(seconds_left / 3600) );
+                    seconds_left = seconds_left % 3600;
+
+                    minutes = pad( parseInt(seconds_left / 60) );
+                    seconds = pad( parseInt( seconds_left % 60 ) );
+
+                    // format countdown string + set tag value
+                    countdown.innerHTML = "<span>" + days + "</span><span>" + hours + "</span><span>" + minutes + "</span><span>" + seconds + "</span>";
+                }
+
+                function pad(n) {
+                    return (n < 10 ? '0' : '') + n;
+                }
+            })
+        </script>
+    @endif
+    {{-- ///////last month countdown////// --}}
+    @if($last_month_donate["fixed_drawdate"] == 1 && $last_month_donate["drawed_id"] == NULL)
+        <script>
+            $(document).ready(function() {
+                // var target_date = new Date().getTime() + (1000*3600*48); // set the countdown date
+                var last_left = {!! $last_month_diff !!};//(target_date - current_date) / 1000;
+                var days, hours, minutes, seconds; // variables for time units
+
+                var countdown = document.getElementById("lastmonth-tiles"); // get tag element
+
+                getCountdown();
+
+                setInterval(function () { getCountdown(); }, 1000);
+
+                function getCountdown(){
+
+                    // find the amount of "seconds" between now and target
+                    // var current_date = new Date().getTime();
+                    last_left = last_left - 1;
+                    seconds_left = last_left;
+                    days = pad( parseInt(seconds_left / 86400) );
+                    seconds_left = seconds_left % 86400;
+
+                    hours = pad( parseInt(seconds_left / 3600) );
+                    seconds_left = seconds_left % 3600;
+
+                    minutes = pad( parseInt(seconds_left / 60) );
+                    seconds = pad( parseInt( seconds_left % 60 ) );
+
+                    // format countdown string + set tag value
+                    countdown.innerHTML = "<span>" + days + "</span><span>" + hours + "</span><span>" + minutes + "</span><span>" + seconds + "</span>";
+                }
+
+                function pad(n) {
+                    return (n < 10 ? '0' : '') + n;
+                }
+            })
+        </script>
+    @endif
 @endsection

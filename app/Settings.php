@@ -4,10 +4,11 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Post extends Model
+class Settings extends Model
 {
-    //
+    public $timestamps = false;
+
     protected $fillable = [
-        'title', 'content', 'slug', 'fromdate','todate','status',
+        'attribute', 'value',
     ];
 }

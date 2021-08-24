@@ -5,7 +5,7 @@
 <script src="{{asset('js/jquery.datetimepicker.full.js') }}"></script>
 
 <div class="container">
-    <a class="pi-button" href="{{url('/luckydrawresult')}}">&#60; Select Period</a>
+    <a class="pi-button" href="{{url('/luckydrawselect')}}">&#60; Select Period</a>
     <div class="row">
         <div id="luckydraw-title" class="page-title">LUCKY DRAW</div>
         <div class="col-md-10 col-md-offset-1">
@@ -91,6 +91,24 @@
                     <div class="row-item">
                         <div class="col-md-6 col-sm-12 row-block" >
                             <div class="col-md-6  col-sm-6 float-left">
+                                <div class="key">Fix draw date:</div>
+                            </div>
+                            <div class="col-md-6  col-sm-6 float-right">
+                                <input type="checkbox" id="fixed_drawdate" name="fixed_drawdate" @if($donatelog["fixed_drawdate"]==1) checked @endif>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-12 row-block">
+                            <div class="col-md-3 col-sm-3 col-xs-3 float-left">
+                                <div class="key">Live link:</div>
+                            </div>
+                            <div class="col-md-9 col-sm-9 col-xs-9 float-right">
+                                <input type="text" id="live_drawlink" name="live_drawlink" value="{{$donatelog["live_drawlink"]}}" style="width: 100%; line-height: 0.9;">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row-item">
+                        <div class="col-md-6 col-sm-12 row-block" >
+                            <div class="col-md-6  col-sm-6 float-left">
                                 <div class="key">Lucky number:</div>
                             </div>
                             <div class="col-md-6  col-sm-6 float-right">
@@ -127,6 +145,7 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="align-center md-separate">
                         <div>
                             <label for="pwd">Password to save:</label>
@@ -162,7 +181,7 @@
             $.ajax({
                     cache: false,
                     url: "/donatelog/getuserbyproposalid",
-                    type: "POST",
+                    type: "GET",
                     data: {
                         "proposal_id": $('#lucky_number').val()
                     },
@@ -198,7 +217,7 @@
             ld.start();
             $.ajax({
                     cache: false,
-                    url: "/donatelog/saveluckydraw",
+                    url: "api/donatelog/saveluckydraw",
                     type: "POST",
                     data: {
                         "_token": "{{ csrf_token() }}",
@@ -209,7 +228,9 @@
                         "drawed_username": $('#drawed_username').html(),
                         "paid": $('#paid').is(":checked"),
                         "txid": $('#txid').val(),
-                        "pwd": $('#pwd').val()
+                        "pwd": $('#pwd').val(),
+                        "fixed_drawdate": $('#fixed_drawdate').is(":checked"),
+                        "live_drawlink": $('#live_drawlink').val(),
                     },
                     dataType: "json",
                 })

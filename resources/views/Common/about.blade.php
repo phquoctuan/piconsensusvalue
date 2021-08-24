@@ -20,8 +20,8 @@
                     <p>Of course, the real value of Pi coin is not decided by this app.
                         We can consider this as a survey of pi value for reference purposes only.</p>
                     <strong>“Pi Value is a survey application for Pi coin consensus value”</strong>
-                    <span class="readmore-link"></span>   
-                </div> 
+                    <span class="readmore-link"></span>
+                </div>
             </div>
             <div class="section">
                 <div class="readmore-title">Feature description</div>
@@ -31,10 +31,10 @@
                     <p><strong>3</strong>. A pioneer can propose a desired price multiple times. To avoid spam, each time propose a new price, the pioneer must donate an amount of Pi equal to 10% of the proposed price difference from the current price.</p>
                     <p><strong>4</strong>. All history of proposal and donation will be public to everyone.</p>
                     <p><strong>5</strong>. All Pi donations will be accumulated and will be used for charity later.</p>
-                    <p><strong>6</strong>. To encourage the proposal of pi value. Each month there will be one time lucky draw. The lucky winner will receive a reward of 10% of the total donation Pi in that month. The lucky number will be draw on <a href='www.random.org'>www.random.org</a>.</p>
+                    <p><strong>6</strong>. To encourage the proposal of pi value. Each month there will be one time lucky draw. The lucky winner will receive a reward of 10% of the total donation Pi in that month. The lucky number will be draw on <a href='http://www.random.org' target="_blank">www.random.org</a>.</p>
                     <span class="readmore-link"></span>
-                </div> 
-            </div> 
+                </div>
+            </div>
 
             <div class="section">
                 <div class="readmore-title">Proposal rule</div>
@@ -54,7 +54,7 @@
                     <p><strong>4</strong>. Once the proposal has been completed, this donate fee will not be refunded for any reason.</p>
                     <p><strong>5</strong>. Each time you make proposal you will receive an proposal id, this id is used to participate in the lucky draw at the end of the month.</p>
                     <span class="readmore-link"></span>
-                </div> 
+                </div>
             </div>
             <div class="section">
                 <div class="readmore-title">Lucky draw each month</div>
@@ -64,8 +64,8 @@
                     <p><strong>3</strong>. Lucky pioneer will be announce on homepage for a month. Lucky pioneer must contact @phquoctuan on Telegram to inform your wallet address to receive award.</p>
                     <p><strong>4</strong>. The lucky draw is scheduled to be the 1st of the successive month. The specific date and time will be announced on the homepage, we will also provide a zoom link for everyone to participate.</p>
                     <span class="readmore-link"></span>
-                </div> 
-            </div> 
+                </div>
+            </div>
             <div class="section">
                 <div class="readmore-title">Donate and Charity</div>
                 <div class="readmore">
@@ -74,12 +74,12 @@
                     <p><strong>3</strong>. Contributions will be given to charities like <a href='https://www.wfp.org/' target="_blank">World Food Programme</a> or <a href='https://www.savethechildren.org/' target="_blank">Save The Children</a>.</p>
                     <p><strong>4</strong>. We will consult the pioneers community when giving charity but the admin (@phquoctuan) will make the final decision.</p>
                     <span class="readmore-link"></span>
-                </div> 
-            </div> 
+                </div>
+            </div>
 
-        </div>  
-    </div>  
-    </div>  
+        </div>
+    </div>
+    </div>
 </div>
 
 <!-- Readmore script -->
@@ -88,7 +88,7 @@
         $(".readmore-link").click( function(e) {
             // record if our text is expanded
             var isExpanded =  $(e.target).hasClass("expand");
-            
+
             //close all open paragraphs
             // $(".readmore.expand").removeClass("expand");
             // $(".readmore-link.expand").removeClass("expand");
@@ -96,11 +96,11 @@
             if (isExpanded){
                 $( e.target ).parent( ".readmore" ).removeClass( "expand" );
                 $(e.target).removeClass("expand");
-            } 
+            }
             else{
                 // if target wasn't expand, then expand it
                 $( e.target ).parent( ".readmore" ).addClass( "expand" );
-                $(e.target).addClass("expand");  
+                $(e.target).addClass("expand");
             }
         });
     });

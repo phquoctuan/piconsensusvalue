@@ -14,6 +14,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('proposal/current', 'ProposalController@currentValue');
+Route::post('/proposal/serverapproval', 'ProposalController@ApprovalPayment');
+Route::post('/proposal/servercompletion', 'ProposalController@CompletionPayment');
+Route::post('/proposal/cancel', 'ProposalController@CancelPayment');
+Route::post('/proposal/error', 'ProposalController@ErrorPayment');
+Route::post('/proposal/incomplete', 'ProposalController@InCompletionPayment');
+Route::post('/proposal/checkproposal', 'ProposalController@CheckProposal');
+
+Route::post('/donatelog/saveluckydraw', 'DonateLogController@SaveLuckyDraw');
+
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+

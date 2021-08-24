@@ -36,7 +36,7 @@ const onIncompletePaymentFound = (payment) => {
     if (payment) {
         $.ajax({
                 cache: false,
-                url: "/proposal/incomplete",
+                url: "api/proposal/incomplete",
                 type: "POST",
                 data: {
                     "paymentid": payment.identifier,
@@ -81,7 +81,7 @@ const onIncompletePaymentFound = (payment) => {
 function ReadyForServerApproval(paymentId) {
     $.ajax({
             cache: false,
-            url: "/proposal/serverapproval",
+            url: "api/proposal/serverapproval",
             type: "POST",
             data: {
                 "propose": parseFloat($('#proposal-value').val()),
@@ -109,7 +109,7 @@ function ReadyForServerCompletion(paymentId, txid) {
     console.log('Call ReadyForServerCompletion');
     $.ajax({
             cache: false,
-            url: "/proposal/servercompletion",
+            url: "api/proposal/servercompletion",
             type: "POST",
             data: {
                 "paymentid": paymentId,
@@ -148,7 +148,7 @@ function PaymentCancel(paymentId) {
     console.log('Call PaymentCancel');
     $.ajax({
             cache: false,
-            url: "/proposal/cancel",
+            url: "api/proposal/cancel",
             type: "POST",
             data: {
                 "paymentid": paymentId,
@@ -187,7 +187,7 @@ function PaymentError(error, payment) {
         swal("Oops!", errors.toString(), 'error');
         $.ajax({
                 cache: false,
-                url: "/proposal/error",
+                url: "api/proposal/error",
                 type: "POST",
                 data: {
                     "paymentid": payment.identifier,
@@ -262,7 +262,7 @@ $(document).ready(function() {
         ld.start();
         $.ajax({
                 cache: false,
-                url: "/proposal/checkproposal",
+                url: "api/proposal/checkproposal",
                 type: "POST",
                 data: {
                     "propose": $('#proposal-value').val(),

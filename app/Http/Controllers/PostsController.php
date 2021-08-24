@@ -8,6 +8,9 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 // use Response;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Redirect;
+Use Alert;
+use Illuminate\Support\Facades\DB;
 
 class PostsController extends Controller
 {
@@ -16,14 +19,19 @@ class PostsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+
+    public function index(Request $request)
     {
         //
         // $posts = Post::all();
         // return $posts;
 
-        $posts = Post::paginate(10);
-        return $posts;
+        $posts = Post::Latest('created_at')->paginate(10);
+
+        if ($request->ajax()) {
+            return $posts;
+        }
+        return view('blog.index', compact('posts'));
 
         //dd($posts);
         // $response = Response::json($posts,200);
@@ -37,9 +45,32 @@ class PostsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $post = new Post();
+        if ($request->method() == "POST") {
+            // if($request->has('user_id')) {
+            $post->title = $request->title;
+            $post->content = $request->content;
+            $post->fromdate = $request->fromdate;
+            $post->todate = $request->todate;
+            $post->status = $request->status;
+
+            $curpass = config('pi.save_password');
+            if($curpass != $request->pwd){
+                // return redirect('posts/edit/' . $request->id)->with('alert', 'Password not match !');
+                return  redirect()->back()->withInput()->with('alert','Password not match !');
+            }
+            else{
+                $post->save();
+                return redirect('posts/edit/' . $post->id)->with('success','Saved !');
+            }
+        }
+        else {
+            //return empty form;
+            return view('blog.create');
+        }
+
     }
 
     /**
@@ -114,7 +145,9 @@ class PostsController extends Controller
      */
     public function edit($id)
     {
-        //
+        // alert('Title','Lorem Lorem Lorem', 'success');
+        $post = Post::find($id);
+        return view('blog.edit', compact('post'));
     }
 
     /**
@@ -124,31 +157,18 @@ class PostsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
-        if ((!$request->title) || (!$request->content)) {
-
-            $response = Response::json([
-                'error' => [
-                    'message' => 'Please enter all required fields',
-                ],
-            ], 422);
-            return $response;
-        }
-
-        $post = Post::find($id);
+        $post = Post::find($request->id);
         $post->title = $request->title;
         $post->content = $request->content;
+        $post->fromdate = $request->fromdate;
+        $post->todate = $request->todate;
+        $post->status = $request->status;
         $post->slug = Str::slug($request->title, '-');
         $post->save();
-
-        $response = Response::json([
-            'message' => 'The post has been updated.',
-            'data' => $post,
-        ], 200);
-
-        return $response;
+        // return $this->edit($request->id);
+        return redirect('posts/edit/' . $request->id)->with('success','updated !');
     }
 
     /**
@@ -179,5 +199,22 @@ class PostsController extends Controller
         ], 200);
 
         return $response;
+    }
+
+    public static function AlertLastActivePost()
+    {
+        //get last notification
+        $post = Post::where('status', 1)
+        ->where(function ($query) {
+            $query->where('fromdate', '<=', date('Y-m-d H:i:s')) //where('fromdate', '<=', DB::raw('NOW()'))
+                ->orWhereNull('fromdate');}
+        )
+        ->where(function ($query) {
+            $query->where('todate', '>=', date('Y-m-d H:i:s'))
+                ->orWhereNull('todate');
+        })
+        ->latest('created_at')->first();
+
+        return view('blog.alert', compact("post"));
     }
 }

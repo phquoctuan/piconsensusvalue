@@ -11,7 +11,7 @@
 
     <link rel="stylesheet" href="/css/ladda.min.css">
     <link href="{{asset('css/app.css') }}" rel="stylesheet" />
-
+    <link href="{{asset('css/countdown.css') }}" rel="stylesheet" />
     {{-- <script src="//code.jquery.com/jquery-1.11.3.min.js"></script> --}}
     <script src="{{asset('js/jquery-1.11.3.min.js') }}"></script>
 

@@ -14,33 +14,36 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', 'HomeController@index');
+
 Route::get('/blog', 'BlogController@index');
-Route::resource('posts', 'PostsController');
 
-Route::group(['prefix' => 'api/v1', 'middleware' => ['api', 'cors']], function(){
-    Route::resource('posts', 'PostsController');
-});
+Route::get('posts', 'PostsController@index');
+Route::get('posts/create', 'PostsController@create');
+Route::post('posts/create', 'PostsController@create');
+Route::get('posts/edit/{id}', 'PostsController@edit');
+Route::post('posts', 'PostsController@update')->middleware('checksavepass');
 
-Route::get('proposal', 'ProposalController@index');
-Route::post('proposal', 'ProposalController@index');
-Route::get('proposal/current', 'ProposalController@currentValue');
-// Route::post('proposal/propose', 'ProposalController@create');
-Route::post('/proposal/serverapproval', 'ProposalController@ApprovalPayment');
-Route::post('/proposal/servercompletion', 'ProposalController@CompletionPayment');
-Route::post('/proposal/cancel', 'ProposalController@CancelPayment');
-Route::post('/proposal/error', 'ProposalController@ErrorPayment');
-Route::post('/proposal/incomplete', 'ProposalController@InCompletionPayment');
-Route::post('/proposal/checkproposal', 'ProposalController@CheckProposal');
+Route::get('lastalert', 'PostsController@AlertLastActivePost');
+// Route::group(['prefix' => 'api/v1', 'middleware' => ['api', 'cors']], function(){
+//     Route::resource('posts', 'PostsController');
+// });
+
+Route::get('/settings', 'SettingsController@index');
+Route::get('/settings/edit/{id}', 'SettingsController@edit');
+Route::post('/settings/update', 'SettingsController@update')->middleware('checksavepass');
+
+Route::get('/proposal', 'ProposalController@index');
+Route::post('/proposal', 'ProposalController@index');
+
 Route::get('/proposal/thismonthdonate', 'ProposalController@ThisMonthDonate');
 Route::get('/proposal/lastmonthdonate', 'ProposalController@LastMonthDonate');
 
-Route::get('drawhistory', 'DonateLogController@index');
-Route::get('luckydrawresult', 'DonateLogController@LuckyDrawSelect');
-Route::post('luckydrawresult', 'DonateLogController@LuckyDrawResult');
-Route::post('/donatelog/getuserbyproposalid', 'DonateLogController@GetUserByProposalId');
-Route::post('/donatelog/saveluckydraw', 'DonateLogController@SaveLuckyDraw');
+Route::get('/drawhistory', 'DonateLogController@index');
+Route::get('/luckydrawselect', 'DonateLogController@LuckyDrawSelect');
+Route::post('/luckydrawresult', 'DonateLogController@LuckyDrawResult');
+Route::get('/donatelog/getuserbyproposalid', 'DonateLogController@GetUserByProposalId');
 
-Route::get('about', 'CommonControler@about');
+Route::get('/about', 'CommonControler@about');
 
 Route::get('users/login', 'Auth\AuthController@getLogin');
 Route::post('users/login', 'Auth\AuthController@postLogin');

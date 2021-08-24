@@ -5,6 +5,7 @@
     $(document).ready(function() {
         var items_url = "/proposal";
         $.ajax({
+                type: "POST",
                 url : items_url
             }).done(function (data) {
                 $('.proposal-items').html(data);

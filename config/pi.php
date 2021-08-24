@@ -1,11 +1,11 @@
 <?php
 
 return [
-     'sandbox' => 'true',
+     'sandbox' => 'false',
      'api_address' => 'https://api.minepi.com/',
      'payment_api_address' => 'https://api.minepi.com/v2/payments/',
      'testnet_api_address' => 'https://api.testnet.minepi.com/',
      'api_key' => 'ksamciucobnikbzrluuziq0ujqn33bqies6shfgqffdeth3ggzvflpjhhazkf53t',
-     'save_password' => 'pivalue@master2020'
+     'save_password' => ''
 ];
 

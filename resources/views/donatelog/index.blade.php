@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
 <a class="pi-button" href="{{url('/')}}">&#60; Home</a>
-<a class="pi-button" href="{{url('/luckydrawresult')}}">Find more...</a>
+<a class="pi-button" href="{{url('/luckydrawselect')}}">Find more...</a>
     <h2>Lucky Draw History</h2>
     <div class="row">
         <div class="col-md-12">

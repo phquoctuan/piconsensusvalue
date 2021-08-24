@@ -5,14 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use SweetAlert;
 use Illuminate\Support\Facades\Cache;
-
+use phpDocumentor\Reflection\Types\Null_;
+use \Datetime;
 
 class HomeController extends Controller
 {
     //
     public function index()
     {
-        alert()->message('Hello', 'Pi coin consensus value')->persistent('Close');
+        // alert()->message('Hello', 'Pi coin consensus value')->persistent('Close');
         // alert()->warning('Message', 'Optional Title');
         // alert()->message('Message', 'Optional Title');
         // alert()->basic('Basic Message', 'Mandatory Title');
@@ -48,6 +49,18 @@ class HomeController extends Controller
             $content = $responsedata->getContent();
             $ThisMonthDonate = json_decode($content, true);
         }
+        //calculate remain second for this month
+        $ThisdiffInSeconds = 0;
+        if($ThisMonthDonate["fixed_drawdate"] == 1 && $ThisMonthDonate["draw_date"] != NULL){
+            $todate = new DateTime($ThisMonthDonate["draw_date"]);
+            $now = new DateTime();
+            $diff = $now->diff($todate);
+            $daysInSecs = $diff->format('%r%a') * 24 * 60 * 60;
+            $hoursInSecs = $diff->h * 60 * 60;
+            $minsInSecs = $diff->i * 60;
+            $ThisdiffInSeconds = $daysInSecs + $hoursInSecs + $minsInSecs + $diff->s;
+            if ($ThisdiffInSeconds < 0) {$ThisdiffInSeconds = 0;}
+        }
 
         $LastMonthDonate = null;
         if(Cache::has('LastMonthDonateLog')){
@@ -60,11 +73,33 @@ class HomeController extends Controller
             $cont = $resdata->getContent();
             $LastMonthDonate = json_decode($cont, true);
         }
+        //calculate remain second for last month
+        $LastdiffInSeconds = 0;
+        if($LastMonthDonate["fixed_drawdate"] == 1 && $LastMonthDonate["draw_date"] != NULL){
+            // $timeFirst  = strtotime('2011-05-12 18:20:20');
+            // $timeSecond = strtotime('2011-05-13 18:20:20');
+            //$date = new DateTime("2012-05-03 17:34:01");
+            $todate = new DateTime($LastMonthDonate["draw_date"]);
+            $now = new DateTime();
+            $diff = $now->diff($todate);
+            // $diffInSeconds = $todate - $now;
+            $daysInSecs = $diff->format('%r%a') * 24 * 60 * 60;
+            $hoursInSecs = $diff->h * 60 * 60;
+            $minsInSecs = $diff->i * 60;
+            $LastdiffInSeconds = $daysInSecs + $hoursInSecs + $minsInSecs + $diff->s;
+            if ($LastdiffInSeconds < 0) {$LastdiffInSeconds = 0;}
+            // dd($diffInSeconds);
+        }
+        //check has post
+
+
         // header("Set-Cookie: cross-site-cookie=whatever; SameSite=None; Secure");
         return view('home')->with('current_value', number_format($pival,7))
                             ->with('current_pi_value', $CurrentPiValue)
                             ->with('this_month_donate', $ThisMonthDonate)
-                            ->with('last_month_donate', $LastMonthDonate);
+                            ->with('last_month_donate', $LastMonthDonate)
+                            ->with('this_month_diff', $ThisdiffInSeconds)
+                            ->with('last_month_diff', $LastdiffInSeconds);
         // return view('home')->with('name', 'Victoria')->with('occupation', 'Astronaut');
         // return view('home', compact('var1','var2','var3'));
         // return $view->with('data', ['ms' => $ms, 'persons' => $persons])); -> {{ $data['ms'] }}

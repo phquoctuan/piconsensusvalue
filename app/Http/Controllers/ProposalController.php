@@ -16,6 +16,7 @@ use App\Classes\Contracts\CurrentValueInterface;
 use Illuminate\Support\Facades\Cache;
 use App\PiValueLog;
 use App\DonateLog;
+use App\Settings;
 use Illuminate\Support\Facades\DB;
 use GuzzleHttp;
 use \Datetime;
@@ -163,7 +164,9 @@ class ProposalController extends Controller
                     'drawed_id' => null,
                     'drawed_username' => null,
                     'paid' => 0,
-                    'txid' => null
+                    'txid' => null,
+                    'fixed_drawdate' => 0,
+                    'live_drawlink' => ""
                 );
                 $LastMonthDonateLog = new DonateLog($newdata);
             }
@@ -188,6 +191,7 @@ class ProposalController extends Controller
             // echo(gettype($LastDonateLog->from_date));
             // echo ($LastDonateLog->from_date);
             //Cache data
+
             $cachedata = array(
                 'from_date' => $LastMonthDonateLog->from_date,//->format('d/m/Y')
                 'to_date' => $LastMonthDonateLog->to_date,
@@ -203,6 +207,8 @@ class ProposalController extends Controller
                 'drawed_username' => $LastMonthDonateLog->drawed_username,
                 'paid' => $LastMonthDonateLog->paid,
                 'txid' => $LastMonthDonateLog->txid,
+                'fixed_drawdate' => $LastMonthDonateLog->fixed_drawdate,
+                'live_drawlink' => $LastMonthDonateLog->live_drawlink,
             );
             Cache::forget('LastMonthDonateLog');
             Cache::put('LastMonthDonateLog', $cachedata);
@@ -231,7 +237,7 @@ class ProposalController extends Controller
 
             $LastDonateLog = DonateLog::where('from_date', $firstday)->first();
             if($LastDonateLog == null){
-                lad("no log");
+                // lad("no log");
                 $newdata = array(
                     'from_date' => $firstday,//->format("Y-m-d")
                     'to_date' => $lastday,
@@ -246,7 +252,9 @@ class ProposalController extends Controller
                     'drawed_id' => null,
                     'drawed_username' => null,
                     'paid' => 0,
-                    'txid' => null
+                    'txid' => null,
+                    'fixed_drawdate' => 0,
+                    'live_drawlink' => ""
                 );
                 $LastDonateLog = new DonateLog($newdata);
                 $LastDonateLog->save();
@@ -283,6 +291,8 @@ class ProposalController extends Controller
                 'drawed_username' => $LastDonateLog->drawed_username,
                 'paid' => $LastDonateLog->paid,
                 'txid' => $LastDonateLog->txid,
+                'fixed_drawdate' => $LastDonateLog->fixed_drawdate,
+                'live_drawlink' => $LastDonateLog->live_drawlink,
             );
             Cache::forget('LastDonateLog');
             Cache::put('LastDonateLog', $cachedata);
@@ -669,6 +679,28 @@ class ProposalController extends Controller
 
     public function CheckProposal(Request $request)
     {
+        //check enable propose
+        $enable_proposal = Cache::rememberForever('enable_proposal', function() {
+            // Laravel >= 5.2, use 'lists' instead of 'pluck' for Laravel <= 5.1
+            $enable_setting = Settings::where("attribute","app_enable")->first();
+            if($enable_setting != null){
+                if($enable_setting->value == "1")
+                    return true;
+                else
+                    return false;
+            }
+            else{
+                return true;
+            }
+        });
+        if(!$enable_proposal){
+            $message = ['success' => 'NG',
+                        'message' => 'Proposal is temporarily disabled',
+                    ];
+            $response = response()->json($message, 200);
+            return $response;
+        }
+
         //validate data
         if ((!$request->propose) || (!$request->donate) || (!$request->username)) {
             if((!$request->propose)){
@@ -901,7 +933,9 @@ function CacheLastDonateLogSameMonth(Proposal  $proposal) {
             'drawed_id' => $LastDonateLog["drawed_id"],
             'drawed_username' => $LastDonateLog["drawed_username"],
             'paid' => $LastDonateLog["paid"],
-            'txid' => $LastDonateLog["txid"]
+            'txid' => $LastDonateLog["txid"],
+            'fixed_drawdate' => $LastDonateLog["fixed_drawdate"],
+            'live_drawlink' => $LastDonateLog["live_drawlink"]
         );
         Cache::forget('LastDonateLog');
         Cache::put('LastDonateLog', $newdata);

@@ -15,12 +15,13 @@ class VerifyCsrfToken extends Middleware
         //
         'proposal',
         'proposal/propose',
-        '/proposal/serverapproval',
-        '/proposal/servercompletion',
-        '/proposal/cancel',
-        '/proposal/error',
-        '/proposal/incomplete',
-        '/proposal/checkproposal',
-        '/donatelog/getuserbyproposalid',
+        '/luckydrawresult',
+        // '/proposal/serverapproval',
+        // '/proposal/servercompletion',
+        // '/proposal/cancel',
+        // '/proposal/error',
+        // '/proposal/incomplete',
+        // '/proposal/checkproposal',
+        // '/donatelog/getuserbyproposalid',
     ];
 }

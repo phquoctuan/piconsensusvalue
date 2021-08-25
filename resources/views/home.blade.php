@@ -38,7 +38,7 @@
                         </div>
                         <div class= "donate">
                             <label id="donate_label" class="">To propose you will have to donate:</label>
-                            <label id="donate_value" class="">{{number_format(0,7)}}</label>
+                            <label id="donate_value" class="">{{number_format(0.0000001,7)}}</label>
                             <label id="donate_sign" class="">π</label>
                             <span id= "donate_hint" class="fa fa-question-circle" data-toggle="tooltip" data-original-title="Donate amount = abs(propose - current) x 10% in dollar, and will be convert to Pi in current value." ></span>
                         </div>
@@ -213,6 +213,41 @@
     </div>
 
     <script>
+        function CalculateDonateAmount(proposalvalue, currentvalue) {
+            var donatePi = 0.0000001;
+            if(proposalvalue == null || proposalvalue == "" || currentvalue == null)
+            {
+                return donatePi.toFixed(7);
+            }
+            var diff = Math.abs(proposalvalue - currentvalue);
+            if(diff != 0) {
+                if (currentvalue == 0){
+                    donatePi = diff/(10 * proposalvalue);
+                }
+                else{
+                    donatePi = diff/(10 * currentvalue);
+                }
+            }
+            else{
+                if (currentvalue == 0){
+                    donatePi = 0.1;
+                }
+                else{
+                    if(currentvalue < 10){
+                        donatePi = 0.1;
+                    }
+                    else{
+                        donatePi = 1/currentvalue;
+                    }
+                }
+            }
+            if(donatePi < 0.0000001)
+            {
+                donatePi = 0.0000001;
+            }
+
+            return donatePi.toFixed(7);
+        }
         // $(function() {
         //     $.ajaxSetup({
         //         headers: {
@@ -235,20 +270,7 @@
                     success:function(response){
                         if(response.current_value || response.current_value == 0){
                             $('#current-pivalue').html(response.current_value.toFixed(7));
-                            var donatePi = 0;
-                            // var propose = $('#proposal-value');
-                            if($('#proposal-value').val()){
-                                var diff = Math.abs($('#proposal-value').val() - response.current_value);
-                                if(diff != 0) {
-                                    if (response.current_value == 0){
-                                        var donatePi = diff/(10 * $('#proposal-value').val())
-                                    }
-                                    else{
-                                        var donatePi = diff/(10 * response.current_value)
-                                    }
-                                }
-                            }
-                            $('#donate_value').html(donatePi.toFixed(7));
+                            $('#donate_value').html(CalculateDonateAmount($('#proposal-value').val(), response.current_value));
                         }
                     },error:function(err){
 
@@ -257,18 +279,8 @@
             }, 1000);
 
             $('#proposal-value').change(function (e) {
-                var donatePi = 0;
-                if($('#proposal-value').val() && $('#current-pivalue').text()){
-                    var diff = Math.abs($('#proposal-value').val() - $('#current-pivalue').text());
-                    if(diff != 0) {
-                        var donatePi = diff/(10 * $('#current-pivalue').text())
-                    }
-                }
-                $('#donate_value').html(donatePi.toFixed(7));
+                $('#donate_value').html(CalculateDonateAmount($('#proposal-value').val(), $('#current-pivalue').text()));
             })
-
-
-
 
         })
     </script>

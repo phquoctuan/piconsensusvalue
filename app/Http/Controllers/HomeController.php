@@ -35,6 +35,7 @@ class HomeController extends Controller
             $responsedata = app('App\Http\Controllers\ProposalController')->currentValue();
             $content = $responsedata->getContent();
             $CurrentPiValue = json_decode($content, true);
+            // dd($CurrentPiValue);
             $pival = $CurrentPiValue['current_value'];
         }
 

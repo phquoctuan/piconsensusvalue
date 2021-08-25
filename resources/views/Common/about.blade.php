@@ -42,6 +42,8 @@
                     <p><strong>1</strong>. Pioneer must open this app (<a href='https://pivalue.trieulai.com'>pivalue.trieulai.com</a>) in Pi Browser to authenticate as a pioneer.</p>
                     <p><strong>2</strong>. Pioneer can suggest any desired price of Pi but must be greater or equal zero.</p>
                     <p><strong>3</strong>. Each time propose value of Pi/USD, pioneer agree to donate an amount of Pi equal to 10% of the proposed price difference from the current price (absolute value).</p>
+                    <p><strong>4</strong>. If you propose a value equal to current value (Pi/USD). And if the current value is less then 10 then donate amount is 0.1π, else if current value is equal or greater then 10 then the donate amount is: 1/(Current value)π</p>
+                    <p><strong>5</strong>. The smallest donate amount is 0.0000001π</p>
                     <div style="background-color: lavender; padding: 5px; margin: 10px;">
                         <em>Example:</em>
                         <p>Current value Pi/USD = 10 (1π = 10$)</p>
@@ -50,9 +52,10 @@
                         <p>&#8594 10% of difference: 20*10% = 2 (USD).</p>
                         <p>&#8594 convert to π base on current value: 2/10 = 0.2π.</p>
                         <p>&#8658 to propose, you must donate 0.2π.</p>
+                        <p>&#8658 to propose, you must donate 0.2π.</p>
                     </div>
-                    <p><strong>4</strong>. Once the proposal has been completed, this donate fee will not be refunded for any reason.</p>
-                    <p><strong>5</strong>. Each time you make proposal you will receive an proposal id, this id is used to participate in the lucky draw at the end of the month.</p>
+                    <p><strong>6</strong>. Once the proposal has been completed, this donate fee will not be refunded for any reason.</p>
+                    <p><strong>7</strong>. Each time you make proposal you will receive an proposal id, this id is used to participate in the lucky draw at the end of the month.</p>
                     <span class="readmore-link"></span>
                 </div>
             </div>

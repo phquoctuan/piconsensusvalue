@@ -20,8 +20,7 @@ use App\Settings;
 use Illuminate\Support\Facades\DB;
 use GuzzleHttp;
 use \Datetime;
-
-
+use PhpParser\Node\Expr\Cast\Double;
 
 class ProposalController extends Controller
 {
@@ -354,12 +353,8 @@ class ProposalController extends Controller
             $curpival = $array['current_value'];
         }
 
-        if($curpival == 0){
-            $realdonate = $request->propose / (10 * $request->propose);
-        }
-        else{
-            $realdonate = abs($request->propose - $curpival)/(10 * $curpival);
-        }
+        $realdonate = $this->CalculateDonateAmount($request->propose, $curpival);
+
         if(abs($realdonate - $request->donate) > 0.01) {
             //fake data;
             $message = ['message' => 'It seems to be your data is out of date'
@@ -625,6 +620,7 @@ class ProposalController extends Controller
                 $new_total_propose = $total_propose + 1;
                 $new_pivalue = (($cacheValue["current_value"] * $total_propose) + $proposal->propose)/$new_total_propose;
                 $new_propose_time = $proposal->created_at;
+                $new_sum_donate = $cacheValue["sum_donate"] + $proposal->donate;
                 $lastlog_time = $cacheValue["lastlog_time"];
                 //$lastlog_time = strtotime($cacheValue["lastlog_time"]);
                 //update cache or clear cache if last for long time
@@ -635,6 +631,7 @@ class ProposalController extends Controller
                         $newdata = array(
                             'current_value' => $new_pivalue,
                             'total_propose' => $new_total_propose,
+                            'sum_donate' => $new_sum_donate,
                             'propose_time' => $new_propose_time,
                             "lastlog_time" => $lastlog_time
                         );
@@ -675,7 +672,42 @@ class ProposalController extends Controller
         }
     }
 
+    //
+    private function CalculateDonateAmount(float $proposalvalue,float $currentvalue) {
+        $donatePi = 0.0000001;
+        if($proposalvalue == null || $currentvalue == null)
+        {
+            return number_format($donatePi,7);
+        }
+        $diff = abs($proposalvalue - $currentvalue);
+        if($diff != 0) {
+            if ($currentvalue == 0) {
+                $donatePi = $diff/(10 * $proposalvalue);
+            }
+            else{
+                $donatePi = $diff/(10 * $currentvalue);
+            }
+        }
+        else{
+            if ($currentvalue == 0){
+                $donatePi = 0.1;
+            }
+            else{
+                if($currentvalue < 10){
+                    $donatePi = 0.1;
+                }
+                else{
+                    $donatePi = 1/$currentvalue;
+                }
+            }
+        }
+        if($donatePi < 0.0000001)
+        {
+            $donatePi = 0.0000001;
+        }
 
+        return number_format($donatePi,7);
+    }
 
     public function CheckProposal(Request $request)
     {
@@ -748,12 +780,8 @@ class ProposalController extends Controller
             $curpival = $array['current_value'];
         }
 
-        if($curpival == 0){
-            $realdonate = $request->propose / (10 * $request->propose);
-        }
-        else{
-            $realdonate = abs($request->propose - $curpival)/(10 * $curpival);
-        }
+        $realdonate = $this->CalculateDonateAmount($request->propose, $curpival);
+
         if(abs($realdonate - $request->donate) > 0.01) {
             //fake data;
             $message = ['success' => 'NG',
@@ -769,6 +797,7 @@ class ProposalController extends Controller
         ], 200);
         return $response;
     }
+
 
 ///////////////////////////////Reserve
     public function create(Request $request)
@@ -852,6 +881,7 @@ class ProposalController extends Controller
             //calculate new pi value
             $total_propose = $cacheValue["total_propose"];
             $new_total_propose = $total_propose + 1;
+            $new_sum_donate = $cacheValue["sum_donate"] + $proposal->donate;
             $new_pivalue = (($cacheValue["current_value"] * $total_propose) + $proposal->propose)/$new_total_propose;
             $new_propose_time = $proposal->created_at;
             $lastlog_time = $cacheValue["lastlog_time"];
@@ -864,6 +894,7 @@ class ProposalController extends Controller
                     $newdata = array(
                         'current_value' => $new_pivalue,
                         'total_propose' => $new_total_propose,
+                        'sum_donate' => $new_sum_donate,
                         'propose_time' => $new_propose_time,
                         "lastlog_time" => $lastlog_time
                     );

@@ -30,7 +30,7 @@
                     <span title="{{$item->donate}}">{{$item->donate}}</span>
                 </td>
                 <td class="small-hide">
-                    <span title={{$item->txid}}>{{\Illuminate\Support\Str::limit($item->txid, 45)}}</span>
+                    <span title={{$item->txid}}>{{\Illuminate\Support\Str::limit($item->txid, 100)}}</span>
                 </td>
             </tr>
         @endforeach

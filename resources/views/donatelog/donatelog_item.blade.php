@@ -50,7 +50,7 @@
                     <span title="{{$item->paid}}">{{($item->paid == 1) ? "Yes" : "No" }}</span>
                 </td>
                 <td>
-                    <span title={{$item->txid}}>{{\Illuminate\Support\Str::limit($item->txid, 45)}}</span>
+                    <span title={{$item->txid}}>{{\Illuminate\Support\Str::limit($item->txid, 100)}}</span>
                 </td>
             </tr>
         @endforeach

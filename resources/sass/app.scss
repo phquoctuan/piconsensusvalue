@@ -212,6 +212,7 @@ textarea.parsley-error {
     display: inline-block;
 }
 
+
 #donate_label {
     clear: both;
     padding-top: 20px;
@@ -223,12 +224,12 @@ textarea.parsley-error {
 
 #donate_value {
     color: blue;
-    font-size: 150%;
+    font-size: 120%;
 }
 
 #donate_sign {
     color: blue;
-    font-size: 150%;
+    font-size: 120%;
 }
 
 #donate_hint {
@@ -507,6 +508,10 @@ textarea.parsley-error {
 }
 
 @media (max-width: 768px) {
+    .donate{
+        margin-left: -10px;
+        margin-right: -10px;
+    }
     #btn-propose {
         width: 100%;
     }

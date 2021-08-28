@@ -42,7 +42,7 @@ class ProposalController extends Controller
             $lastlog = PiValueLog::orderBy('propose_time', 'desc')->first();//PiValueLog::latest();
             if ($lastlog){
                 $new_last_log = false;
-                $new_proposals = Proposal::select(DB::raw("COUNT(*) AS total_propose, SUM(propose) AS sum_propose, SUM(donate) AS sum_donate, MAX(created_at) AS propose_time"))
+                $new_proposals = Proposal::select(DB::raw("COUNT(*) AS total_propose, SUM(propose) AS sum_propose, SUM(donate) AS sum_donate, MAX(id) AS max_id, MAX(created_at) AS propose_time"))
                 ->where('completed','1')
                 ->where('created_at', '>',  $lastlog->propose_time)
                 ->first();
@@ -73,12 +73,14 @@ class ProposalController extends Controller
                 }
                 //save cache
                 $newdata["lastlog_time"] = $new_propose_time;
+                // $newdata["id_to"] = $new_proposals->max_id;
+
                 Cache::put('CurrentPiValue', $newdata);
 
             }
             else{//no last log in database
                 //calculate everage value base all proposal
-                $new_proposals = Proposal::select(DB::raw("COUNT(*) AS total_propose, SUM(propose) AS sum_propose, SUM(donate) AS sum_donate , MAX(created_at) AS propose_time"))
+                $new_proposals = Proposal::select(DB::raw("COUNT(*) AS total_propose, SUM(propose) AS sum_propose, SUM(donate) AS sum_donate, MAX(id) AS max_id , MAX(created_at) AS propose_time"))
                 ->where('completed','1')
                 ->first();
 
@@ -108,13 +110,35 @@ class ProposalController extends Controller
                     $CurrentPiValue->save();
                 }
                 $newdata["lastlog_time"] = $new_propose_time;
+                // $newdata["id_to"] = $new_proposals->max_id;
                 Cache::put('CurrentPiValue', $newdata);
             }
         }
 
         $cacheValue = Cache::get('CurrentPiValue');
-        // lad($cacheValue);
-        $response = response()->json(['current_value' => $cacheValue["current_value"], 'sum_donate' => $cacheValue["sum_donate"] ], 200);
+
+        //caculate this month;
+        $ThisMonthDonate = null;
+        if (Cache::has('LastDonateLog')){
+            // lad("has this month");
+            $ThisMonthDonate = Cache::get('LastDonateLog');
+        }
+        else{
+            // lad("no this month");
+            $responsedata = app('App\Http\Controllers\ProposalController')->ThisMonthDonate();
+            $content = $responsedata->getContent();
+            $ThisMonthDonate = json_decode($content, true);
+        }
+
+        $response = response()->json(['current_value' => $cacheValue["current_value"],
+                                        'sum_donate' => $cacheValue["sum_donate"],
+                                        'total_propose' => $cacheValue["total_propose"],
+                                        'thismonth_id_from' => $ThisMonthDonate["id_from"],
+                                        'thismonth_id_to' => $ThisMonthDonate["id_to"],
+                                        'thismonth_count_donate' => $ThisMonthDonate["count_donate"],
+                                        'thismonth_total_donate' => $ThisMonthDonate["total_donate"],
+                                        'thismonth_reward' => $ThisMonthDonate["reward"]
+                                        ], 200);
         return $response;
     }
 

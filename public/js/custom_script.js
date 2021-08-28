@@ -249,7 +249,7 @@ $(document).ready(function() {
     }).catch(function(error) {
         $('#ready_state').addClass('login_error')
         $('#ready_state').html("Authentication error !");
-        console.error(error);
+        // console.log('error');
     });
 
 

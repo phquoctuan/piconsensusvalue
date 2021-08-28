@@ -82,7 +82,7 @@
                                     <div class="key">Proposals:</div>
                                 </div>
                                 <div class="col-md-6 float-right">
-                                    <div class="value">{{$this_month_donate["count_donate"]}}</div>
+                                    <div id="thismonth_count_donate" class="value">{{$this_month_donate["count_donate"]}}</div>
                                 </div>
                             </div>
                             <div class="row-item">
@@ -90,7 +90,7 @@
                                     <div class="key">Total donation:</div>
                                 </div>
                                 <div class="col-md-6 float-right">
-                                    <div class="value">{{$this_month_donate["total_donate"]}} π</div>
+                                    <div id="thismonth_total_donate" class="value">{{$this_month_donate["total_donate"]}} π</div>
                                 </div>
                             </div>
                         </div>
@@ -108,7 +108,7 @@
                                     <div class="key">Proposal Id to:</div>
                                 </div>
                                 <div class="col-md-6 float-right">
-                                    <div class="value">{{$this_month_donate["id_to"]}}</div>
+                                    <div id="thismonth_id_to" class="value">{{$this_month_donate["id_to"]}}</div>
                                 </div>
                             </div>
                             <div class="row-item">
@@ -116,7 +116,7 @@
                                     <div class="key">Award:</div>
                                 </div>
                                 <div class="col-md-6 float-right">
-                                    <div class="value">{{$this_month_donate["reward"]}} π</div>
+                                    <div id="thismonth_reward" class="value">{{$this_month_donate["reward"]}} π</div>
                                 </div>
                             </div>
                             <div class="row-item">
@@ -136,8 +136,12 @@
                                 (*)
                                 The draw will take place at <span>{{date('Y-M-d H:i', strtotime($this_month_donate["draw_date"]))}}</span> - GMT
                                 <br>
-                                Link to join: <a href="{{$this_month_donate["live_drawlink"]}}" target="_blank">{{$this_month_donate["live_drawlink"]}}</a>
-
+                                Link to join:
+                                @if($this_month_donate["live_drawlink"] == NULL || $this_month_donate["live_drawlink"] == "")
+                                    we will announce as soon as possible.
+                                @else
+                                    <a href="{{$this_month_donate["live_drawlink"]}}" target="_blank">{{$this_month_donate["live_drawlink"]}}</a>
+                                @endif
                             </div>
                         @else
                             <em class="this-month-em">(*): Draw date is intended date. We will announce the specific date and time along with zoom link for everyone involved. </em>
@@ -221,10 +225,10 @@
                     <div class="total-proposal-info">
                         <div class="info-item-wrap">
                             <div class="info-item">
-                                Total proposal: <strong>{{$current_pi_value['total_propose']}}</strong>
+                                Total proposal: <strong id="total_propose">{{$current_pi_value['total_propose']}}</strong>
                             </div>
                             <div class="info-item">
-                                Total donation: <strong>{{$current_pi_value['sum_donate']}} π</strong>
+                                Total donation: <strong id="sum_donate">{{$current_pi_value['sum_donate']}} π</strong>
                             </div>
                         </div>
                     </div>
@@ -297,6 +301,12 @@
                     success:function(response){
                         if(response.current_value || response.current_value == 0){
                             $('#current-pivalue').html(response.current_value.toFixed(7));
+                            $('#thismonth_count_donate').html(response.thismonth_count_donate);
+                            $('#thismonth_total_donate').html(response.thismonth_total_donate);
+                            $('#thismonth_id_to').html(response.thismonth_id_to);
+                            $('#thismonth_reward').html(response.thismonth_reward.toFixed(7));
+                            $('#total_propose').html(response.total_propose);
+                            $('#sum_donate').html(response.sum_donate);
                             $('#donate_value').html(CalculateDonateAmount($('#proposal-value').val(), response.current_value));
                         }
                     },error:function(err){

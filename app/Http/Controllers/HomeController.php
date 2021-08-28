@@ -41,11 +41,11 @@ class HomeController extends Controller
 
         $ThisMonthDonate = null;
         if (Cache::has('LastDonateLog')){
-            lad("has this month");
+            // lad("has this month");
             $ThisMonthDonate = Cache::get('LastDonateLog');
         }
         else{
-            lad("no this month");
+            // lad("no this month");
             $responsedata = app('App\Http\Controllers\ProposalController')->ThisMonthDonate();
             $content = $responsedata->getContent();
             $ThisMonthDonate = json_decode($content, true);

@@ -1,6 +1,10 @@
 <html>
 <head>
     <title> @yield('title') </title>
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+    <meta name="description" content="Pi Value, survey application for Pi coin consensus value ">
+    <meta name="keywords" content="pi network, pi value, pi coin, pi/usd, value of pi, pi donation, pi charty, pi social, crypto, pi app">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href="{{ asset('images/favicon.png') }}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css">
@@ -19,9 +23,16 @@
     {{-- <script src="https://cdn.usebootstrap.com/bootstrap/4.6.0/js/bootstrap.min.js"></script>
     <script src="https://cdn.usebootstrap.com/bootstrap/4.6.0/js/bootstrap.bundle.min.js"></script> --}}
     <script src="{{asset('js/app.js') }}"></script>
-
     <script src="https://sdk.minepi.com/pi-sdk.js"></script>
 
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-37S01781JT"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-37S01781JT');
+    </script>
 </head>
 <body>
     {{-- @include('sweet::alert') --}}

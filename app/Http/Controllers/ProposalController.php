@@ -165,7 +165,17 @@ class ProposalController extends Controller
                     'paid' => 0,
                     'txid' => null,
                     'fixed_drawdate' => 0,
-                    'live_drawlink' => ""
+                    'live_drawlink' => "",
+                    'reward2' => null,
+                    'drawed_id2' => null,
+                    'drawed_username2' => null,
+                    'paid2' => 0,
+                    'txid2' => null,
+                    'reward3' => null,
+                    'drawed_id3' => null,
+                    'drawed_username3' => null,
+                    'paid3' => 0,
+                    'txid3' => null,
                 );
                 $LastMonthDonateLog = new DonateLog($newdata);
             }
@@ -208,6 +218,16 @@ class ProposalController extends Controller
                 'txid' => $LastMonthDonateLog->txid,
                 'fixed_drawdate' => $LastMonthDonateLog->fixed_drawdate,
                 'live_drawlink' => $LastMonthDonateLog->live_drawlink,
+                'reward2' => $LastMonthDonateLog->reward2,
+                'drawed_id2' => $LastMonthDonateLog->drawed_id2,
+                'drawed_username2' => $LastMonthDonateLog->drawed_username2,
+                'paid2' => $LastMonthDonateLog->paid2,
+                'txid2' => $LastMonthDonateLog->txid2,
+                'reward3' => $LastMonthDonateLog->reward3,
+                'drawed_id3' => $LastMonthDonateLog->drawed_id3,
+                'drawed_username3' => $LastMonthDonateLog->drawed_username3,
+                'paid3' => $LastMonthDonateLog->paid3,
+                'txid3' => $LastMonthDonateLog->txid3,
             );
             Cache::forget('LastMonthDonateLog');
             Cache::put('LastMonthDonateLog', $cachedata);
@@ -675,7 +695,7 @@ class ProposalController extends Controller
     //
     private function CalculateDonateAmount(float $proposalvalue,float $currentvalue) {
         $donatePi = 0.0000001;
-        if($proposalvalue == null || $currentvalue == null)
+        if($proposalvalue === null || $currentvalue === null)
         {
             return number_format($donatePi,7);
         }
@@ -705,7 +725,7 @@ class ProposalController extends Controller
         {
             $donatePi = 0.0000001;
         }
-
+        // dd($donatePi);
         return number_format($donatePi,7);
     }
 
@@ -958,7 +978,7 @@ function CacheLastDonateLogSameMonth(Proposal  $proposal) {
             'total_propose' => $LastDonateLog["total_propose"] + $proposal->propose,
             'count_donate' => $LastDonateLog["count_donate"] + 1,
             'total_donate' => $LastDonateLog["total_donate"] + $proposal->donate,
-            'reward' => $LastDonateLog["reward"],
+            'reward' => ($LastDonateLog["total_donate"] + $proposal->donate)/10, //$LastDonateLog["reward"],
             'remain_donate' => $LastDonateLog["remain_donate"] + $proposal->donate,
             'draw_date' => $LastDonateLog["draw_date"],
             'drawed_id' => $LastDonateLog["drawed_id"],

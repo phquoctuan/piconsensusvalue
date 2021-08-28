@@ -9,10 +9,29 @@
                 <th>Total Donate</th>
                 <th>Draw Date</th>
                 <th>Reward(π)</th>
-                <th>Lucky Id</th>
-                <th>Lucky Pioneer</th>
-                <th>Paid Out</th>
-                <th>Txid</th>
+                @if($lucky2_enable == 1 || $lucky3_enable == 1)
+                    <th>Lucky Id(1)</th>
+                    <th>Lucky Pioneer(1)</th>
+                    <th>Paid Out(1)</th>
+                    <th>Txid(1)</th>
+                    @if($lucky2_enable == 1)
+                        <th>Lucky Id(2)</th>
+                        <th>Lucky Pioneer(2)</th>
+                        <th>Paid Out(2)</th>
+                        <th>Txid(2)</th>
+                    @endif
+                    @if($lucky3_enable == 1)
+                        <th>Lucky Id(3)</th>
+                        <th>Lucky Pioneer(3)</th>
+                        <th>Paid Out(3)</th>
+                        <th>Txid(3)</th>
+                    @endif
+                @else
+                    <th>Lucky Id</th>
+                    <th>Lucky Pioneer</th>
+                    <th>Paid Out</th>
+                    <th>Txid</th>
+                @endif
             </tr>
         </thead>
         <tbody>
@@ -40,18 +59,62 @@
                 <td class="">
                     <span title="{{$item->reward}}">{{$item->reward}}</span>
                 </td>
-                <td class="">
-                    <span title="{{$item->drawed_id}}">{{$item->drawed_id}}</span>
-                </td>
-                <td>
-                    <span title={{$item->drawed_username}}>{{\Illuminate\Support\Str::limit($item->drawed_username, 20)}}</span>
-                </td>
-                <td>
-                    <span title="{{$item->paid}}">{{($item->paid == 1) ? "Yes" : "No" }}</span>
-                </td>
-                <td>
-                    <span title={{$item->txid}}>{{\Illuminate\Support\Str::limit($item->txid, 100)}}</span>
-                </td>
+                @if($lucky2_enable == 1 || $lucky3_enable == 1)
+                    <td class="">
+                        <span title="{{$item->drawed_id}}">{{$item->drawed_id}}</span>
+                    </td>
+                    <td>
+                        <span title={{$item->drawed_username}}>{{\Illuminate\Support\Str::limit($item->drawed_username, 20)}}</span>
+                    </td>
+                    <td>
+                        <span title="{{$item->paid}}">{{($item->paid == 1) ? "Yes" : "No" }}</span>
+                    </td>
+                    <td>
+                        <span title={{$item->txid}}>{{\Illuminate\Support\Str::limit($item->txid, 100)}}</span>
+                    </td>
+
+                    @if($lucky2_enable == 1)
+                        <td class="">
+                            <span title="{{$item->drawed_id2}}">{{$item->drawed_id2}}</span>
+                        </td>
+                        <td>
+                            <span title={{$item->drawed_username2}}>{{\Illuminate\Support\Str::limit($item->drawed_username2, 20)}}</span>
+                        </td>
+                        <td>
+                            <span title="{{$item->paid2}}">{{($item->paid2 == 1) ? "Yes" : "No" }}</span>
+                        </td>
+                        <td>
+                            <span title={{$item->txid2}}>{{\Illuminate\Support\Str::limit($item->txid2, 100)}}</span>
+                        </td>
+                    @endif
+                    @if($lucky3_enable == 1)
+                        <td class="">
+                            <span title="{{$item->drawed_id3}}">{{$item->drawed_id3}}</span>
+                        </td>
+                        <td>
+                            <span title={{$item->drawed_username3}}>{{\Illuminate\Support\Str::limit($item->drawed_username3, 20)}}</span>
+                        </td>
+                        <td>
+                            <span title="{{$item->paid3}}">{{($item->paid3 == 1) ? "Yes" : "No" }}</span>
+                        </td>
+                        <td>
+                            <span title={{$item->txid3}}>{{\Illuminate\Support\Str::limit($item->txid3, 100)}}</span>
+                        </td>
+                    @endif
+                @else
+                    <td class="">
+                        <span title="{{$item->drawed_id}}">{{$item->drawed_id}}</span>
+                    </td>
+                    <td>
+                        <span title={{$item->drawed_username}}>{{\Illuminate\Support\Str::limit($item->drawed_username, 20)}}</span>
+                    </td>
+                    <td>
+                        <span title="{{$item->paid}}">{{($item->paid == 1) ? "Yes" : "No" }}</span>
+                    </td>
+                    <td>
+                        <span title={{$item->txid}}>{{\Illuminate\Support\Str::limit($item->txid, 100)}}</span>
+                    </td>
+                @endif
             </tr>
         @endforeach
         </tbody>

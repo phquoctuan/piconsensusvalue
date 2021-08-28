@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use App\DonateLog;
 use App\Proposal;
 use \Datetime;
+use App\Settings;
 use Illuminate\Support\Facades\Cache;
 
 class DonateLogController extends Controller
@@ -17,7 +18,20 @@ class DonateLogController extends Controller
         if ($request->ajax()) {
             return view('donatelog.donatelog_item', ['items' => $items])->render();
         }
-        return view('donatelog.index', compact('items'));
+        $lucky2_enable = 0;
+        $setting = Settings::where("attribute","lucky2_enable")->first();
+        if($setting != null){
+            if($setting->value == "1")
+                $lucky2_enable = 1;
+        }
+        $lucky3_enable = 0;
+        $setting1 = Settings::where("attribute","lucky3_enable")->first();
+        if($setting1 != null){
+            if($setting1->value == "1")
+                $lucky3_enable = 1;
+        }
+        // dd($lucky2_enable);
+        return view('donatelog.index', compact('items', 'lucky2_enable', 'lucky3_enable'));
     }
 
     public function LuckyDrawSelect()
@@ -56,18 +70,44 @@ class DonateLogController extends Controller
             $donatelog['total_propose'] = $ThisDonateLog->total_propose;
             $donatelog['count_donate'] = $ThisDonateLog->count_donate;
             $donatelog['total_donate'] = $ThisDonateLog->total_donate;
-            $donatelog['reward'] = number_format(($ThisDonateLog->total_donate)/10, 7);
             $donatelog['remain_donate'] = $ThisDonateLog->remain_donate;
             $donatelog['draw_date'] = $ThisDonateLog->draw_date;
+            $donatelog['reward'] = number_format(($ThisDonateLog->reward), 7);
             $donatelog['drawed_id'] = $ThisDonateLog->drawed_id;
             $donatelog['drawed_username'] = $ThisDonateLog->drawed_username;
             $donatelog['paid'] = $ThisDonateLog->paid;
             $donatelog['txid'] = $ThisDonateLog->txid;
+            $donatelog['fee'] = $ThisDonateLog->fee;
             $donatelog['fixed_drawdate'] = $ThisDonateLog->fixed_drawdate;
             $donatelog['live_drawlink'] = $ThisDonateLog->live_drawlink;
+            $donatelog['reward2'] = number_format(($ThisDonateLog->reward2), 7);
+            $donatelog['drawed_id2'] = $ThisDonateLog->drawed_id2;
+            $donatelog['drawed_username2'] = $ThisDonateLog->drawed_username2;
+            $donatelog['paid2'] = $ThisDonateLog->paid2;
+            $donatelog['txid2'] = $ThisDonateLog->txid2;
+            $donatelog['fee2'] = $ThisDonateLog->fee2;
+            $donatelog['reward3'] = number_format(($ThisDonateLog->reward3), 7);
+            $donatelog['drawed_id3'] = $ThisDonateLog->drawed_id3;
+            $donatelog['drawed_username3'] = $ThisDonateLog->drawed_username3;
+            $donatelog['paid3'] = $ThisDonateLog->paid3;
+            $donatelog['txid3'] = $ThisDonateLog->txid3;
+            $donatelog['fee3'] = $ThisDonateLog->fee3;
         }
 
-        return view('donatelog.luckydraw_result', compact('donatelog'));
+        $lucky2_enable = 0;
+        $setting = Settings::where("attribute","lucky2_enable")->first();
+        if($setting != null){
+            if($setting->value == "1")
+                $lucky2_enable = 1;
+        }
+        $lucky3_enable = 0;
+        $setting1 = Settings::where("attribute","lucky3_enable")->first();
+        if($setting1 != null){
+            if($setting1->value == "1")
+                $lucky3_enable = 1;
+        }
+
+        return view('donatelog.luckydraw_result', compact('donatelog', 'lucky2_enable', 'lucky3_enable'));
     }
 
     public function GetUserByProposalId(Request $request)
@@ -147,6 +187,8 @@ class DonateLogController extends Controller
             //draw_date
             $temdate = DateTime::createFromFormat('Y-m-d H:i', $request->draw_date);
             $founditem->draw_date = $temdate;
+            $founditem->reward = $request->reward;
+            $founditem->fee = $request->fee;
             if($request->fixed_drawdate =="true"){
                 $founditem->fixed_drawdate = 1;
             }
@@ -154,6 +196,34 @@ class DonateLogController extends Controller
                 $founditem->fixed_drawdate = 0;
             }
             $founditem->live_drawlink = $request->live_drawlink;
+            //lucky 2
+            if ($request->has('lucky2_enable') && $request->lucky2_enable == 1) {
+                $founditem->reward2 = $request->reward2;
+                $founditem->drawed_id2 = $request->drawed_id2;
+                $founditem->drawed_username2 = $request->drawed_username2;
+                if($request->paid2 =="true"){
+                    $founditem->paid2 = 1;
+                }
+                else{
+                    $founditem->paid2 = 0;
+                }
+                $founditem->txid2 = $request->txid2;
+                $founditem->fee2 = $request->fee2;
+            }
+            //lucky 3
+            if ($request->has('lucky3_enable') && $request->lucky3_enable == 1) {
+                $founditem->reward3 = $request->reward3;
+                $founditem->drawed_id3 = $request->drawed_id3;
+                $founditem->drawed_username3 = $request->drawed_username3;
+                if($request->paid3 =="true"){
+                    $founditem->paid3 = 1;
+                }
+                else{
+                    $founditem->paid3 = 0;
+                }
+                $founditem->txid3 = $request->txid3;
+                $founditem->fee3 = $request->fee3;
+            }
             $founditem->save();
 
             Cache::forget('LastDonateLog');

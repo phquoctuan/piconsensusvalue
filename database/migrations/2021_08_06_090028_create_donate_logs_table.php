@@ -29,21 +29,27 @@ class CreateDonateLogsTable extends Migration
             $table->string('drawed_username', 256)->nullable();//winner
             $table->boolean('paid')->nullable();//mark transferred for winner this month
             $table->string('txid')->nullable();
+            $table->double('fee')->nullable();//reward transfer fee
             $table->string('fromwallet')->nullable();
             $table->string('towallet')->nullable();
+            $table->double('reward2')->nullable();
             $table->integer('drawed_id2')->nullable();//proposal id 2
             $table->string('drawed_username2', 256)->nullable();//winner
             $table->boolean('paid2')->nullable();//mark transferred for winner this month
             $table->string('txid2')->nullable();
+            $table->double('fee2')->nullable();//reward transfer fee
             $table->string('fromwallet2')->nullable();
             $table->string('towallet2')->nullable();
+            $table->double('reward3')->nullable();
             $table->integer('drawed_id3')->nullable();//proposal id 2
             $table->string('drawed_username3', 256)->nullable();//winner
             $table->boolean('paid3')->nullable();//mark transferred for winner this month
             $table->string('txid3')->nullable();
+            $table->double('fee3')->nullable();//reward transfer fee
             $table->string('fromwallet3')->nullable();
             $table->string('towallet3')->nullable();
             $table->dateTime('created_at')->useCurrent = true;
+            $table->dateTime('update_at')->nullable();
             $table->boolean('fixed_drawdate')->nullable();//mark to fix draw datetime
             $table->string('live_drawlink', 256)->nullable();
         });

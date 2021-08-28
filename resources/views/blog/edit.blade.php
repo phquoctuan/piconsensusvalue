@@ -33,31 +33,31 @@
             <div class="form-fields">
                 <label class="" for="name">Title:</label>
                 <div class="col-md-12 post-field">
-                    <input type="text" id="title" name="title" value="{{$post["title"]}}">
+                    <input type="text" id="title" name="title" value="{{old('title', $post["title"])}}">
                 </div>
             </div>
             <div class="form-fields">
                 <label class="" for="content">Content:</label>
                 <div class="col-md-12 post-field">
-                    <textarea id="content" name="content" rows="5">{{$post["content"]}}</textarea>
+                    <textarea id="content" name="content" rows="5">{{old('content',$post["content"])}}</textarea>
                 </div>
             </div>
             <div class="form-fields">
                 <label class="" for="fromdate">From date:</label>
                 <div class="col-md-12 post-field">
-                    <input type="text" id="fromdate" name="fromdate" class = "input-datetime" style="width: 165px;" value='{{date('Y-m-d H:i', strtotime($post["fromdate"]))}}'/>
+                    <input type="text" id="fromdate" name="fromdate" class = "input-datetime" style="width: 165px;" value='{{old('fromdate', $post["fromdate"] ? date('Y-m-d H:i', strtotime($post["fromdate"])) : '')}}'/>
                 </div>
             </div>
             <div class="form-fields">
                 <label class="" for="todate">To date:</label>
                 <div class="col-md-12 post-field">
-                    <input type="text" id="todate" name="todate" class = "input-datetime" style="width: 165px;" value='{{date('Y-m-d H:i', strtotime($post["todate"]))}}'/>
+                    <input type="text" id="todate" name="todate" class = "input-datetime" style="width: 165px;" value='{{old('todate', $post["todate"] ? date('Y-m-d H:i', strtotime($post["todate"])) : '')}}'/>
                 </div>
             </div>
             <div class="form-fields">
                 <label class="" for="status">Status:</label>
                 <div class="col-md-12 post-field">
-                    <input type="number" id="status" name="status" value="{{$post["status"]}}"></input>
+                    <input type="number" id="status" name="status" value="{{old('todate', $post["status"])}}"></input>
                 </div>
             </div>
 

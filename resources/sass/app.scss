@@ -79,6 +79,10 @@ td {
 
 /* HTML5 display-role reset for older browsers */
 
+ol, ul {
+    padding-left: 5px;
+}
+
 article,
 aside,
 details,
@@ -275,8 +279,11 @@ textarea.parsley-error {
     border-top: 1px solid #ddd;
     font-family: sans-serif;
     font-size: 105%;
-    color: #337ab7;
+    color: #171718;
     // background-color: ghostwhite;
+}
+#last-month-reward ul{
+    color: #337ab7;
 }
 
 #last-month-reward .draw-info {
@@ -505,6 +512,14 @@ textarea.parsley-error {
     margin-left: 20px;
     border: solid 1px beige;
     margin-bottom: 10px;
+}
+
+.luckyresult_item{
+    border: solid 1px darkgray;
+    padding-bottom: 3px;
+    padding-top: 3px;
+    padding: 5px;
+    margin-bottom: 5px;
 }
 
 @media (max-width: 768px) {

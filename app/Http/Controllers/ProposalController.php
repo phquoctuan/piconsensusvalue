@@ -327,7 +327,7 @@ class ProposalController extends Controller
                 'total_propose' => $LastDonateLog->total_propose,
                 'count_donate' => $LastDonateLog->count_donate,
                 'total_donate' => $LastDonateLog->total_donate,
-                'reward' => number_format(($LastDonateLog->total_donate)/10, 7),
+                'reward' => $LastDonateLog->total_donate/10,
                 'remain_donate' => $LastDonateLog->remain_donate,
                 'draw_date' => $LastDonateLog->draw_date,
                 'drawed_id' => $LastDonateLog->drawed_id,
@@ -701,7 +701,7 @@ class ProposalController extends Controller
 
             $response = response()->json([
                 'success' => 'OK',
-                'message' => 'The incompletion proposal has been completed.',
+                'message' => 'The incompletion proposal has been completed. \n Your proposal Id is: ' . $proposal->id,
                 'data' => $proposal,
             ], 200);
             return $response;
@@ -718,10 +718,11 @@ class ProposalController extends Controller
 
     //
     private function CalculateDonateAmount(float $proposalvalue,float $currentvalue) {
-        $donatePi = 0.0000001;
+        $donatePi = 0.00001;
+        $numDecimal = 5;
         if($proposalvalue === null || $currentvalue === null)
         {
-            return number_format($donatePi,7);
+            return number_format($donatePi,$numDecimal);
         }
         $diff = abs($proposalvalue - $currentvalue);
         if($diff != 0) {
@@ -745,12 +746,12 @@ class ProposalController extends Controller
                 }
             }
         }
-        if($donatePi < 0.0000001)
+        if($donatePi < 0.00001)
         {
-            $donatePi = 0.0000001;
+            $donatePi = 0.00001;
         }
         // dd($donatePi);
-        return number_format($donatePi,7);
+        return number_format($donatePi, $numDecimal);
     }
 
     public function CheckProposal(Request $request)

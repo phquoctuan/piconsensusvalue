@@ -220,7 +220,12 @@ function PaymentError(error, payment) {
             })
             .complete(function(response) {});
     } else {
-        swal("Oops!", error.toString(), 'error');
+        if(error.response.data.error_message){
+            swal("Oops!", error.toString() + "\n" + error.response.data.error_message, 'error');
+        }
+        else{
+            swal("Oops!", error.toString(), 'error');
+        }
     }
 }
 
@@ -233,10 +238,10 @@ const callbacks = {
 
 // Authenticate the user, and get permission to request payments from them:
 // const authResult = window.Pi.authenticate(scopes, onIncompletePaymentFound);
+Pi.init({ version: "2.0"})
 
 $(document).ready(function() {
-
-    Pi.init({ version: "2.0", sandbox: true })
+    // Pi.init({ version: "2.0", sandbox: true })
         // const authResult = await window.Pi.authenticate(scopes, onIncompletePaymentFound);
 
     window.Pi.authenticate(scopes, onIncompletePaymentFound).then(function(auth) {
@@ -249,9 +254,14 @@ $(document).ready(function() {
     }).catch(function(error) {
         $('#ready_state').addClass('login_error')
         $('#ready_state').html("Authentication error !");
-        // console.log('error');
+        console.log('Authentication error');
     });
 
+
+    // if(uId != null && uId != ""){
+    //     $('#ready_state').removeClass('login_error');
+    //     $('#ready_state').html("You're ready to make proposal: " + auth.user.username);
+    // }
 
     // propose pi value
 
@@ -301,61 +311,5 @@ $(document).ready(function() {
         ld.stop();
         ld.remove();
     });
-
-
-
-    // propose pi value
-    /*
-        var btnPropose = $('#btn-propose');
-        btnPropose.click(function(e) {
-            e.preventDefault();
-            // var loading = Ladda.create(btnPropose);
-            var ld = Ladda.create(document.querySelector('#btn-propose'));
-            ld.start();
-            $.ajax({
-                    cache: false,
-                    url: "/proposal/propose",
-                    type: "POST",
-                    data: {
-                        "propose": $('#proposal-value').val(),
-                        "current": $('#current-pivalue').text(),
-                        "donate": $('#donate_value').text(),
-                        "publickey": uId,
-                    },
-                    dataType: "json",
-                    // processData: false,
-                })
-                .done(function(response) { //success
-                    if (response.success) {
-                        swal({
-                            title: "Accepted !",
-                            text: response.message,
-                            timer: 10000,
-                            showConfirmButton: true,
-                            type: "success"
-                        });
-                    } else {
-                        swal("Oops!", response.errors.toString(), 'error');
-                    }
-                })
-                .fail(function(response) { //error
-                    if (response.message) {
-                        swal("Fail!", response.message, 'error');
-                    } else
-                    if (response.responseJSON) {
-                        swal("Fail!", response.responseJSON.message, 'error');
-                    } else {
-                        swal("Fail!", "unknow error, please try again.", 'error');
-                    }
-                    ld.stop();
-                    ld.remove();
-                })
-                .complete(function(response) {
-                    ld.stop();
-                    ld.remove();
-                });
-
-        });
-    */
 
 });

@@ -43,7 +43,7 @@
                     <p><strong>2</strong>. Pioneer can suggest any desired price of Pi but must be greater or equal zero.</p>
                     <p><strong>3</strong>. Each time propose value of Pi/USD, pioneer agree to donate an amount of Pi equal to 10% of the proposed price difference from the current price (absolute value).</p>
                     <p><strong>4</strong>. If you propose a value equal to current value (Pi/USD). And if the current value is less then 10 then donate amount is 0.1π, else if current value is equal or greater then 10 then the donate amount is: 1/(Current value)π.</p>
-                    <p><strong>5</strong>. The smallest donate amount is 0.0000001π.</p>
+                    <p><strong>5</strong>. The smallest donate amount is 0.00001π.</p>
                     <div style="background-color: lavender; padding: 5px; margin: 10px;">
                         <em>Example:</em>
                         <p>Current value Pi/USD = 10 (1π = 10$).</p>

@@ -38,7 +38,7 @@
                         </div>
                         <div class= "donate">
                             <label id="donate_label" class="">To propose you will have to donate:</label>
-                            <label id="donate_value" class="">{{number_format(0.0000001,7)}}</label>
+                            <label id="donate_value" class="">{{number_format(0.0001, 4)}}</label>
                             <label id="donate_sign" class="">π</label>
                             <span id= "donate_hint" class="fa fa-question-circle" data-toggle="tooltip" data-original-title="Donate amount = abs(propose - current) x 10% in dollar, and will be convert to Pi in current value." ></span>
                         </div>
@@ -245,10 +245,10 @@
 
     <script>
         function CalculateDonateAmount(proposalvalue, currentvalue) {
-            var donatePi = 0.0000001;
+            var donatePi = 0.00001;
             if(proposalvalue == null || proposalvalue == "" || currentvalue == null)
             {
-                return donatePi.toFixed(7);
+                return donatePi;
             }
             var diff = Math.abs(proposalvalue - currentvalue);
             if(diff != 0) {
@@ -272,12 +272,12 @@
                     }
                 }
             }
-            if(donatePi < 0.0000001)
+            if(donatePi < 0.00001)
             {
-                donatePi = 0.0000001;
+                donatePi = 0.00001;
             }
-
-            return donatePi.toFixed(7);
+            retval = donatePi.toFixed(5);
+            return retval;
         }
         // $(function() {
         //     $.ajaxSetup({
@@ -300,20 +300,20 @@
                     dataType:'json',
                     success:function(response){
                         if(response.current_value || response.current_value == 0){
-                            $('#current-pivalue').html(response.current_value.toFixed(7));
+                            $('#current-pivalue').html(response.current_value.toFixed(5));
                             $('#thismonth_count_donate').html(response.thismonth_count_donate);
-                            $('#thismonth_total_donate').html(response.thismonth_total_donate);
+                            $('#thismonth_total_donate').html(response.thismonth_total_donate.toFixed(5));
                             $('#thismonth_id_to').html(response.thismonth_id_to);
-                            $('#thismonth_reward').html(response.thismonth_reward.toFixed(7));
+                            $('#thismonth_reward').html(response.thismonth_reward.toFixed(5));
                             $('#total_propose').html(response.total_propose);
-                            $('#sum_donate').html(response.sum_donate);
+                            $('#sum_donate').html(response.sum_donate.toFixed(5));
                             $('#donate_value').html(CalculateDonateAmount($('#proposal-value').val(), response.current_value));
                         }
                     },error:function(err){
-
+                        console.log("Error get current value");
                     }
                 })
-            }, 1000);
+            }, 2000);
 
             $('#proposal-value').change(function (e) {
                 $('#donate_value').html(CalculateDonateAmount($('#proposal-value').val(), $('#current-pivalue').text()));

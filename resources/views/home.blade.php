@@ -38,7 +38,7 @@
                         </div>
                         <div class= "donate">
                             <label id="donate_label" class="">To propose you will have to donate:</label>
-                            <label id="donate_value" class="">{{number_format(0.0001, 4)}}</label>
+                            <label id="donate_value" class="">{{number_format(0.00001, 4)}}</label>
                             <label id="donate_sign" class="">π</label>
                             <span id= "donate_hint" class="fa fa-question-circle" data-toggle="tooltip" data-original-title="Donate amount = abs(propose - current) x 10% in dollar, and will be convert to Pi in current value." ></span>
                         </div>
@@ -90,7 +90,7 @@
                                     <div class="key">Total donation:</div>
                                 </div>
                                 <div class="col-md-6 float-right">
-                                    <div id="thismonth_total_donate" class="value">{{$this_month_donate["total_donate"]}} π</div>
+                                    <div id="thismonth_total_donate" class="value">{{number_format($this_month_donate["total_donate"], 5)}} π</div>
                                 </div>
                             </div>
                         </div>
@@ -116,7 +116,7 @@
                                     <div class="key">Award:</div>
                                 </div>
                                 <div class="col-md-6 float-right">
-                                    <div id="thismonth_reward" class="value">{{$this_month_donate["reward"]}} π</div>
+                                    <div id="thismonth_reward" class="value">{{number_format($this_month_donate["reward"],5)}} π</div>
                                 </div>
                             </div>
                             <div class="row-item">
@@ -228,7 +228,7 @@
                                 Total proposal: <strong id="total_propose">{{$current_pi_value['total_propose']}}</strong>
                             </div>
                             <div class="info-item">
-                                Total donation: <strong id="sum_donate">{{$current_pi_value['sum_donate']}} π</strong>
+                                Total donation: <strong id="sum_donate">{{number_format($current_pi_value['sum_donate'],5)}} π</strong>
                             </div>
                         </div>
                     </div>
@@ -302,18 +302,18 @@
                         if(response.current_value || response.current_value == 0){
                             $('#current-pivalue').html(response.current_value.toFixed(5));
                             $('#thismonth_count_donate').html(response.thismonth_count_donate);
-                            $('#thismonth_total_donate').html(response.thismonth_total_donate.toFixed(5));
+                            $('#thismonth_total_donate').html(response.thismonth_total_donate.toFixed(5) + " π");
                             $('#thismonth_id_to').html(response.thismonth_id_to);
-                            $('#thismonth_reward').html(response.thismonth_reward.toFixed(5));
+                            $('#thismonth_reward').html(response.thismonth_reward.toFixed(5) + " π");
                             $('#total_propose').html(response.total_propose);
-                            $('#sum_donate').html(response.sum_donate.toFixed(5));
+                            $('#sum_donate').html(response.sum_donate.toFixed(5) + " π");
                             $('#donate_value').html(CalculateDonateAmount($('#proposal-value').val(), response.current_value));
                         }
                     },error:function(err){
                         console.log("Error get current value");
                     }
                 })
-            }, 2000);
+            }, 1000);
 
             $('#proposal-value').change(function (e) {
                 $('#donate_value').html(CalculateDonateAmount($('#proposal-value').val(), $('#current-pivalue').text()));

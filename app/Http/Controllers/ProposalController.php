@@ -701,7 +701,7 @@ class ProposalController extends Controller
 
             $response = response()->json([
                 'success' => 'OK',
-                'message' => 'The incompletion proposal has been completed. \n Your proposal Id is: ' . $proposal->id,
+                'message' => 'The incompletion proposal has been completed. Your proposal Id is: ' . $proposal->id,
                 'data' => $proposal,
             ], 200);
             return $response;

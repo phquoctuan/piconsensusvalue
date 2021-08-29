@@ -95,7 +95,7 @@ class HomeController extends Controller
 
 
         // header("Set-Cookie: cross-site-cookie=whatever; SameSite=None; Secure");
-        return view('home')->with('current_value', number_format($pival,7))
+        return view('home')->with('current_value', number_format($pival,5))
                             ->with('current_pi_value', $CurrentPiValue)
                             ->with('this_month_donate', $ThisMonthDonate)
                             ->with('last_month_donate', $LastMonthDonate)

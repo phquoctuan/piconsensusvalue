@@ -185,8 +185,13 @@ class DonateLogController extends Controller
             }
             $founditem->txid = $request->txid;
             //draw_date
+            if($request->draw_date == ""){
+                $founditem->draw_date = null;
+            }
+            else{
             $temdate = DateTime::createFromFormat('Y-m-d H:i', $request->draw_date);
             $founditem->draw_date = $temdate;
+            }
             $founditem->reward = $request->reward;
             $founditem->fee = $request->fee;
             if($request->fixed_drawdate =="true"){

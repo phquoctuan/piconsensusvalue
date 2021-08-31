@@ -93,7 +93,6 @@ class HomeController extends Controller
         }
         //check has post
 
-
         // header("Set-Cookie: cross-site-cookie=whatever; SameSite=None; Secure");
         return view('home')->with('current_value', number_format($pival,5))
                             ->with('current_pi_value', $CurrentPiValue)

@@ -76,7 +76,7 @@
                                 <div class="key">Draw date(GMT):</div>
                             </div>
                             <div class="col-md-6 col-sm-6 float-right">
-                                <input type="text" id="draw_date" class="input_datetime" style="width: 165px;" value='{{date('Y-m-d H:i', strtotime($donatelog["draw_date"]))}}'/>
+                                <input type="text" id="draw_date" class="input_datetime" style="width: 165px;" value='{{$donatelog["draw_date"] != null ? date('Y-m-d H:i', strtotime($donatelog["draw_date"])) : ''}}'/>
                             </div>
                         </div>
                         <div class="col-md-6 col-sm-12 row-block" >

@@ -78,7 +78,7 @@ const onIncompletePaymentFound = (payment) => {
 };
 
 
-function ReadyForServerApproval(paymentId) {
+const ReadyForServerApproval = (paymentId) => {
     $.ajax({
             cache: false,
             url: "api/proposal/serverapproval",
@@ -105,7 +105,7 @@ function ReadyForServerApproval(paymentId) {
         .complete(function(response) {});
 }
 
-function ReadyForServerCompletion(paymentId, txid) {
+const ReadyForServerCompletion = (paymentId, txid) => {
     console.log('Call ReadyForServerCompletion');
     $.ajax({
             cache: false,
@@ -144,7 +144,7 @@ function ReadyForServerCompletion(paymentId, txid) {
         .complete(function(response) {});
 }
 
-function PaymentCancel(paymentId) {
+const PaymentCancel = (paymentId) => {
     console.log('Call PaymentCancel');
     $.ajax({
             cache: false,
@@ -182,7 +182,7 @@ function PaymentCancel(paymentId) {
         .complete(function(response) {});
 }
 
-function PaymentError(error, payment) {
+const PaymentError = (error, payment) => {
     if (payment) {
         swal("Oops!", errors.toString(), 'error');
         $.ajax({
@@ -224,7 +224,7 @@ function PaymentError(error, payment) {
             swal("Oops!", error.toString() + "\n" + error.response.data.error_message, 'error');
         }
         else{
-            swal("Oops!", error.toString(), 'error');
+            swal("Oops!", error.toString() + "\n" + "Please reload the app.", 'error');
         }
     }
 }
@@ -313,3 +313,5 @@ $(document).ready(function() {
     });
 
 });
+
+

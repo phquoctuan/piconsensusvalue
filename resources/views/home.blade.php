@@ -38,7 +38,7 @@
                         </div>
                         <div class= "donate">
                             <label id="donate_label" class="">To propose you will have to donate:</label>
-                            <label id="donate_value" class="">{{number_format(0.00001, 4)}}</label>
+                            <label id="donate_value" class="">{{number_format(0.00001, 5)}}</label>
                             <label id="donate_sign" class="">π</label>
                             <span id= "donate_hint" class="fa fa-question-circle" data-toggle="tooltip" data-original-title="Donate amount = abs(propose - current) x 10% in dollar, and will be convert to Pi in current value." ></span>
                         </div>
@@ -126,7 +126,9 @@
                                     {{-- <div class="fa fa-question-circle" data-toggle="tooltip" data-placement="top" data-original-title="intended" ></div> --}}
                                 </div>
                                 <div class="col-md-6 float-right">
+                                    @if($this_month_donate["draw_date"] != null)
                                     <div class="value">{{date('d-M-Y', strtotime($this_month_donate["draw_date"]))}}</div>
+                                    @endif
                                 </div>
                             </div>
 

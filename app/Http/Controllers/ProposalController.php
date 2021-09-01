@@ -314,10 +314,8 @@ class ProposalController extends Controller
             $LastDonateLog->id_to = $thismonth_proposals->max_id;
             $LastDonateLog->total_propose = $thismonth_proposals->sum_propose;
             $LastDonateLog->total_donate = $thismonth_proposals->sum_donate;
-            // $LastDonateLog->save();
+            $LastDonateLog->save();
 
-            // echo(gettype($LastDonateLog->from_date));
-            // echo ($LastDonateLog->from_date);
             //Cache data
             $cachedata = array(
                 'from_date' => $LastDonateLog->from_date,//->format('d/m/Y')
@@ -998,7 +996,7 @@ function CacheLastDonateLogSameMonth(Proposal  $proposal) {
         $newdata = array(
             'from_date' => $LastDonateLog["from_date"],
             'to_date' => $LastDonateLog["to_date"],
-            'id_from' => $LastDonateLog["id_from"],
+            'id_from' => ($LastDonateLog["id_from"] != null) ? $LastDonateLog["id_from"] : $proposal->id,
             'id_to' => ($proposal->id > $LastDonateLog["id_to"]) ? $proposal->id : $LastDonateLog["id_to"],
             'total_propose' => $LastDonateLog["total_propose"] + $proposal->propose,
             'count_donate' => $LastDonateLog["count_donate"] + 1,

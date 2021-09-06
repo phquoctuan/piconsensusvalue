@@ -20,6 +20,7 @@ use App\Settings;
 use Illuminate\Support\Facades\DB;
 use GuzzleHttp;
 use \Datetime;
+use phpDocumentor\Reflection\Types\Null_;
 use PhpParser\Node\Expr\Cast\Double;
 
 class ProposalController extends Controller
@@ -352,8 +353,8 @@ class ProposalController extends Controller
     */
     public function ApprovalPayment(Request $request){
         //validate data
-        if ((!$request->propose) || (!$request->donate) || (!$request->paymentid)) {
-            if((!$request->propose)){
+        if (($request->propose == null) || (!$request->donate) || (!$request->paymentid)) {
+            if(($request->propose == null)){
                 $message = ['message' => 'Please enter proposal value !'
                             , "errors" => ["required fields: propose, donate"]];
             }
@@ -777,8 +778,8 @@ class ProposalController extends Controller
         }
 
         //validate data
-        if ((!$request->propose) || (!$request->donate) || (!$request->username)) {
-            if((!$request->propose)){
+        if (($request->propose == null) || (!$request->donate) || (!$request->username)) {
+            if(($request->propose == null)){
                 $message = ['success' => 'NG',
                             'message' => 'Please enter proposal value !',
                             'errors' => ["required fields: propose, donate, username"]];

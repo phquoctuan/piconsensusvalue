@@ -314,7 +314,7 @@
                         console.log("Error get current value");
                     }
                 })
-            }, 3000);
+            }, 1000);
 
             $('#proposal-value').change(function (e) {
                 $('#donate_value').html(CalculateDonateAmount($('#proposal-value').val(), $('#current-pivalue').text()));

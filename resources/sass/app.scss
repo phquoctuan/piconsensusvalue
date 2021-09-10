@@ -175,7 +175,7 @@ textarea.parsley-error {
 }
 
 #pi-value {
-    font-size: 40;
+    font-size: 36;
     color: white;
 }
 
@@ -192,7 +192,7 @@ textarea.parsley-error {
 
 #current-pivalue {
     display: inline-block;
-    font-size: 200%;
+    font-size: 150%;
     color: gold;
 }
 
@@ -523,7 +523,7 @@ textarea.parsley-error {
 }
 .drop-lang{
     padding: 12px;
-    display: inline-block;
+    display: block;
     float: right;
 }
 .drop-lang a{
@@ -548,7 +548,7 @@ textarea.parsley-error {
         width: 100%;
     }
     #current-pivalue {
-        font-size: 110%;
+        font-size: 105%;
     }
     #donate_label {
         font-size: 14px;

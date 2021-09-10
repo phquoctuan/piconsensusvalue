@@ -17,8 +17,12 @@ class LangController extends Controller
     {
         if (in_array($lang, $this->langActive)) {
             $request->session()->put(['lang' => $lang]);
-            // return redirect()->back();
-            return back()->withInput();
+            return redirect()->back();
+            // return url()->previous();
+            //return back()->withInput();
+            //return redirect()->getUrlGenerator()->previous()
+            //redirect()->back()->getTargetUrl()
+            //return redirect()->route('profile', [$user]);
         }
     }
 

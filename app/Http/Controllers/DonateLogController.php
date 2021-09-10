@@ -115,7 +115,7 @@ class DonateLogController extends Controller
         if (!$request->proposal_id) {
             $message = [
                         "success" => 'NG',
-                        "message" => 'Please enter proposal Id.',
+                        "message" => __('Please enter proposal Id.'),
                         "errors" => ["required fields: proposal_id"]];
             $response = response()->json($message, 200);
             return $response;
@@ -133,7 +133,7 @@ class DonateLogController extends Controller
         else{
             $message = [
                 "success" => 'NG',
-                'message' => 'Username with this proposal id not found.'
+                'message' => __('Username with this proposal id not found.')
                 , "errors" => ["not found"]];
             $response = response()->json($message, 200);
             return $response;
@@ -147,7 +147,7 @@ class DonateLogController extends Controller
         if (!$request->pwd) {
             $message = [
                         "success" => 'NG',
-                        "message" => 'Please enter password to save data.',
+                        "message" => __('Please enter password to save data.'),
                         "errors" => ["required fields: password"]];
             $response = response()->json($message, 200);
             return $response;
@@ -157,7 +157,7 @@ class DonateLogController extends Controller
             if($curpass != $request->pwd){
                 $message = [
                     "success" => 'NG',
-                    "message" => 'Password not match.',
+                    "message" => __('Password not match.'),
                     "errors" => ["required fields: password"]];
                 $response = response()->json($message, 200);
                 return $response;
@@ -167,7 +167,7 @@ class DonateLogController extends Controller
         if (!$request->donatelog_id) {
             $message = [
                         "success" => 'NG',
-                        "message" => 'Invalid donate log id.',
+                        "message" => __('Invalid donate log id.'),
                         "errors" => ["required fields: donatelog_id"]];
             $response = response()->json($message, 200);
             return $response;
@@ -236,7 +236,7 @@ class DonateLogController extends Controller
 
             $message = [
                 "success" => 'OK',
-                "message" => 'Data has been saved successfully.',
+                "message" => __('Data has been saved successfully.'),
                 "data" =>  ["username" => $founditem->username]
             ];
             $response = response()->json($message, 200);
@@ -245,7 +245,7 @@ class DonateLogController extends Controller
         else{
             $message = [
                 "success" => 'NG',
-                'message' => 'Data not found by this Id.'
+                'message' => __('Data not found by this Id.')
                 , "errors" => ["not found"]];
             $response = response()->json($message, 200);
             return $response;

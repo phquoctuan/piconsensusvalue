@@ -1,31 +1,41 @@
-<nav class="navbar navbar-default">
-    <div class="container-fluid">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="/"><span style="font-family: serif; font-size: 35;">π</span> value</a>
-        </div>
+@extends('shared.language')
 
-        <!-- Navbar Right -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="/about">About</a></li>
-                {{-- <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Account <span class="caret"></span></a>
-                    <ul class="dropdown-menu" role="menu">
-                        <li class=''><a href="/users/register" class="disabled-link">Register</a></li>
-                        <li><a href="/users/login" >Login</a></li>
-                    </ul>
-                </li> --}}
-            </ul>
-        </div>
-    </div>
-</nav>
+@section('drop-lang')
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+        <img src="{{ asset('images/' . App::getLocale() . '.png') }}" alt="{{ __('VI')}}" style="border: solid 1px lightgray;">
+        <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu" role="menu">
+        @if (!App::isLocale('vi'))
+            <li><a href="{{ route('lang',['lang' => 'vi']) }}">
+                <img src="{{ asset('images/vi.png') }}" alt="{{ __('VI')}}">
+                {{ __('VI')}}
+                </a>
+            </li>
+        @endif
+        @if (!App::isLocale('en'))
+            <li><a href="{{ route('lang',['lang' => 'en' ]) }}">
+                <img src="{{ asset('images/en.png') }}" alt="{{ __('EN')}}">
+                {{ __('EN')}}
+                </a>
+            </li>
+        @endif
+        @if (!App::isLocale('jp'))
+        <li><a href="{{ route('lang',['lang' => 'jp' ]) }}">
+            <img src="{{ asset('images/jp.png') }}" alt="{{ __('JP')}}">
+            {{ __('JP')}}
+            </a>
+        </li>
+        @endif
+        @if (!App::isLocale('cn'))
+        <li><a href="{{ route('lang',['lang' => 'cn' ]) }}">
+            <img src="{{ asset('images/cn.png') }}" alt="{{ __('CN')}}">
+            {{ __('CN')}}
+            </a>
+        </li>
+        @endif
+    </ul>
+@endsection
 
 {{-- bootstrap 4 --}}
 {{-- <nav class="navbar navbar-expand-md bg-dark navbar-dark">

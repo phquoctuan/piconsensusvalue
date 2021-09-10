@@ -8,7 +8,7 @@
         <div class="row">
             <div class="col-md-10 col-md-offset-1">
             <div id="currentvalue_panel" class="">
-                <div class="text-center" id="pi-value_label">Current <span class="pi-sign">π</span> Value</div>
+                <div class="text-center" id="pi-value_label">{{__("Current")}} <span class="pi-sign">π</span> {{__("Value")}}</div>
                 <div class="text-center" id="pi-value">
                     1π =
                     <div class="current-pivalue" id="current-pivalue">{{$current_value}}</div>
@@ -23,30 +23,30 @@
             <div class="col-md-10 col-md-offset-1">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <div class="text-center">Your Proposal</div>
+                        <div class="text-center">{{__("Your Proposal")}}</div>
                     </div>
                     <div class="panel-body">
                         <div class="text-center" id="pi-proposal">
-                            <label id="ready_state" class="login_error">Open this page in Pi Browser to enable proposal</label>
+                            <label id="ready_state" class="login_error">{{__("Open in Pi Browser Announcement")}}</label>
                         </div>
                         <div class="text-center" id="pi-proposal">
                             <div class="form-group">
                                 <label id="onepi" class="control-label col-xs-2 col-md-2 col-md-offset-1" >1π =</label>
-                                <input type="number" id="proposal-value" min="0" step="any" class="col-xs-8 col-md-7" placeholder="type here..." />
+                                <input type="number" id="proposal-value" min="0" step="any" class="col-xs-8 col-md-7" placeholder="{{__("type here...")}}" />
                                 <label id="dollar-sign" class="control-label col-xs-2 col-md-2">$</label>
                             </div>
                         </div>
                         <div class= "donate">
-                            <label id="donate_label" class="">To propose you will have to donate:</label>
+                            <label id="donate_label" class="">{{__("To propose you will have to donate:")}}</label>
                             <label id="donate_value" class="">{{number_format(0.00001, 5)}}</label>
                             <label id="donate_sign" class="">π</label>
-                            <span id= "donate_hint" class="fa fa-question-circle" data-toggle="tooltip" data-original-title="Donate amount = abs(propose - current) x 10% in dollar, and will be convert to Pi in current value." ></span>
+                            <span id= "donate_hint" class="fa fa-question-circle" data-toggle="tooltip" data-original-title="{{__("Donate amount = abs(...")}}" ></span>
                         </div>
                         <div class="col-md-6 col-md-offset-3 text-center">
                             <button type="submit" id ="btn-propose" class="btn btn-primary ladda-button" data-style="expand-right"
                                 data-size="m" data-color="green" action="{{ url('proposal/propose') }}">
                                 {{-- <i class="fa fa-btn fa-sign-in"></i>  --}}
-                                Propose
+                                {{ __('Propose') }}
                             </button>
                         </div>
                     </div>
@@ -57,13 +57,13 @@
             <div class="col-md-10 col-md-offset-1">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <div class="text-center">This month</div>
+                        <div class="text-center">{{ __('This month') }}</div>
                     </div>
                     <div class="panel-body">
                         <div class="col-md-6" >
                             <div class="row-item">
                                 <div class="col-md-6 float-left">
-                                    <div class="key">From date:</div>
+                                    <div class="key">{{ __('From date:') }}</div>
                                 </div>
                                 <div class="col-md-6 float-right">
                                     <div class="value">{{date('d-M-Y', strtotime($this_month_donate["from_date"]))}}</div>
@@ -71,7 +71,7 @@
                             </div>
                             <div class="row-item">
                                 <div class="col-md-6 float-left">
-                                    <div class="key">To date:</div>
+                                    <div class="key">{{ __('To date:') }}</div>
                                 </div>
                                 <div class="col-md-6 float-right">
                                     <div class="value">{{date('d-M-Y', strtotime($this_month_donate["to_date"]))}}</div>
@@ -79,7 +79,7 @@
                             </div>
                             <div class="row-item">
                                 <div class="col-md-6 float-left">
-                                    <div class="key">Proposals:</div>
+                                    <div class="key">{{ __('Proposals:')}}</div>
                                 </div>
                                 <div class="col-md-6 float-right">
                                     <div id="thismonth_count_donate" class="value">{{$this_month_donate["count_donate"]}}</div>
@@ -87,7 +87,7 @@
                             </div>
                             <div class="row-item">
                                 <div class="col-md-6 float-left">
-                                    <div class="key">Total donation:</div>
+                                    <div class="key">{{ __('Total donation:')}}</div>
                                 </div>
                                 <div class="col-md-6 float-right">
                                     <div id="thismonth_total_donate" class="value">{{number_format($this_month_donate["total_donate"], 5)}} π</div>
@@ -97,7 +97,7 @@
                         <div class="col-md-6">
                             <div class="row-item">
                                 <div class="col-md-6 float-left">
-                                    <div class="key">Proposal Id from:</div>
+                                    <div class="key">{{ __('Proposal Id from:')}}</div>
                                 </div>
                                 <div class="col-md-6 float-right">
                                     <div class="value">{{$this_month_donate["id_from"]}}</div>
@@ -105,7 +105,7 @@
                             </div>
                             <div class="row-item">
                                 <div class="col-md-6 float-left">
-                                    <div class="key">Proposal Id to:</div>
+                                    <div class="key">{{ __('Proposal Id to:')}}</div>
                                 </div>
                                 <div class="col-md-6 float-right">
                                     <div id="thismonth_id_to" class="value">{{$this_month_donate["id_to"]}}</div>
@@ -113,7 +113,7 @@
                             </div>
                             <div class="row-item">
                                 <div class="col-md-6 float-left">
-                                    <div class="key">Award:</div>
+                                    <div class="key">{{ __('Award')}}:</div>
                                 </div>
                                 <div class="col-md-6 float-right">
                                     <div id="thismonth_reward" class="value">{{number_format($this_month_donate["reward"],5)}} π</div>
@@ -122,7 +122,7 @@
                             <div class="row-item">
 
                                 <div class="col-md-6 float-left">
-                                    <div class="key">Draw date*:</div>
+                                    <div class="key">{{ __('Draw date*:')}}</div>
                                     {{-- <div class="fa fa-question-circle" data-toggle="tooltip" data-placement="top" data-original-title="intended" ></div> --}}
                                 </div>
                                 <div class="col-md-6 float-right">
@@ -135,18 +135,17 @@
                         </div>
                         @if($this_month_donate["fixed_drawdate"] == 1 && $this_month_donate["drawed_id"] == NULL)
                             <div class="this-month-em">
-                                (*)
-                                The draw will take place at <span>{{date('Y-M-d H:i', strtotime($this_month_donate["draw_date"]))}}</span> - GMT
+                                (*) {{ __('The draw will take place at')}} <span>{{date('Y-M-d H:i', strtotime($this_month_donate["draw_date"]))}}</span> - GMT
                                 <br>
-                                Link to join:
+                                {{ __('Link to join:')}}
                                 @if($this_month_donate["live_drawlink"] == NULL || $this_month_donate["live_drawlink"] == "")
-                                    we will announce as soon as possible.
+                                {{ __('we will announce as soon as possible.')}}
                                 @else
                                     <a href="{{$this_month_donate["live_drawlink"]}}" target="_blank">{{$this_month_donate["live_drawlink"]}}</a>
                                 @endif
                             </div>
                         @else
-                            <em class="this-month-em">(*): Draw date is intended date. We will announce the specific date and time along with zoom link for everyone involved. </em>
+                            <em class="this-month-em">{{ __('(*): Draw date is intended date...')}}</em>
                         @endif
 
                         @if($this_month_donate["fixed_drawdate"] == 1 && $this_month_donate["drawed_id"] == NULL)
@@ -157,56 +156,56 @@
                         <br>
                         <div id="last-month-reward">
                             @if($last_month_donate["count_donate"] == 0 )
-                                <li>Last month reward: <strong>no data</strong></li>
+                                <li>{{ __('Last month reward:')}} <strong>{{ __('no data')}}</strong></li>
                             @else
                                 @if($last_month_donate["reward2"] > 0 || $last_month_donate["reward3"] > 0)
                                     <ul>
-                                        <li>Last month reward: <strong>{{$last_month_donate["reward"]}} π</strong></li>
+                                        <li>{{ __('Last month reward:')}} <strong>{{$last_month_donate["reward"]}} π</strong></li>
                                         @if ($last_month_donate["drawed_username"] != null )
-                                            <li>Lucky person 1: <strong>{{$last_month_donate["drawed_username"]}}</strong> with proposal id : <strong>{{$last_month_donate["drawed_id"]}}</strong></li>
+                                            <li>{{ __('Lucky person 1:')}} <strong>{{$last_month_donate["drawed_username"]}}</strong> {{ __('with proposal id :')}} <strong>{{$last_month_donate["drawed_id"]}}</strong></li>
                                             @if($last_month_donate["drawed_id2"] != NULL && $last_month_donate["drawed_username2"] != null && $last_month_donate["reward2"] > 0)
-                                                <li>Lucky person 2: <strong>{{$last_month_donate["drawed_username2"]}}</strong> with proposal id : <strong>{{$last_month_donate["drawed_id2"]}}</strong></li>
+                                                <li>{{ __('Lucky person 2:')}} <strong>{{$last_month_donate["drawed_username2"]}}</strong> {{ __('with proposal id :')}} <strong>{{$last_month_donate["drawed_id2"]}}</strong></li>
                                             @endif
                                             @if($last_month_donate["drawed_id3"] != NULL && $last_month_donate["drawed_username3"] != null && $last_month_donate["reward3"] > 0)
-                                                <li>Lucky person 3: <strong>{{$last_month_donate["drawed_username3"]}}</strong> with proposal id : <strong>{{$last_month_donate["drawed_id3"]}}</strong></li>
+                                                <li>{{ __('Lucky person 3:')}} <strong>{{$last_month_donate["drawed_username3"]}}</strong> {{ __('with proposal id :')}} <strong>{{$last_month_donate["drawed_id3"]}}</strong></li>
                                             @endif
 
                                         @else
-                                            <li>Lucky person is: no draw yet.</li>
+                                            <li>{{ __('Lucky person is: no draw yet.')}}</li>
                                             @if($last_month_donate["fixed_drawdate"] == 1 && $last_month_donate["drawed_id"] == NULL)
                                                 <div class="draw-info">
-                                                    The draw will take place at <span>{{date('Y-M-d H:i', strtotime($last_month_donate["draw_date"]))}}</span> - GMT
+                                                    {{__('The draw will take place at')}} <span>{{date('Y-M-d H:i', strtotime($last_month_donate["draw_date"]))}}</span> - GMT
                                                     <br>
-                                                    Link to join: <a href="{{$last_month_donate["live_drawlink"]}}" target="_blank">{{$last_month_donate["live_drawlink"]}}</a>
+                                                    {{ __('Link to join:')}} <a href="{{$last_month_donate["live_drawlink"]}}" target="_blank">{{$last_month_donate["live_drawlink"]}}</a>
                                                 </div>
                                             @endif
                                         @endif
                                         @if ($last_month_donate["paid"] == 1 )
-                                            <li>The reward has been transferred.</li>
+                                            <li>{{ __('The reward has been transferred.')}}</li>
                                             {{-- <li>Txid: {{$last_month_donate["txid"]}}.</li> --}}
                                         @endif
                                     </ul>
                                 @else
                                     <ul>
-                                        <li>Last month reward: <strong>{{$last_month_donate["reward"]}} π</strong></li>
+                                        <li>{{ __('Last month reward:')}} <strong>{{$last_month_donate["reward"]}} π</strong></li>
                                         @if ($last_month_donate["drawed_username"] != null )
-                                            <li>Lucky person is: <strong>{{$last_month_donate["drawed_username"]}}</strong> with proposal id : <strong>{{$last_month_donate["drawed_id"]}}</strong></li>
+                                            <li>{{ __('Lucky person is:')}}  <strong>{{$last_month_donate["drawed_username"]}}</strong> {{ __('with proposal id :')}} <strong>{{$last_month_donate["drawed_id"]}}</strong></li>
                                         @else
-                                            <li>Lucky person is: no draw yet.</li>
+                                            <li>{{ __('Lucky person is: no draw yet.')}}</li>
                                             @if($last_month_donate["fixed_drawdate"] == 1 && $last_month_donate["drawed_id"] == NULL)
                                                 <div class="draw-info">
-                                                    The draw will take place at <span>{{date('Y-M-d H:i', strtotime($last_month_donate["draw_date"]))}}</span> - GMT
+                                                    {{__('The draw will take place at')}} <span>{{date('Y-M-d H:i', strtotime($last_month_donate["draw_date"]))}}</span> - GMT
                                                     <br>
-                                                    Link to join: <a href="{{$last_month_donate["live_drawlink"]}}" target="_blank">{{$last_month_donate["live_drawlink"]}}</a>
+                                                    {{ __('Link to join:')}} <a href="{{$last_month_donate["live_drawlink"]}}" target="_blank">{{$last_month_donate["live_drawlink"]}}</a>
                                                 </div>
                                             @endif
                                         @endif
                                         @if ($last_month_donate["paid"] == 1 )
-                                            <li>The reward has been transferred.</li>
+                                            <li>{{ __('The reward has been transferred.')}}</li>
                                         @endif
                                     </ul>
                                 @endif
-                                Please DM on telegram to @phquoctuan to claim your reward.
+                                {{ __('Please DM on telegram')}}
                             @endif
                             @if($last_month_donate["count_donate"] > 0 && $last_month_donate["fixed_drawdate"] == 1 && $last_month_donate["drawed_id"] == NULL && $last_month_donate["drawed_username"] == NULL)
                                 <div class="countdown-item">
@@ -222,15 +221,15 @@
             <div class="col-md-10 col-md-offset-1">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <div class="text-center">Proposal history</div>
+                        <div class="text-center">{{ __('Proposal history')}}</div>
                     </div>
                     <div class="total-proposal-info">
                         <div class="info-item-wrap">
                             <div class="info-item">
-                                Total proposal: <strong id="total_propose">{{$current_pi_value['total_propose']}}</strong>
+                                {{ __('Total proposal:')}} <strong id="total_propose">{{$current_pi_value['total_propose']}}</strong>
                             </div>
                             <div class="info-item">
-                                Total donation: <strong id="sum_donate">{{number_format($current_pi_value['sum_donate'],5)}} π</strong>
+                                {{ __('Total donation:')}} <strong id="sum_donate">{{number_format($current_pi_value['sum_donate'],5)}} π</strong>
                             </div>
                         </div>
                     </div>
@@ -241,7 +240,7 @@
             </div>
         </div>
         <div class="">
-            <a class="pi-button" href="{{url('/drawhistory')}}">Lucky Draw history</a>
+            <a class="pi-button" href="{{url('/drawhistory')}}">{{ __('Lucky draw history')}}</a>
         </div>
     </div>
 
@@ -315,7 +314,7 @@
                         console.log("Error get current value");
                     }
                 })
-            }, 1000);
+            }, 3000);
 
             $('#proposal-value').change(function (e) {
                 $('#donate_value').html(CalculateDonateAmount($('#proposal-value').val(), $('#current-pivalue').text()));

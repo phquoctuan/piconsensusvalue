@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <div class="row">
-        <div id="luckydraw-title" class="page-title">LUCKY DRAW</div>
+        <div id="luckydraw-title" class="page-title">{{ __('LUCKY DRAW')}}</div>
         <div class="col-md-10 col-md-offset-1">
             <div id="select-time" class="align-center">
                 <form method="POST" action="{{url("/luckydrawresult")}}">
@@ -30,7 +30,7 @@
                         echo '</select>'."\n";
                     ?>
                     <div class="md-separate">
-                        <button type="submit" id="btn-OK" class="btn btn-primary ladda-button" data-style="expand-right" data-size="s" data-color="green">Load ...</button>
+                        <button type="submit" id="btn-OK" class="btn btn-primary ladda-button" data-style="expand-right" data-size="s" data-color="green">{{__("Load ...")}}</button>
                     </div>
                 </form>
             </div>

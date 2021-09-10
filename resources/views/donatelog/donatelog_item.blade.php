@@ -3,33 +3,33 @@
         <thead>
             <tr>
                 <th class="ssmall-hide">Id</th>
-                <th>From Date</th>
-                <th>To Date</th>
-                <th>Count</th>
-                <th>Total Donate</th>
-                <th>Draw Date</th>
-                <th>Reward(π)</th>
+                <th>{{__('From Date')}}</th>
+                <th>{{__('To Date')}}</th>
+                <th>{{__('Count')}}</th>
+                <th>{{__('Total Donate')}}</th>
+                <th>{{__('Draw Date')}}</th>
+                <th>{{__('Reward')}}(π)</th>
                 @if($lucky2_enable == 1 || $lucky3_enable == 1)
-                    <th>Lucky Id(1)</th>
-                    <th>Lucky Pioneer(1)</th>
-                    <th>Paid Out(1)</th>
+                    <th>{{__('Lucky Id')}}(1)</th>
+                    <th>{{__('Lucky Pioneer')}}(1)</th>
+                    <th>{{__('Paid Out')}}(1)</th>
                     <th>Txid(1)</th>
                     @if($lucky2_enable == 1)
-                        <th>Lucky Id(2)</th>
-                        <th>Lucky Pioneer(2)</th>
-                        <th>Paid Out(2)</th>
+                        <th>{{__('Lucky Id')}}(2)</th>
+                        <th>{{__('Lucky Pioneer')}}(2)</th>
+                        <th>{{__('Paid Out')}}(2)</th>
                         <th>Txid(2)</th>
                     @endif
                     @if($lucky3_enable == 1)
-                        <th>Lucky Id(3)</th>
-                        <th>Lucky Pioneer(3)</th>
-                        <th>Paid Out(3)</th>
+                        <th>{{__('Lucky Id')}}(3)</th>
+                        <th>{{__('Lucky Pioneer')}}(3)</th>
+                        <th>{{__('Paid Out')}}(3)</th>
                         <th>Txid(3)</th>
                     @endif
                 @else
-                    <th>Lucky Id</th>
-                    <th>Lucky Pioneer</th>
-                    <th>Paid Out</th>
+                    <th>{{__('Lucky Id')}}</th>
+                    <th>{{__('Lucky Pioneer')}}</th>
+                    <th>{{__('Paid Out')}}</th>
                     <th>Txid</th>
                 @endif
             </tr>

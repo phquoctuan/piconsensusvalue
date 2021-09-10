@@ -86,7 +86,7 @@ class PostsController extends Controller
 
             $response = Response::json([
                 'error' => [
-                    'message' => 'Please enter all required fields',
+                    'message' => __('Please enter all required fields'),
                 ],
             ], 422);
             return $response;
@@ -101,7 +101,7 @@ class PostsController extends Controller
         $post->save();
 
         $response = Response::json([
-            'message' => 'The post has been created succesfully',
+            'message' => __('The post has been created succesfully'),
             'data' => $post,
         ], 201);
 
@@ -126,7 +126,7 @@ class PostsController extends Controller
         if (!$post) {
             $response = json_encode([
                 'error' => [
-                    'message' => 'This post cannot be found.',
+                    'message' => __('This post cannot be found.'),
                 ],
             ], 404);
             return $response;
@@ -186,7 +186,7 @@ class PostsController extends Controller
         if (!$post) {
             $response = Response::json([
                 'error' => [
-                    'message' => 'The post cannot be found.',
+                    'message' => __('The post cannot be found.'),
                 ],
             ], 404);
 
@@ -196,7 +196,7 @@ class PostsController extends Controller
         Post::destroy($id);
 
         $response = Response::json([
-            'message' => 'The post has been deleted.',
+            'message' => __('The post has been deleted.'),
         ], 200);
 
         return $response;

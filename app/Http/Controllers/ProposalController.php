@@ -281,7 +281,7 @@ class ProposalController extends Controller
 
             $LastDonateLog = DonateLog::where('from_date', $firstday)->first();
             if($LastDonateLog == null){
-                // lad("no log");
+                //lad("no log");
                 $newdata = array(
                     'from_date' => $firstday,//->format("Y-m-d")
                     'to_date' => $lastday,
@@ -309,12 +309,12 @@ class ProposalController extends Controller
             ->where('created_at', '<=',  $lastday)
             ->where('completed','1')
             ->first();
-
+        // dd($thismonth_proposals->sum_donate);
             $LastDonateLog->count_donate = $thismonth_proposals->count_propose;
             $LastDonateLog->id_from = $thismonth_proposals->min_id;
             $LastDonateLog->id_to = $thismonth_proposals->max_id;
-            $LastDonateLog->total_propose = $thismonth_proposals->sum_propose;
-            $LastDonateLog->total_donate = $thismonth_proposals->sum_donate;
+            $LastDonateLog->total_propose = $thismonth_proposals->sum_propose ?? 0;
+            $LastDonateLog->total_donate = $thismonth_proposals->sum_donate ?? 0;
             $LastDonateLog->save();
 
             //Cache data
@@ -355,16 +355,16 @@ class ProposalController extends Controller
         //validate data
         if (($request->propose == null) || (!$request->donate) || (!$request->paymentid)) {
             if(($request->propose == null)){
-                $message = ['message' => 'Please enter proposal value !'
+                $message = ['message' => __('Please enter proposal value !')
                             , "errors" => ["required fields: propose, donate"]];
             }
             else
             if(!$request->donate) {
-                $message = ['message' => 'Donate value invalid !'
+                $message = ['message' => __('Donate value invalid !')
                             , "errors" => ["required fields: propose, donate"]];
             }
             else{
-                $message = ['message' => 'PaymentId is empty !'
+                $message = ['message' => __('PaymentId is empty !')
                             , "errors" => ["required fields: propose, donate"]];
             }
             $response = response()->json($message, 402);
@@ -378,7 +378,7 @@ class ProposalController extends Controller
             'paymentid' => 'required|alphaNum',
         ]);
         if ($validator->fails()) {
-            $message = ['message' => 'Input data invalid'
+            $message = ['message' => __('Input data invalid')
                     ,   'errors' => $validator->errors()->all()];
             $response = response()->json($message, 202);
             return $response;
@@ -400,8 +400,8 @@ class ProposalController extends Controller
 
         if(abs($realdonate - $request->donate) > 0.01) {
             //fake data;
-            $message = ['message' => 'It seems to be your data is out of date'
-            , "errors" => ["Please refresh to update current Pi value."]];
+            $message = ['message' => __('It seems to be your data is out of date.')
+            , "errors" => [__('Please refresh to update current Pi value.')]];
             $response = response()->json($message, 402);
             return $response;
         }
@@ -438,7 +438,7 @@ class ProposalController extends Controller
         if($res->getStatusCode() == 200){
             $response = response()->json([
                 'success' => 'OK',
-                'message' => 'The proposal has been accepted, thank you for donation',
+                'message' => __('The proposal has been accepted, thank you for donation.'),
                 'data' => $proposal,
             ], 200);
             return $response;
@@ -446,7 +446,7 @@ class ProposalController extends Controller
         else{
             $response = response()->json([
                 'success' => 'NG',
-                'message' => 'The proposal approve is not accepted.',
+                'message' => __('The proposal approve is not accepted.'),
                 'data' => $proposal,
             ], 200);
             return $response;
@@ -462,11 +462,11 @@ class ProposalController extends Controller
         //validate data
         if ((!$request->paymentid) || (!$request->txid)) {
             if((!$request->paymentid)){
-                $message = ['message' => 'CompletionPayment: paymentid is empty !'
+                $message = ['message' => __('CompletionPayment: paymentid is empty !')
                             , "errors" => ["required fields: paymentid, txid"]];
             }
             else{
-                $message = ['message' => 'CompletionPayment: txid is empty !'
+                $message = ['message' => __('CompletionPayment: txid is empty !')
                             , "errors" => ["required fields: paymentid, txid"]];
             }
             $response = response()->json($message, 402);
@@ -540,7 +540,7 @@ class ProposalController extends Controller
 
             $response = response()->json([
                 'success' => 'OK',
-                'message' => 'The proposal has accepted, thank you for donation.',
+                'message' => __('The proposal has been accepted, thank you for donation.'),
                 'data' => $proposal,
             ], 200);
             return $response;
@@ -548,7 +548,7 @@ class ProposalController extends Controller
         else{
             $response = response()->json([
                 'success' => 'NG',
-                'message' => 'The proposal has not completed.',
+                'message' => __('The proposal has not completed.'),
                 'data' => $proposal,
             ], 200);
             return $response;
@@ -563,7 +563,7 @@ class ProposalController extends Controller
     public function CancelPayment(Request $request){
         //validate data
         if (!$request->paymentid) {
-            $message = ['message' => 'CancelPayment: paymentid is empty !'
+            $message = ['message' => __('CancelPayment: paymentid is empty !')
                         , "errors" => ["required fields: paymentid, txid"]];
             $response = response()->json($message, 402);
             return $response;
@@ -579,7 +579,7 @@ class ProposalController extends Controller
         //return
         $response = response()->json([
             'success' => 'OK',
-            'message' => 'The proposal has canceled.',
+            'message' => __('The proposal has canceled.'),
             'data' => $proposal,
         ], 200);
         return $response;
@@ -605,7 +605,7 @@ class ProposalController extends Controller
         //return
         $response = response()->json([
             'success' => 'OK',
-            'message' => 'The proposal has error and terminate.',
+            'message' => __('The proposal has error and terminate.'),
             'data' => $proposal,
         ], 200);
         return $response;
@@ -620,7 +620,7 @@ class ProposalController extends Controller
     public function InCompletionPayment(Request $request){
         //validate data
         if (!$request->paymentid) {
-            $message = ['message' => 'InCompletionPayment: paymentid is empty !'
+            $message = ['message' => __('InCompletionPayment: paymentid is empty !')
                         , "errors" => ["required fields: paymentid, txid"]];
             $response = response()->json($message, 402);
             return $response;
@@ -700,7 +700,7 @@ class ProposalController extends Controller
 
             $response = response()->json([
                 'success' => 'OK',
-                'message' => 'The incompletion proposal has been completed. Your proposal Id is: ' . $proposal->id,
+                'message' => __('The incompletion ... Your proposal Id is:') . $proposal->id,
                 'data' => $proposal,
             ], 200);
             return $response;
@@ -708,7 +708,7 @@ class ProposalController extends Controller
         else{
             $response = response()->json([
                 'success' => 'NG',
-                'message' => 'The Incompletion proposal has errors',
+                'message' => __('The Incompletion proposal has errors'),
                 'data' => $proposal,
             ], 200);
             return $response;
@@ -771,7 +771,7 @@ class ProposalController extends Controller
         });
         if(!$enable_proposal){
             $message = ['success' => 'NG',
-                        'message' => 'Proposal is temporarily disabled',
+                        'message' => __('Proposal is temporarily disabled'),
                     ];
             $response = response()->json($message, 200);
             return $response;
@@ -781,18 +781,18 @@ class ProposalController extends Controller
         if (($request->propose == null) || (!$request->donate) || (!$request->username)) {
             if(($request->propose == null)){
                 $message = ['success' => 'NG',
-                            'message' => 'Please enter proposal value !',
+                            'message' => __('Please enter proposal value !'),
                             'errors' => ["required fields: propose, donate, username"]];
             }
             else
             if(!$request->donate) {
                 $message = ['success' => 'NG',
-                            'message' => 'Donate value invalid !',
+                            'message' => __('Donate value invalid !'),
                             'errors' => ["required fields: propose, donate, username"]];
             }
             else{
                 $message = ['success' => 'NG',
-                            'message' => 'Unauthorized, open page in Pi browser to enable proposal !',
+                            'message' => __('Unauthorized, open page in Pi browser to enable proposal !'),
                             'errors' => ["required fields: propose, donate, username"]];
             }
             $response = response()->json($message, 200);
@@ -806,7 +806,7 @@ class ProposalController extends Controller
         ]);
         if ($validator->fails()) {
             $message = ['success' => 'NG',
-                        'message' => 'Input data invalid',
+                        'message' => __('Input data invalid'),
                         'errors' => $validator->errors()->all()];
             $response = response()->json($message, 200);
             return $response;
@@ -829,7 +829,7 @@ class ProposalController extends Controller
         if(abs($realdonate - $request->donate) > 0.01) {
             //fake data;
             $message = ['success' => 'NG',
-                        'message' => 'It seems to be your data is out of date',
+                        'message' => __('It seems to be your data is out of date.'),
                         'errors' => ["Please refresh to update current Pi value."]];
             $response = response()->json($message, 200);
             return $response;
@@ -837,7 +837,7 @@ class ProposalController extends Controller
 
         $response = response()->json([
             'success' => 'OK',
-            'message' => 'The proposal data is valid',
+            'message' => __('The proposal data is valid'),
         ], 200);
         return $response;
     }
@@ -849,11 +849,11 @@ class ProposalController extends Controller
         //validate data
         if ((!$request->propose) || (!$request->publickey)) {
             if((!$request->propose)){
-                $message = ['message' => 'Please enter proposal value !'
+                $message = ['message' => __('Please enter proposal value !')
                             , "errors" => ["required fields: propose, publickey"]];
             }
             else {
-                $message = ['message' => 'Please enter all required fields'
+                $message = ['message' => __('Please enter all required fields')
                             , "errors" => ["required fields: propose, publickey"]];
             }
             lad($request->publickey);
@@ -867,7 +867,7 @@ class ProposalController extends Controller
             'publickey' => 'required|alphaNum',
         ]);
         if ($validator->fails()) {
-            $message = ['message' => 'Input data invalid'
+            $message = ['message' => __('Input data invalid')
                     ,   'errors' => $validator->errors()->all()];
             $response = response()->json($message, 202);
             return $response;
@@ -895,7 +895,7 @@ class ProposalController extends Controller
         lad($request->donate);
         if(abs($realdonate - $request->donate) > 0.01) {
             //fake data;
-            $message = ['message' => 'It seems to be your data is out of date'
+            $message = ['message' => __('It seems to be your data is out of date.')
             , "errors" => ["Please refresh to update current Pi value."]];
             $response = response()->json($message, 402);
             return $response;
@@ -962,7 +962,7 @@ class ProposalController extends Controller
 
         $response = response()->json([
             'success' => 'OK',
-            'message' => 'The proposal has been accepted, thank you for donation',
+            'message' => __('The proposal has been accepted, thank you for donation.'),
             'data' => $proposal,
         ], 201);
         return $response;

@@ -50,10 +50,10 @@
 </script>
     <div class="footer align-center">
             <div>
-                Thank you for using this application.
+                {{ __('Thank you for using this application.')}}
             </div>
             <div>
-                For more information, please contact @phquoctuan on Telegram.
+                {{ __('For more information, please...')}}
             </div>
     </div>
 </body>

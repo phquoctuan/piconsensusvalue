@@ -521,8 +521,25 @@ textarea.parsley-error {
     padding: 5px;
     margin-bottom: 5px;
 }
+.drop-lang{
+    padding: 12px;
+    display: inline-block;
+    float: right;
+}
+.drop-lang a{
+    text-decoration: none;
+}
+
+@media (min-width: 768px) {
+    #nav-header-lang{
+        display: none;
+    }
+}
 
 @media (max-width: 768px) {
+    #nav-lang{
+        display: none;
+    }
     .donate{
         margin-left: -10px;
         margin-right: -10px;

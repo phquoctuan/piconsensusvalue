@@ -41,6 +41,7 @@ Route::get('/proposal/lastmonthdonate', 'ProposalController@LastMonthDonate');
 Route::get('/drawhistory', 'DonateLogController@index');
 Route::get('/luckydrawselect', 'DonateLogController@LuckyDrawSelect');
 Route::post('/luckydrawresult', 'DonateLogController@LuckyDrawResult');
+Route::get('/luckydrawresult', 'DonateLogController@LuckyDrawResult');
 Route::get('/donatelog/getuserbyproposalid', 'DonateLogController@GetUserByProposalId');
 
 Route::get('/about', 'CommonControler@about');
@@ -49,3 +50,5 @@ Route::get('users/login', 'Auth\AuthController@getLogin');
 Route::post('users/login', 'Auth\AuthController@postLogin');
 Route::get('users/register', 'Auth\AuthController@getRegister');
 Route::post('users/register', 'Auth\AuthController@postRegister');
+
+Route::get('lang/{lang}','LangController@changeLang')->name('lang');

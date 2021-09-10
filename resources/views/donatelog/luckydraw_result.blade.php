@@ -5,9 +5,9 @@
 <script src="{{asset('js/jquery.datetimepicker.full.js') }}"></script>
 
 <div class="container">
-    <a class="pi-button" href="{{url('/luckydrawselect')}}">&#60; Select Period</a>
+    <a class="pi-button" href="{{url('/luckydrawselect')}}">&#60; {{ __('Select Period')}}</a>
     <div class="row">
-        <div id="luckydraw-title" class="page-title">LUCKY DRAW</div>
+        <div id="luckydraw-title" class="page-title">{{ __('LUCKY DRAW')}}</div>
         <div class="col-md-10 col-md-offset-1">
             <div id="selected-time" class="align-center">
             {{$donatelog['select_month']}} - {{$donatelog['select_year']}}
@@ -19,7 +19,7 @@
                     <div class="row-item">
                         <div class="col-md-6 col-sm-12 row-block" >
                             <div class="col-md-6  col-sm-6 float-left">
-                                <div class="key">From date:</div>
+                                <div class="key">{{ __('From date:')}}</div>
                             </div>
                             <div class="col-md-6  col-sm-6 float-right">
                                 <div class="value">{{date('d-M-Y', strtotime($donatelog["from_date"]))}}</div>
@@ -27,7 +27,7 @@
                         </div>
                         <div class="col-md-6 col-sm-12 row-block">
                             <div class="col-md-6 col-sm-6 float-left">
-                                <div class="key">To date:</div>
+                                <div class="key">{{ __('To date:')}}</div>
                             </div>
                             <div class="col-md-6 col-sm-6 float-right">
                                 <div class="value">{{date('d-M-Y', strtotime($donatelog["to_date"]))}}</div>
@@ -37,7 +37,7 @@
                     <div class="row-item">
                         <div class="col-md-6 col-sm-12 row-block" >
                             <div class="col-md-6  col-sm-6 float-left">
-                                <div class="key">Proposals:</div>
+                                <div class="key">{{ __('Proposals:')}}</div>
                             </div>
                             <div class="col-md-6  col-sm-6 float-right">
                                 <div class="value">{{$donatelog["count_donate"]}}</div>
@@ -45,7 +45,7 @@
                         </div>
                         <div class="col-md-6 col-sm-12 row-block">
                             <div class="col-md-6 col-sm-6 float-left">
-                                <div class="key">Total donation:</div>
+                                <div class="key">{{ __('Total donation:')}}</div>
                             </div>
                             <div class="col-md-6 col-sm-6 float-right">
                                 <div class="value">{{$donatelog["total_donate"]}} π</div>
@@ -55,7 +55,7 @@
                     <div class="row-item">
                         <div class="col-md-6 col-sm-12 row-block" >
                             <div class="col-md-6  col-sm-6 float-left">
-                                <div class="key">From Id:</div>
+                                <div class="key">{{ __('From Id:')}}</div>
                             </div>
                             <div class="col-md-6  col-sm-6 float-right">
                                 <div class="value">{{$donatelog["id_from"]}}</div>
@@ -63,7 +63,7 @@
                         </div>
                         <div class="col-md-6 col-sm-12 row-block">
                             <div class="col-md-6 col-sm-6 float-left">
-                                <div class="key">To Id:</div>
+                                <div class="key">{{ __('To Id:')}}</div>
                             </div>
                             <div class="col-md-6 col-sm-6 float-right">
                                 <div class="value">{{$donatelog["id_to"]}}</div>
@@ -73,7 +73,7 @@
                     <div class="row-item">
                         <div class="col-md-6 col-sm-12 row-block">
                             <div class="col-md-6 col-sm-6 float-left">
-                                <div class="key">Draw date(GMT):</div>
+                                <div class="key">{{ __('Draw date')}}(GMT):</div>
                             </div>
                             <div class="col-md-6 col-sm-6 float-right">
                                 <input type="text" id="draw_date" class="input_datetime" style="width: 165px;" value='{{$donatelog["draw_date"] != null ? date('Y-m-d H:i', strtotime($donatelog["draw_date"])) : ''}}'/>
@@ -81,7 +81,7 @@
                         </div>
                         <div class="col-md-6 col-sm-12 row-block" >
                             <div class="col-md-6  col-sm-6 float-left">
-                                <div class="key">Fix draw date:</div>
+                                <div class="key">{{ __('Fix draw date')}}:</div>
                             </div>
                             <div class="col-md-6  col-sm-6 float-right">
                                 <input type="checkbox" id="fixed_drawdate" name="fixed_drawdate" @if($donatelog["fixed_drawdate"]==1) checked @endif>
@@ -91,7 +91,7 @@
                     <div class="row-item">
                         <div class="col-md-12 col-sm-12 row-block">
                             <div class="col-md-3 col-sm-3 col-xs-3 float-left">
-                                <div class="key">Live link:</div>
+                                <div class="key">{{ __('Live link')}}:</div>
                             </div>
                             <div class="col-md-9 col-sm-9 col-xs-9 float-right">
                                 <input type="text" id="live_drawlink" name="live_drawlink" value="{{$donatelog["live_drawlink"]}}" style="width: 100%; line-height: 0.9;">
@@ -103,7 +103,7 @@
                             <div class="row-item">
                                 <div class="col-md-12 col-sm-12 row-block" >
                                     <div class="col-md-6  col-sm-6 float-left">
-                                        <div class="key">Award 1:</div>
+                                        <div class="key">{{ __('Award')}} 1:</div>
                                     </div>
                                     <div class="col-md-6  col-sm-6 float-right">
                                         <input type="number" id="reward" name="reward" class="value" value="{{$donatelog["reward"]}}" style="width: 90%; line-height: 0.9;"> <span>π</span>
@@ -113,7 +113,7 @@
                             <div class="row-item">
                                 <div class="col-md-6 col-sm-12 row-block" >
                                     <div class="col-md-6  col-sm-6 float-left">
-                                        <div class="key">Lucky number 1:</div>
+                                        <div class="key">{{ __('Lucky number')}} 1:</div>
                                     </div>
                                     <div class="col-md-6  col-sm-6 float-right">
                                         <input id="lucky_number" type="number" min="0" step="1" style="width: 100px;" value={{$donatelog["drawed_id"]}} />
@@ -122,7 +122,7 @@
                                 </div>
                                 <div class="col-md-6 col-sm-12 row-block">
                                     <div class="col-md-6 col-sm-6 float-left">
-                                        <div class="key">Lucky pioneer 1:</div>
+                                        <div class="key">{{ __('Lucky Pioneer')}} 1:</div>
                                     </div>
                                     <div class="col-md-6 col-sm-6 float-right">
                                         <strong>
@@ -134,7 +134,7 @@
                             <div class="row-item">
                                 <div class="col-md-6 col-sm-12 row-block" >
                                     <div class="col-md-6  col-sm-6 float-left">
-                                        <div class="key">Paid 1:</div>
+                                        <div class="key">{{ __('Paid Out')}} 1:</div>
                                     </div>
                                     <div class="col-md-6  col-sm-6 float-right">
                                         <input type="checkbox" id="paid" name="paid" @if($donatelog["paid"]==1) checked @endif>
@@ -142,7 +142,7 @@
                                 </div>
                                 <div class="col-md-6 col-sm-9 row-block">
                                     <div class="col-md-4 col-sm-4 col-xs-4">
-                                        <div class="key">Tx Fee 1:</div>
+                                        <div class="key">{{ __('Tx Fee')}} 1:</div>
                                     </div>
                                     <div class="col-md-6 col-sm-6 col-xs-6">
                                         <input type="number" id="fee" name="fee" value="{{$donatelog["fee"]}}" style="width: 100%; line-height: 0.9;">
@@ -168,7 +168,7 @@
                                 <div class="row-item">
                                     <div class="col-md-12 col-sm-12 row-block" >
                                         <div class="col-md-6  col-sm-6 float-left">
-                                            <div class="key">Award 2:</div>
+                                            <div class="key">{{ __('Award')}} 2:</div>
                                         </div>
                                         <div class="col-md-6  col-sm-6 float-right">
                                             <input type="number" id="reward2" name="reward2" value="{{$donatelog["reward2"]}}" style="width: 90%; line-height: 0.9;"> <span> π</span>
@@ -178,7 +178,7 @@
                                 <div class="row-item">
                                     <div class="col-md-6 col-sm-12 row-block" >
                                         <div class="col-md-6  col-sm-6 float-left">
-                                            <div class="key">Lucky number 2:</div>
+                                            <div class="key">{{ __('Lucky number')}} 2:</div>
                                         </div>
                                         <div class="col-md-6  col-sm-6 float-right">
                                             <input id="lucky_number2" type="number" min="0" step="1" style="width: 100px;" value={{$donatelog["drawed_id2"]}} />
@@ -187,7 +187,7 @@
                                     </div>
                                     <div class="col-md-6 col-sm-12 row-block">
                                         <div class="col-md-6 col-sm-6 float-left">
-                                            <div class="key">Lucky pioneer 2:</div>
+                                            <div class="key">{{ __('Lucky Pioneer')}} 2:</div>
                                         </div>
                                         <div class="col-md-6 col-sm-6 float-right">
                                             <strong>
@@ -199,7 +199,7 @@
                                 <div class="row-item">
                                     <div class="col-md-6 col-sm-12 row-block" >
                                         <div class="col-md-6  col-sm-6 float-left">
-                                            <div class="key">Paid 2:</div>
+                                            <div class="key">{{ __('Paid Out')}} 2:</div>
                                         </div>
                                         <div class="col-md-6  col-sm-6 float-right">
                                             <input type="checkbox" id="paid2" name="paid2" @if($donatelog["paid2"]==1) checked @endif>
@@ -207,7 +207,7 @@
                                     </div>
                                     <div class="col-md-6 col-sm-9 row-block">
                                         <div class="col-md-4 col-sm-4 col-xs-4">
-                                            <div class="key">Tx Fee 2:</div>
+                                            <div class="key">{{ __('Tx Fee')}} 2:</div>
                                         </div>
                                         <div class="col-md-6 col-sm-6 col-xs-6">
                                             <input type="number" id="fee2" name="fee2" value="{{$donatelog["fee2"]}}" style="width: 100%; line-height: 0.9;">
@@ -235,7 +235,7 @@
                                 <div class="row-item">
                                     <div class="col-md-12 col-sm-12 row-block" >
                                         <div class="col-md-6  col-sm-6 float-left">
-                                            <div class="key">Award 3:</div>
+                                            <div class="key">{{ __('Award')}} 3:</div>
                                         </div>
                                         <div class="col-md-6  col-sm-6 float-right">
                                             <input type="number" id="reward3" name="reward3" value="{{$donatelog["reward3"]}}" style="width: 90%; line-height: 0.9;"><span> π</span>
@@ -245,7 +245,7 @@
                                 <div class="row-item">
                                     <div class="col-md-6 col-sm-12 row-block" >
                                         <div class="col-md-6  col-sm-6 float-left">
-                                            <div class="key">Lucky number 3:</div>
+                                            <div class="key">{{ __('Lucky number')}} 3:</div>
                                         </div>
                                         <div class="col-md-6  col-sm-6 float-right">
                                             <input id="lucky_number3" type="number" min="0" step="1" style="width: 100px;" value={{$donatelog["drawed_id3"]}} />
@@ -254,7 +254,7 @@
                                     </div>
                                     <div class="col-md-6 col-sm-12 row-block">
                                         <div class="col-md-6 col-sm-6 float-left">
-                                            <div class="key">Lucky pioneer 3:</div>
+                                            <div class="key">{{ __('Lucky Pioneer')}} 3:</div>
                                         </div>
                                         <div class="col-md-6 col-sm-6 float-right">
                                             <strong>
@@ -266,7 +266,7 @@
                                 <div class="row-item">
                                     <div class="col-md-6 col-sm-12 row-block" >
                                         <div class="col-md-6  col-sm-6 float-left">
-                                            <div class="key">Paid 3:</div>
+                                            <div class="key">{{ __('Paid Out')}} 3:</div>
                                         </div>
                                         <div class="col-md-6  col-sm-6 float-right">
                                             <input type="checkbox" id="paid3" name="paid3" @if($donatelog["paid3"]==1) checked @endif>
@@ -274,7 +274,7 @@
                                     </div>
                                     <div class="col-md-6 col-sm-9 row-block">
                                         <div class="col-md-4 col-sm-4 col-xs-4">
-                                            <div class="key">Tx Fee 3:</div>
+                                            <div class="key">{{ __('Tx Fee')}} 3:</div>
                                         </div>
                                         <div class="col-md-6 col-sm-6 col-xs-6">
                                             <input type="number" id="fee3" name="fee3" value="{{$donatelog["fee3"]}}" style="width: 100%; line-height: 0.9;">
@@ -300,7 +300,7 @@
                         <div class="row-item">
                             <div class="col-md-12 col-sm-12 row-block" >
                                 <div class="col-md-6  col-sm-6 float-left">
-                                    <div class="key">Award:</div>
+                                    <div class="key">{{ __('Award')}}:</div>
                                 </div>
                                 <div class="col-md-6  col-sm-6 float-right">
                                     <input type="number" id="reward" name="reward" value="{{$donatelog["reward"]}}" style="width: 90%; line-height: 0.9;"> <span> π</span>
@@ -310,7 +310,7 @@
                         <div class="row-item">
                             <div class="col-md-6 col-sm-12 row-block" >
                                 <div class="col-md-6  col-sm-6 float-left">
-                                    <div class="key">Lucky number:</div>
+                                    <div class="key">{{ __('Lucky number')}}:</div>
                                 </div>
                                 <div class="col-md-6  col-sm-6 float-right">
                                     <input id="lucky_number" type="number" min="0" step="1" style="width: 100px;" value={{$donatelog["drawed_id"]}} />
@@ -319,7 +319,7 @@
                             </div>
                             <div class="col-md-6 col-sm-12 row-block">
                                 <div class="col-md-6 col-sm-6 float-left">
-                                    <div class="key">Lucky pioneer:</div>
+                                    <div class="key">{{ __('Lucky Pioneer')}}:</div>
                                 </div>
                                 <div class="col-md-6 col-sm-6 float-right">
                                     <strong>
@@ -331,7 +331,7 @@
                         <div class="row-item">
                             <div class="col-md-6 col-sm-12 row-block" >
                                 <div class="col-md-6  col-sm-6 float-left">
-                                    <div class="key">Paid:</div>
+                                    <div class="key">{{ __('Paid Out')}}:</div>
                                 </div>
                                 <div class="col-md-6  col-sm-6 float-right">
                                     <input type="checkbox" id="paid" name="paid" @if($donatelog["paid"]==1) checked @endif>
@@ -339,7 +339,7 @@
                             </div>
                             <div class="col-md-6 col-sm-9 row-block">
                                 <div class="col-md-4 col-sm-4 col-xs-4">
-                                    <div class="key">Tx Fee:</div>
+                                    <div class="key">{{ __('Tx Fee')}}:</div>
                                 </div>
                                 <div class="col-md-6 col-sm-6 col-xs-6">
                                     <input type="number" id="fee" name="fee" value="{{$donatelog["fee"]}}" style="width: 100%; line-height: 0.9;">
@@ -362,17 +362,17 @@
                     @endif
                     <div class="align-center md-separate">
                         <div>
-                            <label for="pwd">Password to save:</label>
+                            <label for="pwd">{{ __('Password to save')}}:</label>
                             <input type="password" id="pwd" name="pwd">
                         </div>
-                        <input type="submit" id="save-donatelog" class="btn btn-primary ladda-button sm-separate"  data-color="green" value="Save">
+                        <input type="submit" id="save-donatelog" class="btn btn-primary ladda-button sm-separate"  data-color="green" value="{{ __('Save')}}">
                     </div>
                     <input type="hidden" id ="lucky2_enable" value="{{$lucky2_enable}}">
                     <input type="hidden" id ="lucky3_enable" value="{{$lucky3_enable}}">
                 </form>
             @else
                 <div class="alert-warning alert-dismissible show align-center md-separate text-danger">
-                    <strong>No data in this period.</strong>
+                    <strong>{{ __('No data in this period.')}}</strong>
                 </div>
             @endif
         </div>

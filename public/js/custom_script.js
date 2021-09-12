@@ -238,7 +238,7 @@ const callbacks = {
 
 // Authenticate the user, and get permission to request payments from them:
 // const authResult = window.Pi.authenticate(scopes, onIncompletePaymentFound);
-Pi.init({ version: "2.0" , sandbox: true})
+Pi.init({ version: "2.0"})
 
 $(document).ready(function() {
     // Pi.init({ version: "2.0", sandbox: true })

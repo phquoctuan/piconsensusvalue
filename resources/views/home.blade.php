@@ -12,7 +12,7 @@
                 <div class="text-center" id="pi-value">
                     1π =
                     <div class="current-pivalue" id="current-pivalue">{{$current_value}}</div>
-                    <div id="currentpivalue" style="display: none;>{{$current_value}}</div>
+                    <div id="currentpivalue" style="display: none;">{{$current_value}}</div>
                     <div id="dollar-sign">$
                     </div>
                 </div>

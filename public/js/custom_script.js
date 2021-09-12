@@ -238,7 +238,7 @@ const callbacks = {
 
 // Authenticate the user, and get permission to request payments from them:
 // const authResult = window.Pi.authenticate(scopes, onIncompletePaymentFound);
-Pi.init({ version: "2.0"})
+Pi.init({ version: "2.0" , sandbox: true})
 
 $(document).ready(function() {
     // Pi.init({ version: "2.0", sandbox: true })
@@ -276,7 +276,7 @@ $(document).ready(function() {
                 type: "POST",
                 data: {
                     "propose": $('#proposal-value').val(),
-                    "current": $('#current-pivalue').text(),
+                    "current": $('#currentpivalue').text(),
                     "donate": $('#donate_value').text(),
                     "username": userName,
                 },

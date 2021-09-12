@@ -12,6 +12,7 @@
                 <div class="text-center" id="pi-value">
                     1π =
                     <div class="current-pivalue" id="current-pivalue">{{$current_value}}</div>
+                    <div id="currentpivalue" style="display: none;>{{$current_value}}</div>
                     <div id="dollar-sign">$
                     </div>
                 </div>
@@ -301,7 +302,8 @@
                     dataType:'json',
                     success:function(response){
                         if(response.current_value || response.current_value == 0){
-                            $('#current-pivalue').html(response.current_value.toFixed(5));
+                            $('#current-pivalue').html(response.current_value_str);
+                            $('#currentpivalue').html(response.current_value.toFixed(5));
                             $('#thismonth_count_donate').html(response.thismonth_count_donate);
                             $('#thismonth_total_donate').html(response.thismonth_total_donate.toFixed(5) + " π");
                             $('#thismonth_id_to').html(response.thismonth_id_to);
@@ -317,7 +319,7 @@
             }, 1000);
 
             $('#proposal-value').change(function (e) {
-                $('#donate_value').html(CalculateDonateAmount($('#proposal-value').val(), $('#current-pivalue').text()));
+                $('#donate_value').html(CalculateDonateAmount($('#proposal-value').val(), $('#currentpivalue').text()));
             })
 
         })

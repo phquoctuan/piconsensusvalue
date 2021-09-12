@@ -22,6 +22,12 @@ class CreatePiValueLogsTable extends Migration
             $table->dateTime('propose_time');
             $table->integer('propose_id')->default(0);
             $table->dateTime('created_at')->useCurrent = true;
+            // ath_value
+            // atl_value
+            // ath_propose
+            // atl_propose
+            // ath_donate
+            // atl_donate
         });
     }
 

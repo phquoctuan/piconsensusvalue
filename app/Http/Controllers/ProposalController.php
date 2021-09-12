@@ -40,12 +40,13 @@ class ProposalController extends Controller
         if (!Cache::has('CurrentPiValue')) {
             //calculate current value
             //1: get lasttest PiValueLog
-            $lastlog = PiValueLog::orderBy('propose_time', 'desc')->first();//PiValueLog::latest();
+            // $lastlog = PiValueLog::orderBy('propose_time', 'desc')->first();//PiValueLog::latest();
+            $lastlog = PiValueLog::orderBy('propose_id', 'desc')->first();//PiValueLog::latest();
             if ($lastlog){
                 $new_last_log = false;
                 $new_proposals = Proposal::select(DB::raw("COUNT(*) AS total_propose, SUM(propose) AS sum_propose, SUM(donate) AS sum_donate, MAX(id) AS max_id, MAX(created_at) AS propose_time"))
                 ->where('completed','1')
-                ->where('created_at', '>',  $lastlog->propose_time)
+                ->where('id', '>',  $lastlog->propose_id)
                 ->first();
                 if($new_proposals->total_propose > 0){
                     $new_last_log = true;
@@ -53,19 +54,22 @@ class ProposalController extends Controller
                     $new_sum_donate = $lastlog->sum_donate + $new_proposals->sum_donate;
                     $new_pivalue = (($lastlog->current_value * $lastlog->total_propose) + $new_proposals->sum_propose)/$new_total_propose;
                     $new_propose_time = $new_proposals->propose_time;
+                    $new_propose_id = $new_proposals->max_id;
                 }
                 else{ //no new proposal data
                     $new_total_propose = $lastlog->total_propose;
                     $new_sum_donate = $lastlog->sum_donate;
                     $new_pivalue = $lastlog->current_value;
                     $new_propose_time = $lastlog-> propose_time;
+                    $new_propose_id = $lastlog->propose_id;
                 }
                 //save new PiValueLog
                 $newdata = array(
                     'current_value' => $new_pivalue,
                     'total_propose' => $new_total_propose,
                     'sum_donate' => $new_sum_donate,
-                    'propose_time' => $new_propose_time
+                    'propose_time' => $new_propose_time,
+                    'propose_id' => $new_propose_id
                 );
 
                 if($new_last_log){
@@ -91,19 +95,22 @@ class ProposalController extends Controller
                     $new_sum_donate = $new_proposals->sum_donate;
                     $new_pivalue = $new_proposals->sum_propose/$new_proposals->total_propose;
                     $new_propose_time = $new_proposals->propose_time;
+                    $new_propose_id = $new_proposals->max_id;
                 }
                 else{// no data at all
                     $new_total_propose = 0;
                     $new_sum_donate = 0;
                     $new_pivalue = 0;
                     $new_propose_time = null;
+                    $new_propose_id = 0;
                 }
                 //save new PiValueLog
                 $newdata = array(
                     'current_value' => $new_pivalue,
                     'total_propose' => $new_total_propose,
                     'sum_donate' => $new_sum_donate,
-                    'propose_time' => $new_propose_time
+                    'propose_time' => $new_propose_time,
+                    'propose_id' => $new_propose_id
                 );
                 $CurrentPiValue = new PiValueLog($newdata);
                 if($CurrentPiValue->propose_time != null)
@@ -130,8 +137,21 @@ class ProposalController extends Controller
             $content = $responsedata->getContent();
             $ThisMonthDonate = json_decode($content, true);
         }
-
+        $pival = $cacheValue["current_value"];
+        if($pival > 999999){
+            $strcurpival = number_format($pival,2);
+        }
+        else if ($pival > 99999){
+            $strcurpival = number_format($pival,3);
+        }
+        else if ($pival > 9999){
+            $strcurpival = number_format($pival,4);
+        }
+        else{
+            $strcurpival = number_format($pival,5);
+        }
         $response = response()->json(['current_value' => $cacheValue["current_value"],
+                                        'current_value_str' => $strcurpival,
                                         'sum_donate' => $cacheValue["sum_donate"],
                                         'total_propose' => $cacheValue["total_propose"],
                                         'thismonth_id_from' => $ThisMonthDonate["id_from"],

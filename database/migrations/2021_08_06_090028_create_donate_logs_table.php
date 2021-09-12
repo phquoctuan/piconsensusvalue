@@ -23,7 +23,7 @@ class CreateDonateLogsTable extends Migration
             $table->double('total_propose')->default(0);//this period
             $table->double('total_donate')->default(0);//this period
             $table->double('reward')->nullable();//reward this period
-            $table->double('remain_donate')->nullable();//reward this period
+            $table->double('remain_donate')->nullable();//
             $table->dateTime('draw_date')->nullable();//first day of next month
             $table->integer('drawed_id')->nullable();//proposal id
             $table->string('drawed_username', 256)->nullable();//winner

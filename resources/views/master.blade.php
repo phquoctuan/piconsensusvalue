@@ -55,6 +55,12 @@
             <div>
                 {{ __('For more information, please...')}}
             </div>
+            <div>
+                Pi Value Telegram group: <a href="https://t.me/livepivalue" target="_blank" style="color: aqua;">t.me/livepivalue</a>
+            </div>
+            <div>
+                Pi Value on YouTube: <a href="https://www.youtube.com/channel/UCEtfHRvBYjduAjZBOPBrSzA" target="_blank" style="color: aqua;">youtube.com/channel/UCE...</a>
+            </div>
     </div>
 </body>
 </html>

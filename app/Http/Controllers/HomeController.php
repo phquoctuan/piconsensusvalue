@@ -92,9 +92,21 @@ class HomeController extends Controller
             // dd($diffInSeconds);
         }
         //check has post
+        if($pival > 999999){
+            $curpival = number_format($pival,2);
+        }
+        else if ($pival > 99999){
+            $curpival = number_format($pival,3);
+        }
+        else if ($pival > 9999){
+            $curpival = number_format($pival,4);
+        }
+        else{
+            $curpival = number_format($pival,5);
+        }
 
         // header("Set-Cookie: cross-site-cookie=whatever; SameSite=None; Secure");
-        return view('home')->with('current_value', number_format($pival,5))
+        return view('home')->with('current_value', $curpival)
                             ->with('current_pi_value', $CurrentPiValue)
                             ->with('this_month_donate', $ThisMonthDonate)
                             ->with('last_month_donate', $LastMonthDonate)

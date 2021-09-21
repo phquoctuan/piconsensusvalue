@@ -64,6 +64,7 @@
     "Select Period" : "Chọn tháng",
     "Password to save" : "Nhập pass để lưu",
     "Save" : "Lưu",
+    "Update Data" : "Cập nhật dữ liệu",
     "No data in this period." : "Tháng này không có dữ liệu.",
     "Pi Value is a survey application ..." : "Pi Value là ứng dụng khảo sát giá đồng thuận của Pi",
     "What is 'Pi Value' app": "Ứng dụng 'Pi Value' làm gì ?",
@@ -134,6 +135,7 @@
     "The post has been created succesfully" : "Bài đăng đã lưu thành công.",
     "This post cannot be found." : "Không tìm thấy bài đăng.",
     "The post cannot be found." : "Không tìm thấy bài đăng.",
-    "The post has been deleted." : "Bài đăng đã bị xóa."
+    "The post has been deleted." : "Bài đăng đã bị xóa.",
+    "Please enter password to update data." : "Vui lòng nhập pass để cập nhật dữ liệu."
 
 }

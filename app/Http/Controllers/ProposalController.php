@@ -44,7 +44,7 @@ class ProposalController extends Controller
             $lastlog = PiValueLog::orderBy('propose_id', 'desc')->first();//PiValueLog::latest();
             if ($lastlog){
                 $new_last_log = false;
-                $new_proposals = Proposal::select(DB::raw("COUNT(*) AS total_propose, SUM(propose) AS sum_propose, SUM(donate) AS sum_donate, MAX(id) AS max_id, MAX(created_at) AS propose_time"))
+                $new_proposals = Proposal::select(DB::raw("COUNT(*) AS total_propose, SUM(propose) AS sum_propose, SUM(donate) AS sum_donate, MAX(id) AS max_id, MIN(propose) AS min_propose, MAX(propose) AS max_propose, MIN(donate) AS min_donate, MAX(donate) AS max_donate, MAX(created_at) AS propose_time"))
                 ->where('completed','1')
                 ->where('id', '>',  $lastlog->propose_id)
                 ->first();
@@ -55,6 +55,12 @@ class ProposalController extends Controller
                     $new_pivalue = (($lastlog->current_value * $lastlog->total_propose) + $new_proposals->sum_propose)/$new_total_propose;
                     $new_propose_time = $new_proposals->propose_time;
                     $new_propose_id = $new_proposals->max_id;
+                    $new_atl_propose = ($lastlog->atl_propose > $new_proposals->min_propose) ? $new_proposals->min_propose : $lastlog->atl_propose;
+                    $new_ath_propose = ($lastlog->ath_propose < $new_proposals->max_propose) ? $new_proposals->max_propose : $lastlog->ath_propose;
+                    $new_atl_donate = ($lastlog->atl_donate > $new_proposals->min_donate) ? $new_proposals->min_donate : $lastlog->atl_donate;
+                    $new_ath_donate = ($lastlog->ath_donate < $new_proposals->max_donate) ? $new_proposals->max_donate : $lastlog->ath_donate;
+                    $new_ath_value = ($new_pivalue > $lastlog->ath_value) ? $new_pivalue : $lastlog->ath_value;
+                    $new_atl_value = ($new_pivalue < $lastlog->atl_value) ? $new_pivalue : $lastlog->atl_value;
                 }
                 else{ //no new proposal data
                     $new_total_propose = $lastlog->total_propose;
@@ -62,6 +68,12 @@ class ProposalController extends Controller
                     $new_pivalue = $lastlog->current_value;
                     $new_propose_time = $lastlog-> propose_time;
                     $new_propose_id = $lastlog->propose_id;
+                    $new_atl_propose = $lastlog->atl_propose;
+                    $new_ath_propose = $lastlog->ath_propose;
+                    $new_atl_donate = $lastlog->atl_donate;
+                    $new_ath_donate = $lastlog->ath_donate;
+                    $new_ath_value = $lastlog->ath_value;
+                    $new_atl_value = $lastlog->atl_value;
                 }
                 //save new PiValueLog
                 $newdata = array(
@@ -69,7 +81,13 @@ class ProposalController extends Controller
                     'total_propose' => $new_total_propose,
                     'sum_donate' => $new_sum_donate,
                     'propose_time' => $new_propose_time,
-                    'propose_id' => $new_propose_id
+                    'propose_id' => $new_propose_id,
+                    'atl_value' => $new_atl_value,
+                    'ath_value' => $new_ath_value,
+                    'atl_propose' => $new_atl_propose,
+                    'ath_propose' => $new_ath_propose,
+                    'atl_donate' => $new_atl_donate,
+                    'ath_donate' => $new_ath_donate,
                 );
 
                 if($new_last_log){
@@ -85,7 +103,7 @@ class ProposalController extends Controller
             }
             else{//no last log in database
                 //calculate everage value base all proposal
-                $new_proposals = Proposal::select(DB::raw("COUNT(*) AS total_propose, SUM(propose) AS sum_propose, SUM(donate) AS sum_donate, MAX(id) AS max_id , MAX(created_at) AS propose_time"))
+                $new_proposals = Proposal::select(DB::raw("COUNT(*) AS total_propose, SUM(propose) AS sum_propose, SUM(donate) AS sum_donate, MAX(id) AS max_id , MIN(propose) AS min_propose, MAX(propose) AS max_propose, MIN(donate) AS min_donate, MAX(donate) AS max_donate, MAX(created_at) AS propose_time"))
                 ->where('completed','1')
                 ->first();
 
@@ -96,6 +114,12 @@ class ProposalController extends Controller
                     $new_pivalue = $new_proposals->sum_propose/$new_proposals->total_propose;
                     $new_propose_time = $new_proposals->propose_time;
                     $new_propose_id = $new_proposals->max_id;
+                    $new_atl_propose = $new_proposals->min_propose;
+                    $new_ath_propose = $new_proposals->max_propose;
+                    $new_atl_donate = $new_proposals->min_donate;
+                    $new_ath_donate = $new_proposals->max_donate;
+                    $new_ath_value = $new_pivalue;
+                    $new_atl_value = $new_pivalue;
                 }
                 else{// no data at all
                     $new_total_propose = 0;
@@ -103,6 +127,12 @@ class ProposalController extends Controller
                     $new_pivalue = 0;
                     $new_propose_time = null;
                     $new_propose_id = 0;
+                    $new_atl_propose = null;
+                    $new_ath_propose = null;
+                    $new_atl_donate = null;
+                    $new_ath_donate = null;
+                    $new_ath_value = null;
+                    $new_atl_value = null;
                 }
                 //save new PiValueLog
                 $newdata = array(
@@ -110,9 +140,16 @@ class ProposalController extends Controller
                     'total_propose' => $new_total_propose,
                     'sum_donate' => $new_sum_donate,
                     'propose_time' => $new_propose_time,
-                    'propose_id' => $new_propose_id
+                    'propose_id' => $new_propose_id,
+                    'atl_value' => $new_atl_value,
+                    'ath_value' => $new_ath_value,
+                    'atl_propose' => $new_atl_propose,
+                    'ath_propose' => $new_ath_propose,
+                    'atl_donate' => $new_atl_donate,
+                    'ath_donate' => $new_ath_donate,
                 );
                 $CurrentPiValue = new PiValueLog($newdata);
+                // dd($CurrentPiValue);
                 if($CurrentPiValue->propose_time != null)
                 {
                     $CurrentPiValue->save();
@@ -158,7 +195,13 @@ class ProposalController extends Controller
                                         'thismonth_id_to' => $ThisMonthDonate["id_to"],
                                         'thismonth_count_donate' => $ThisMonthDonate["count_donate"],
                                         'thismonth_total_donate' => $ThisMonthDonate["total_donate"],
-                                        'thismonth_reward' => $ThisMonthDonate["reward"]
+                                        'thismonth_reward' => $ThisMonthDonate["reward"],
+                                        'atl_propose' => $cacheValue["atl_propose"],
+                                        'ath_propose' => $cacheValue["ath_propose"],
+                                        'atl_donate' => $cacheValue["atl_donate"],
+                                        'ath_donate' => $cacheValue["ath_donate"],
+                                        'atl_value' => $cacheValue["atl_value"],
+                                        'ath_value' => $cacheValue["ath_value"],
                                         ], 200);
         return $response;
     }
@@ -318,23 +361,37 @@ class ProposalController extends Controller
                     'paid' => 0,
                     'txid' => null,
                     'fixed_drawdate' => 0,
-                    'live_drawlink' => ""
+                    'live_drawlink' => "",
+                    'atl_value' => null,
+                    'ath_value' => null,
+                    'atl_propose' => null,
+                    'ath_propose' => null,
+                    'atl_donate' => null,
+                    'ath_donate' => null
                 );
                 $LastDonateLog = new DonateLog($newdata);
                 $LastDonateLog->save();
             }
             //sum donation for this month
-            $thismonth_proposals = Proposal::select(DB::raw("COUNT(*) AS count_propose, SUM(propose) AS sum_propose , SUM(donate) AS sum_donate, MIN(id) AS min_id ,MAX(id) AS max_id"))
+            $thismonth_proposals = Proposal::select(DB::raw("COUNT(*) AS count_propose, SUM(propose) AS sum_propose , SUM(donate) AS sum_donate, MIN(propose) AS min_propose, MAX(propose) AS max_propose, MIN(donate) AS min_donate, MAX(donate) AS max_donate, MIN(id) AS min_id ,MAX(id) AS max_id"))
             ->where('created_at', '>=', $firstday)
             ->where('created_at', '<=',  $lastday)
             ->where('completed','1')
             ->first();
-        // dd($thismonth_proposals->sum_donate);
+            // dd($thismonth_proposals->sum_donate);
             $LastDonateLog->count_donate = $thismonth_proposals->count_propose;
             $LastDonateLog->id_from = $thismonth_proposals->min_id;
             $LastDonateLog->id_to = $thismonth_proposals->max_id;
             $LastDonateLog->total_propose = $thismonth_proposals->sum_propose ?? 0;
             $LastDonateLog->total_donate = $thismonth_proposals->sum_donate ?? 0;
+            $LastDonateLog->atl_propose = $thismonth_proposals->min_propose;
+            $LastDonateLog->ath_propose = $thismonth_proposals->max_propose;
+            $LastDonateLog->atl_donate = $thismonth_proposals->min_donate;
+            $LastDonateLog->ath_donate = $thismonth_proposals->max_donate;
+            //atl_value, ath_value will be updated in each propose
+            // $LastDonateLog->atl_value = ?;
+            // $LastDonateLog->ath_value = ?;
+
             $LastDonateLog->save();
 
             //Cache data
@@ -355,6 +412,12 @@ class ProposalController extends Controller
                 'txid' => $LastDonateLog->txid,
                 'fixed_drawdate' => $LastDonateLog->fixed_drawdate,
                 'live_drawlink' => $LastDonateLog->live_drawlink,
+                'atl_value' => $LastDonateLog->atl_value,
+                'ath_value' => $LastDonateLog->ath_value,
+                'atl_propose' => $LastDonateLog->atl_propose,
+                'ath_propose' => $LastDonateLog->ath_propose,
+                'atl_donate' => $LastDonateLog->atl_donate,
+                'ath_donate' => $LastDonateLog->ath_donate,
             );
             Cache::forget('LastDonateLog');
             Cache::put('LastDonateLog', $cachedata);
@@ -522,21 +585,35 @@ class ProposalController extends Controller
                 //calculate new pi value
                 $total_propose = $cacheValue["total_propose"];
                 $new_total_propose = $total_propose + 1;
-                $new_sum_donate = $cacheValue["sum_donate"] + $proposal->donate;
                 $new_pivalue = (($cacheValue["current_value"] * $total_propose) + $proposal->propose)/$new_total_propose;
                 $new_propose_time = $proposal->created_at;
+                $new_sum_donate = $cacheValue["sum_donate"] + $proposal->donate;
+                $new_propose_id = $proposal->id;
+                $new_atl_propose = ($cacheValue["atl_propose"] > $proposal->propose) ? $proposal->propose : $cacheValue["atl_propose"];
+                $new_ath_propose = ($cacheValue["ath_propose"] < $proposal->propose) ? $proposal->propose : $cacheValue["ath_propose"];
+                $new_atl_donate = ($cacheValue["atl_donate"] > $proposal->donate) ? $proposal->propose : $cacheValue["atl_donate"];
+                $new_ath_donate = ($cacheValue["ath_donate"] < $proposal->donate) ? $proposal->propose : $cacheValue["ath_donate"];
+                $new_ath_value = ($new_pivalue > $cacheValue["ath_value"]) ? $new_pivalue : $cacheValue["ath_value"];
+                $new_atl_value = ($new_pivalue < $cacheValue["atl_value"]) ? $new_pivalue : $cacheValue["atl_value"];
                 $lastlog_time = $cacheValue["lastlog_time"];
                 //$lastlog_time = strtotime($cacheValue["lastlog_time"]);
                 //update cache or clear cache if last for long time
                 if($lastlog_time != null) {
                     $interval = $proposal->created_at->diff($lastlog_time);
-                    if($interval->i < 60){// interval = 60 minute
+                    if(($interval->i < 60) && ($new_pivalue <= $cacheValue["ath_value"]) && ($new_pivalue >= $cacheValue["atl_value"])){
                         //update cache
                         $newdata = array(
                             'current_value' => $new_pivalue,
                             'total_propose' => $new_total_propose,
                             'sum_donate' => $new_sum_donate,
                             'propose_time' => $new_propose_time,
+                            'propose_id' => $new_propose_id,
+                            'atl_value' => $new_atl_value,
+                            'ath_value' => $new_ath_value,
+                            'atl_propose' => $new_atl_propose,
+                            'ath_propose' => $new_ath_propose,
+                            'atl_donate' => $new_atl_donate,
+                            'ath_donate' => $new_ath_donate,
                             "lastlog_time" => $lastlog_time
                         );
                         Cache::forget('CurrentPiValue');
@@ -554,7 +631,7 @@ class ProposalController extends Controller
             }
             //LastDonateLog
             if ($proposal && Cache::has('LastDonateLog')) {
-                CacheLastDonateLogSameMonth($proposal);
+                CacheLastDonateLogSameMonth($proposal, $new_pivalue);
             }
             //return
 
@@ -684,18 +761,34 @@ class ProposalController extends Controller
                 $new_pivalue = (($cacheValue["current_value"] * $total_propose) + $proposal->propose)/$new_total_propose;
                 $new_propose_time = $proposal->created_at;
                 $new_sum_donate = $cacheValue["sum_donate"] + $proposal->donate;
+                $new_propose_id = $proposal->id;
+                $new_atl_propose = ($cacheValue["atl_propose"] > $proposal->propose) ? $proposal->propose : $cacheValue["atl_propose"];
+                $new_ath_propose = ($cacheValue["ath_propose"] < $proposal->propose) ? $proposal->propose : $cacheValue["ath_propose"];
+                $new_atl_donate = ($cacheValue["atl_donate"] > $proposal->donate) ? $proposal->propose : $cacheValue["atl_donate"];
+                $new_ath_donate = ($cacheValue["ath_donate"] < $proposal->donate) ? $proposal->propose : $cacheValue["ath_donate"];
+                $new_ath_value = ($new_pivalue > $cacheValue["ath_value"]) ? $new_pivalue : $cacheValue["ath_value"];
+                $new_atl_value = ($new_pivalue < $cacheValue["atl_value"]) ? $new_pivalue : $cacheValue["atl_value"];
                 $lastlog_time = $cacheValue["lastlog_time"];
+
                 //$lastlog_time = strtotime($cacheValue["lastlog_time"]);
                 //update cache or clear cache if last for long time
                 if($lastlog_time != null) {
                     $interval = $proposal->created_at->diff($lastlog_time);
-                    if($interval->i < 60){// interval = 60 minute
+                    //check save new log if interval = 60 minute, ath_value, atl_value
+                    if(($interval->i < 60) && ($new_pivalue <= $cacheValue["ath_value"]) && ($new_pivalue >= $cacheValue["atl_value"])){
                         //update cache
                         $newdata = array(
                             'current_value' => $new_pivalue,
                             'total_propose' => $new_total_propose,
                             'sum_donate' => $new_sum_donate,
                             'propose_time' => $new_propose_time,
+                            'propose_id' => $new_propose_id,
+                            'atl_value' => $new_atl_value,
+                            'ath_value' => $new_ath_value,
+                            'atl_propose' => $new_atl_propose,
+                            'ath_propose' => $new_ath_propose,
+                            'atl_donate' => $new_atl_donate,
+                            'ath_donate' => $new_ath_donate,
                             "lastlog_time" => $lastlog_time
                         );
                         Cache::forget('CurrentPiValue');
@@ -714,7 +807,7 @@ class ProposalController extends Controller
 
             //LastDonateLog
             if ($proposal && $proposal->completed && Cache::has('LastDonateLog')) {
-                CacheLastDonateLogSameMonth($proposal);
+                CacheLastDonateLogSameMonth($proposal, $new_pivalue);
             }
             //return
 
@@ -1009,7 +1102,7 @@ class ProposalController extends Controller
 
 }
 
-function CacheLastDonateLogSameMonth(Proposal  $proposal) {
+function CacheLastDonateLogSameMonth(Proposal  $proposal, float $new_pivalue) {
     $LastDonateLog = Cache::get('LastDonateLog');
     $from_date = $LastDonateLog["from_date"];
     if(($proposal->created_at)->format('Y-m') === $from_date->format('Y-m')) {//check if same month-year
@@ -1030,10 +1123,32 @@ function CacheLastDonateLogSameMonth(Proposal  $proposal) {
             'paid' => $LastDonateLog["paid"],
             'txid' => $LastDonateLog["txid"],
             'fixed_drawdate' => $LastDonateLog["fixed_drawdate"],
-            'live_drawlink' => $LastDonateLog["live_drawlink"]
+            'live_drawlink' => $LastDonateLog["live_drawlink"],
+            'atl_value' => ($LastDonateLog["atl_value"] == null || $LastDonateLog["atl_value"] > $new_pivalue) ? $new_pivalue : $LastDonateLog["atl_value"],
+            'ath_value' => ($LastDonateLog["ath_value"] == null || $LastDonateLog["ath_value"] < $new_pivalue) ? $new_pivalue : $LastDonateLog["ath_value"],
+            'atl_propose' => ($LastDonateLog["atl_propose"] == null || $LastDonateLog["atl_propose"] > $proposal->propose) ? $proposal->propose : $LastDonateLog["atl_propose"],
+            'ath_propose' => ($LastDonateLog["ath_propose"] == null || $LastDonateLog["ath_propose"] < $proposal->propose) ? $proposal->propose : $LastDonateLog["ath_propose"],
+            'atl_donate' => ($LastDonateLog["atl_donate"] == null || $LastDonateLog["atl_donate"] > $proposal->donate) ? $proposal->donate : $LastDonateLog["atl_donate"],
+            'ath_donate' => ($LastDonateLog["ath_donate"] == null || $LastDonateLog["ath_donate"] < $proposal->donate) ? $proposal->donate : $LastDonateLog["ath_donate"]
         );
         Cache::forget('LastDonateLog');
         Cache::put('LastDonateLog', $newdata);
+
+        if($LastDonateLog["atl_value"] == null || $LastDonateLog["atl_value"] > $new_pivalue || $LastDonateLog["ath_value"] == null || $LastDonateLog["ath_value"] < $new_pivalue){
+            //save atl_value, ath_value
+            $firstdaystr = date("Y-m-01");//first day of month
+            $firstday = new DateTime($firstdaystr);
+            $DatabaseLog = DonateLog::where('from_date', $firstday)->first();
+            if($DatabaseLog != null){
+                if($LastDonateLog["atl_value"] == null || $LastDonateLog["atl_value"] > $new_pivalue){
+                    $LastDonateLog->atl_value = $new_pivalue;
+                }
+                if($LastDonateLog["ath_value"] == null || $LastDonateLog["ath_value"] < $new_pivalue){
+                    $LastDonateLog->ath_value = $new_pivalue;
+                }
+                $DatabaseLog->save();
+            }
+        }
     }
     else{
         //clear -> Create LastDonateLog when load homepage

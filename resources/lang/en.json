@@ -63,6 +63,7 @@
     "Select Period" : "Select Period",
     "Password to save" : "Password to save",
     "Save" : "Save",
+    "Update Data" : "Update Data",
     "No data in this period." : "No data in this period.",
     "Pi Value is a survey application ..." : "Pi Value is a survey application for Pi coin consensus value",
     "What is 'Pi Value' app": "What is 'Pi Value' app",
@@ -133,6 +134,7 @@
     "The post has been created succesfully" : "The post has been created succesfully",
     "This post cannot be found." : "This post cannot be found.",
     "The post cannot be found." : "The post cannot be found.",
-    "The post has been deleted." : "The post has been deleted."
+    "The post has been deleted." : "The post has been deleted.",
+    "Please enter password to update data." : "Please enter password to update data."
 
 }

@@ -226,11 +226,23 @@
                     </div>
                     <div class="total-proposal-info">
                         <div class="info-item-wrap">
-                            <div class="info-item">
+                            <div class="info-item col-xs-12 col-sm-6 col-md-4">
                                 {{ __('Total proposal:')}} <strong id="total_propose">{{$current_pi_value['total_propose']}}</strong>
                             </div>
-                            <div class="info-item">
+                            <div class="info-item col-xs-12 col-sm-6 col-md-4">
                                 {{ __('Total donation:')}} <strong id="sum_donate">{{number_format($current_pi_value['sum_donate'],5)}} π</strong>
+                            </div>
+                            <div class="info-item col-xs-12 col-sm-6 col-md-4">
+                                {{ __('Min proposal:')}} <strong id="atl_proposal">{{number_format($current_pi_value['atl_propose'],0)}}</strong>
+                            </div>
+                            <div class="info-item col-xs-12 col-sm-6 col-md-4">
+                                {{ __('Max proposal:')}} <strong id="ath_proposal">{{number_format($current_pi_value['ath_propose'],0)}}</strong>
+                            </div>
+                            <div class="info-item col-xs-12 col-sm-6 col-md-4">
+                                {{ __('ATL π Value:')}} <strong id="atl_value">{{number_format($current_pi_value['atl_value'],2)}}</strong>
+                            </div>
+                            <div class="info-item col-xs-12 col-sm-6 col-md-4">
+                                {{ __('ATH π Value:')}} <strong id="ath_value">{{number_format($current_pi_value['ath_value'],2)}}</strong>
                             </div>
                         </div>
                     </div>
@@ -310,13 +322,17 @@
                             $('#thismonth_reward').html(response.thismonth_reward.toFixed(5) + " π");
                             $('#total_propose').html(response.total_propose);
                             $('#sum_donate').html(response.sum_donate.toFixed(5) + " π");
+                            $('#atl_proposal').html(response.atl_propose.toFixed(0));
+                            $('#ath_proposal').html(response.ath_propose.toFixed(0));
+                            $('#atl_value').html(response.atl_value.toFixed(2));
+                            $('#ath_value').html(response.ath_value.toFixed(2));
                             $('#donate_value').html(CalculateDonateAmount($('#proposal-value').val(), response.current_value));
                         }
                     },error:function(err){
                         console.log("Error get current value");
                     }
                 })
-            }, 1000);
+            }, 5000);
 
             $('#proposal-value').change(function (e) {
                 $('#donate_value').html(CalculateDonateAmount($('#proposal-value').val(), $('#currentpivalue').text()));

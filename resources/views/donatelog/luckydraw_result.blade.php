@@ -365,6 +365,7 @@
                             <label for="pwd">{{ __('Password to save')}}:</label>
                             <input type="password" id="pwd" name="pwd">
                         </div>
+                        <input type="submit" id="update-donatelog" class="btn btn-primary ladda-button sm-separate"  data-color="blue" value="{{ __('Update Data')}}">
                         <input type="submit" id="save-donatelog" class="btn btn-primary ladda-button sm-separate"  data-color="green" value="{{ __('Save')}}">
                     </div>
                     <input type="hidden" id ="lucky2_enable" value="{{$lucky2_enable}}">
@@ -550,6 +551,47 @@
                 })
                 .done(function(response) { //success
                     if (response.success == "OK") {
+                        swal("Successful", response.message, 'success');
+                    } else {
+                        swal("Oops!", response.message, 'error');
+                    }
+                })
+                .fail(function(response) { //error
+                    if (response.message) {
+                        swal("Fail!", response.message, 'error');
+                    } else
+                    if (response.responseJSON) {
+                        swal("Fail!", response.responseJSON.message, 'error');
+                    } else {
+                        swal("Fail!", "unknow error, please try again.", 'error');
+                    }
+
+                })
+            ld.stop();
+            ld.remove();
+        });
+
+        ///////////---------------------
+        var btnUpdate = $('#update-donatelog');
+        btnUpdate.click(function(e) {
+            e.preventDefault();
+            var ld = Ladda.create(document.querySelector('#update-donatelog'));
+            ld.start();
+
+            $.ajax({
+                    cache: false,
+                    url: "api/donatelog/updateluckydraw",
+                    type: "POST",
+                    data: {
+                        "_token": "{{ csrf_token() }}",
+                        "donatelog_id": $('#donatelog_id').val(),
+                        "pwd": $('#pwd').val(),
+                    },
+                    dataType: "json",
+                })
+                .done(function(response) { //success
+                    if (response.success == "OK") {
+                        location.reload();
                         swal("Successful", response.message, 'success');
                     } else {
                         swal("Oops!", response.message, 'error');

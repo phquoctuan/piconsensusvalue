@@ -41,20 +41,26 @@ class DonateLogController extends Controller
 
     public function LuckyDrawResult(Request $request)
     {
-        $nummonth = $request->select_month;
-        $numyear = $request->select_year;
-        $num_padded = sprintf("%02d", $nummonth);
-        $donatelog = array(
-            'select_month' => $num_padded,
-            'select_year' => $request->select_year
-        );
-        //query donate log
-        $firstdaystr = date("Y-m-01");
-        $fromdate = new DateTime($firstdaystr);
-        $fromdate->setDate($numyear, $nummonth, 1);
-        // $fromdate = mktime(0, 0, 0, $nummonth, 1, $numyear);
-        // echo $fromdate->format('Y-m-d');
-        $ThisDonateLog = DonateLog::where('from_date', $fromdate)->first();
+        if(!$request->donatelog_id){
+            $nummonth = $request->select_month;
+            $numyear = $request->select_year;
+            $num_padded = sprintf("%02d", $nummonth);
+            $donatelog = array(
+                'select_month' => $num_padded,
+                'select_year' => $request->select_year
+            );
+            //query donate log
+            $firstdaystr = date("Y-m-01");
+            $fromdate = new DateTime($firstdaystr);
+            $fromdate->setDate($numyear, $nummonth, 1);
+            // $fromdate = mktime(0, 0, 0, $nummonth, 1, $numyear);
+            // echo $fromdate->format('Y-m-d');
+            $ThisDonateLog = DonateLog::where('from_date', $fromdate)->first();
+        }
+        else{
+            $ThisDonateLog = DonateLog::find($request->donatelog_id);
+        }
+
         if($ThisDonateLog == null){
             $donatelog["has_donatelog"] = 0;
         }
@@ -234,6 +240,79 @@ class DonateLogController extends Controller
             Cache::forget('LastDonateLog');
             Cache::forget('LastMonthDonateLog');
 
+            $message = [
+                "success" => 'OK',
+                "message" => __('Data has been saved successfully.'),
+                "data" =>  ["username" => $founditem->username]
+            ];
+            $response = response()->json($message, 200);
+            return $response;
+        }
+        else{
+            $message = [
+                "success" => 'NG',
+                'message' => __('Data not found by this Id.')
+                , "errors" => ["not found"]];
+            $response = response()->json($message, 200);
+            return $response;
+        }
+
+    }
+
+    public function UpdateLuckyDraw(Request $request)
+    {
+        //check password
+        if (!$request->pwd) {
+            $message = [
+                        "success" => 'NG',
+                        "message" => __('Please enter password to update data.'),
+                        "errors" => ["required fields: password"]];
+            $response = response()->json($message, 200);
+            return $response;
+        }
+        else{
+            $curpass = config('pi.save_password');
+            if($curpass != $request->pwd){
+                $message = [
+                    "success" => 'NG',
+                    "message" => __('Password not match.'),
+                    "errors" => ["required fields: password"]];
+                $response = response()->json($message, 200);
+                return $response;
+            }
+        }
+
+        if (!$request->donatelog_id) {
+            $message = [
+                        "success" => 'NG',
+                        "message" => __('Invalid donate log id.'),
+                        "errors" => ["required fields: donatelog_id"]];
+            $response = response()->json($message, 200);
+            return $response;
+        }
+        //find data
+        $founditem = DonateLog::find($request->donatelog_id);
+        if($founditem != NULL){
+            //update data
+            $donate_proposals = Proposal::select(DB::raw("COUNT(*) AS count_propose, SUM(propose) AS sum_propose , SUM(donate) AS sum_donate, MIN(id) AS min_id ,MAX(id) AS max_id"))
+            ->where('created_at', '>=', $founditem->from_date)
+            ->where('created_at', '<=',  $founditem->to_date)
+            ->where('completed','1')
+            ->first();
+            if($donate_proposals != null){
+                $founditem->id_from = $donate_proposals->min_id;
+                $founditem->id_to = $donate_proposals->max_id;
+                $founditem->count_donate = $donate_proposals->count_propose;
+                $founditem->total_propose = $donate_proposals->sum_propose;
+                $founditem->total_donate = $donate_proposals->sum_donate;
+                $founditem->save();
+
+                Cache::forget('LastDonateLog');
+                Cache::forget('LastMonthDonateLog');
+            }
+            // echo("here");
+            // return redirect()->route('/luckydrawresult');// ['donatelog_id' => $request->donatelog_id]
+            // return redirect('/luckydrawresult');
             $message = [
                 "success" => 'OK',
                 "message" => __('Data has been saved successfully.'),

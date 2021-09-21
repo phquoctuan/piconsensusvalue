@@ -291,26 +291,28 @@ textarea.parsley-error {
 }
 
 .total-proposal-info {
-    padding-top: 20px;
-    padding-left: 20px;
-    padding-right: 20px;
+    padding-top: 10px;
+    padding-left: 5px;
+    padding-right: 5px;
     // color: brown;
     font-size: 16px;
     display: inline-block;
 }
 
 .total-proposal-info .info-item-wrap {
-    background-color: #555;
-    padding: 5px;
+    padding: 10px;
+    overflow: hidden;
+    clear: both;
+    background: #555;
     border-radius: 5px;
 }
 
 .total-proposal-info .info-item {
     display: inline-block;
-    padding: 0 15px;
-    background-color: #555;
+    padding: 0 5px;
+    // background-color: #555;
     color: white;
-    border-radius: 5px;
+    // border-radius: 5px;
 }
 
 .align-center {

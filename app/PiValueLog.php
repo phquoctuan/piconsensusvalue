@@ -12,5 +12,6 @@ class PiValueLog extends Model
 
     protected $fillable = [
         'current_value', 'total_propose', 'sum_donate', 'propose_time', 'propose_id',
+        'atl_value', 'ath_value', 'atl_propose', 'ath_propose', 'atl_donate', 'ath_donate'
     ];
 }

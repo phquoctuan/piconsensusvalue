@@ -21,13 +21,15 @@ class CreatePiValueLogsTable extends Migration
             $table->double('sum_donate');
             $table->dateTime('propose_time');
             $table->integer('propose_id')->default(0);
+
+            // $table->double('ath_value')->nullable();
+            // $table->double('atl_value')->nullable();
+            // $table->double('ath_propose')->nullable();
+            // $table->double('atl_propose')->nullable();
+            // $table->double('ath_donate')->nullable();
+            // $table->double('atl_donate')->nullable();
+
             $table->dateTime('created_at')->useCurrent = true;
-            // ath_value
-            // atl_value
-            // ath_propose
-            // atl_propose
-            // ath_donate
-            // atl_donate
         });
     }
 

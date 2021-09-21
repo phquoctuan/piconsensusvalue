@@ -23,6 +23,7 @@ Route::post('/proposal/incomplete', 'ProposalController@InCompletionPayment');
 Route::post('/proposal/checkproposal', 'ProposalController@CheckProposal');
 
 Route::post('/donatelog/saveluckydraw', 'DonateLogController@SaveLuckyDraw');
+Route::post('/donatelog/updateluckydraw', 'DonateLogController@UpdateLuckyDraw');
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();

@@ -55,12 +55,12 @@ class ProposalController extends Controller
                     $new_pivalue = (($lastlog->current_value * $lastlog->total_propose) + $new_proposals->sum_propose)/$new_total_propose;
                     $new_propose_time = $new_proposals->propose_time;
                     $new_propose_id = $new_proposals->max_id;
-                    $new_atl_propose = ($lastlog->atl_propose > $new_proposals->min_propose) ? $new_proposals->min_propose : $lastlog->atl_propose;
+                    $new_atl_propose = ($lastlog->atl_propose == null || ($lastlog->atl_propose > $new_proposals->min_propose)) ? $new_proposals->min_propose : $lastlog->atl_propose;
                     $new_ath_propose = ($lastlog->ath_propose < $new_proposals->max_propose) ? $new_proposals->max_propose : $lastlog->ath_propose;
-                    $new_atl_donate = ($lastlog->atl_donate > $new_proposals->min_donate) ? $new_proposals->min_donate : $lastlog->atl_donate;
+                    $new_atl_donate = ($lastlog->atl_donate == null || ($lastlog->atl_donate > $new_proposals->min_donate)) ? $new_proposals->min_donate : $lastlog->atl_donate;
                     $new_ath_donate = ($lastlog->ath_donate < $new_proposals->max_donate) ? $new_proposals->max_donate : $lastlog->ath_donate;
                     $new_ath_value = ($new_pivalue > $lastlog->ath_value) ? $new_pivalue : $lastlog->ath_value;
-                    $new_atl_value = ($new_pivalue < $lastlog->atl_value) ? $new_pivalue : $lastlog->atl_value;
+                    $new_atl_value = ($lastlog->atl_value == null || ($new_pivalue < $lastlog->atl_value)) ? $new_pivalue : $lastlog->atl_value;
                 }
                 else{ //no new proposal data
                     $new_total_propose = $lastlog->total_propose;
@@ -68,12 +68,12 @@ class ProposalController extends Controller
                     $new_pivalue = $lastlog->current_value;
                     $new_propose_time = $lastlog-> propose_time;
                     $new_propose_id = $lastlog->propose_id;
-                    $new_atl_propose = $lastlog->atl_propose;
+                    $new_atl_propose = $lastlog->atl_propose ?? 0;
                     $new_ath_propose = $lastlog->ath_propose;
-                    $new_atl_donate = $lastlog->atl_donate;
+                    $new_atl_donate = $lastlog->atl_donate ?? 0;
                     $new_ath_donate = $lastlog->ath_donate;
                     $new_ath_value = $lastlog->ath_value;
-                    $new_atl_value = $lastlog->atl_value;
+                    $new_atl_value = $lastlog->atl_value ?? 0;
                 }
                 //save new PiValueLog
                 $newdata = array(

@@ -315,17 +315,42 @@
                     success:function(response){
                         if(response.current_value || response.current_value == 0){
                             $('#current-pivalue').html(response.current_value_str);
-                            $('#currentpivalue').html(response.current_value.toFixed(5));
+                            if(response.current_value == null){
+                                $('#currentpivalue').html('');
+                            }
+                            else{
+                                $('#currentpivalue').html(response.current_value.toFixed(5));
+                            }
                             $('#thismonth_count_donate').html(response.thismonth_count_donate);
                             $('#thismonth_total_donate').html(response.thismonth_total_donate.toFixed(5) + " π");
                             $('#thismonth_id_to').html(response.thismonth_id_to);
                             $('#thismonth_reward').html(response.thismonth_reward.toFixed(5) + " π");
                             $('#total_propose').html(response.total_propose);
                             $('#sum_donate').html(response.sum_donate.toFixed(5) + " π");
-                            $('#atl_proposal').html(response.atl_propose.toFixed(0));
-                            $('#ath_proposal').html(response.ath_propose.toFixed(0));
-                            $('#atl_value').html(response.atl_value.toFixed(2));
-                            $('#ath_value').html(response.ath_value.toFixed(2));
+                            if(response.atl_propose == null){
+                                $('#atl_proposal').html('');
+                            }
+                            else{
+                                $('#atl_proposal').html(response.atl_propose.toFixed(0));
+                            }
+                            if(response.ath_propose == null){
+                                $('#ath_proposal').html('');
+                            }
+                            else{
+                                $('#ath_proposal').html(response.ath_propose.toFixed(0));
+                            }
+                            if(response.atl_value == null){
+                                $('#atl_value').html('');
+                            }
+                            else{
+                                $('#atl_value').html(response.atl_value.toFixed(2));
+                            }
+                            if(response.ath_value == null){
+                                $('#ath_value').html('');
+                            }
+                            else{
+                                $('#ath_value').html(response.ath_value.toFixed(2));
+                            }
                             $('#donate_value').html(CalculateDonateAmount($('#proposal-value').val(), response.current_value));
                         }
                     },error:function(err){

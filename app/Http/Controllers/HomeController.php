@@ -7,6 +7,7 @@ use SweetAlert;
 use Illuminate\Support\Facades\Cache;
 use phpDocumentor\Reflection\Types\Null_;
 use \Datetime;
+use App\Statictis;
 
 class HomeController extends Controller
 {
@@ -26,6 +27,12 @@ class HomeController extends Controller
         //alert()->error('Error Message', 'Optional Title')->persistent('Close');
         //Alert::info('Welcome to our website', 'Hi! This is a Sweet Alert message!');
         //SweetAlert::message('Robots are working!');
+        $statictises = statictis::orderBy('id')->get();
+        $chartlabel = $statictises->pluck('label');
+        $chartdata = $statictises->pluck('total');
+        // var_dump($plucked);
+        // die();
+
         $pival = 0;
         if (Cache::has('CurrentPiValue')){
             $CurrentPiValue = Cache::get('CurrentPiValue');
@@ -105,13 +112,18 @@ class HomeController extends Controller
             $curpival = number_format($pival,5);
         }
 
+        //chart static data
+
+
         // header("Set-Cookie: cross-site-cookie=whatever; SameSite=None; Secure");
         return view('home')->with('current_value', $curpival)
                             ->with('current_pi_value', $CurrentPiValue)
                             ->with('this_month_donate', $ThisMonthDonate)
                             ->with('last_month_donate', $LastMonthDonate)
                             ->with('this_month_diff', $ThisdiffInSeconds)
-                            ->with('last_month_diff', $LastdiffInSeconds);
+                            ->with('last_month_diff', $LastdiffInSeconds)
+                            ->with('chart_label', $chartlabel)
+                            ->with('chart_data', $chartdata);
         // return view('home')->with('name', 'Victoria')->with('occupation', 'Astronaut');
         // return view('home', compact('var1','var2','var3'));
         // return $view->with('data', ['ms' => $ms, 'persons' => $persons])); -> {{ $data['ms'] }}

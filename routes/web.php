@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\StatictisController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+//piconsensusvalue.com
 Route::get('/', 'HomeController@index');
 
 Route::get('/blog', 'BlogController@index');
@@ -52,3 +52,7 @@ Route::get('users/register', 'Auth\AuthController@getRegister');
 Route::post('users/register', 'Auth\AuthController@postRegister');
 
 Route::get('lang/{lang}','LangController@changeLang')->name('lang');
+
+Route::resource('/statictis', 'StatictisController');
+Route::get('/computestatic', 'StatictisController@ComputeStatictis');
+// Route::resource('statictis', StatictisController::class);
